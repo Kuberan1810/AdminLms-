@@ -1,0 +1,374 @@
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+/* ================= Types ================= */
+
+export type Resource = {
+  id: string;
+  name: string;
+  url: string;
+  size?: string;
+};
+
+export type Chapter = {
+  id: string;
+  title: string;
+  moduleId: string;
+  resourceIds: string[];
+  assignmentIds: string[];
+  classContent?: string;
+  keyTopics?: string[];
+};
+
+export type Assignment = {
+  id: string;
+  title: string;
+  moduleId: string;
+  dueDate: string;
+  dueTime: string;
+  description: string;
+  objective: string;
+  outcome: string;
+  resources: string[]; // URLs or file paths
+  batch: string;
+  course: string;
+};
+
+export type QuestionType = "mcq" | "checkbox" | "short" | "long";
+
+export type Question = {
+  id: number;
+  text: string;
+  type: QuestionType;
+  options: string[];
+  required: boolean;
+  answerKey: number[];
+  points: number;
+}
+
+export type Test = {
+  id: string;
+  name: string;
+  moduleId: string;
+  course: string;
+  batch: string;
+  category: string;
+  description: string;
+  fromTime: string;
+  toTime: string; // or duration
+  questions: Question[];
+  totalMarks: number;
+  createdAt: string;
+  date: string; // Added back date field for compatibility
+}
+
+export type Module = {
+  id: string;
+  title: string;
+  chapterIds: string[];
+  assignmentIds: string[];
+  testIds: string[];
+};
+
+type ResourcesState = {
+  modules: {
+    byId: Record<string, Module>;
+    allIds: string[];
+  };
+  chapters: {
+    byId: Record<string, Chapter>;
+    allIds: string[];
+  };
+  resources: {
+    byId: Record<string, Resource>;
+    allIds: string[];
+  };
+  assignments: {
+    byId: Record<string, Assignment>;
+    allIds: string[];
+  };
+  tests: {
+    byId: Record<string, Test>;
+    allIds: string[];
+  }
+};
+
+/* ================= Initial ================= */
+
+const initialState: ResourcesState = {
+  modules: { byId: {}, allIds: [] },
+  chapters: { byId: {}, allIds: [] },
+  resources: { byId: {}, allIds: [] },
+  assignments: { byId: {}, allIds: [] },
+  tests: { byId: {}, allIds: [] },
+};
+
+/* ================= Slice ================= */
+
+const resourcesSlice = createSlice({
+  name: "resourcesManager",
+  initialState,
+  reducers: {
+    /* ---------- Module ---------- */
+    addModule: (state, action: PayloadAction<{ id: string; title: string }>) => {
+      const { id, title } = action.payload;
+
+      state.modules.byId[id] = {
+        id,
+        title,
+        chapterIds: [],
+        assignmentIds: [],
+        testIds: [],
+      };
+
+      state.modules.allIds.push(id);
+    },
+
+    /* ---------- Chapter ---------- */
+    addChapter: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        title: string;
+        moduleId: string;
+        classContent?: string;
+        keyTopics?: string[];
+      }>
+    ) => {
+      const { id, title, moduleId, classContent, keyTopics } = action.payload;
+
+      state.chapters.byId[id] = {
+        id,
+        title,
+        moduleId,
+        resourceIds: [],
+        assignmentIds: [],
+        classContent: classContent || "",
+        keyTopics: keyTopics || [],
+      };
+
+      state.chapters.allIds.push(id);
+
+      if (state.modules.byId[moduleId]) {
+        state.modules.byId[moduleId].chapterIds.push(id);
+      }
+    },
+
+    updateChapter: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        title?: string;
+        classContent?: string;
+        keyTopics?: string[];
+      }>
+    ) => {
+      const { id, title, classContent, keyTopics } = action.payload;
+      const chapter = state.chapters.byId[id];
+      if (chapter) {
+        if (title !== undefined) chapter.title = title;
+        if (classContent !== undefined) chapter.classContent = classContent;
+        if (keyTopics !== undefined) chapter.keyTopics = keyTopics;
+      }
+    },
+
+    /* ---------- Resource ---------- */
+    addResource: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        name: string;
+        url: string;
+        chapterId: string;
+        size?: string;
+      }>
+    ) => {
+      const { id, name, url, chapterId, size } = action.payload;
+
+      state.resources.byId[id] = { id, name, url, size };
+      state.resources.allIds.push(id);
+
+      if (state.chapters.byId[chapterId]) {
+        state.chapters.byId[chapterId].resourceIds.push(id);
+      }
+    },
+
+    updateResource: (
+      state,
+      action: PayloadAction<{ id: string; name: string; url?: string }>
+    ) => {
+      const { id, name, url } = action.payload;
+      if (state.resources.byId[id]) {
+        state.resources.byId[id].name = name;
+        if (url) state.resources.byId[id].url = url;
+      }
+    },
+
+    /* ---------- Assignment ---------- */
+    addAssignment: (
+      state,
+      action: PayloadAction<Assignment>
+    ) => {
+      const assignment = action.payload;
+      state.assignments.byId[assignment.id] = assignment;
+      state.assignments.allIds.push(assignment.id);
+
+      // Add to Module
+      if (state.modules.byId[assignment.moduleId]) {
+        state.modules.byId[assignment.moduleId].assignmentIds.push(assignment.id);
+      }
+    },
+
+    updateAssignment: (state, action: PayloadAction<Assignment>) => {
+      const assignment = action.payload;
+      if (state.assignments.byId[assignment.id]) {
+        state.assignments.byId[assignment.id] = assignment;
+      }
+    },
+
+    removeAssignment: (state, action: PayloadAction<{ assignmentId: string; moduleId?: string }>) => {
+      const { assignmentId, moduleId } = action.payload;
+      const assignment = state.assignments.byId[assignmentId];
+      // If moduleId not provided, try to find it from the assignment itself
+      const modId = moduleId || (assignment ? assignment.moduleId : null);
+
+      delete state.assignments.byId[assignmentId];
+      state.assignments.allIds = state.assignments.allIds.filter(id => id !== assignmentId);
+
+      if (modId && state.modules.byId[modId]) {
+        state.modules.byId[modId].assignmentIds = state.modules.byId[modId].assignmentIds.filter(id => id !== assignmentId);
+      }
+    },
+
+    /* ---------- Test ---------- */
+    addTest: (state, action: PayloadAction<Test>) => {
+      const test = action.payload;
+      state.tests.byId[test.id] = test;
+      state.tests.allIds.push(test.id);
+
+      if (state.modules.byId[test.moduleId]) {
+        state.modules.byId[test.moduleId].testIds.push(test.id);
+      }
+    },
+
+    removeTest: (state, action: PayloadAction<{ testId: string }>) => {
+      const { testId } = action.payload;
+      const test = state.tests.byId[testId];
+
+      if (test) {
+        const moduleId = test.moduleId;
+        delete state.tests.byId[testId];
+        state.tests.allIds = state.tests.allIds.filter(id => id !== testId);
+
+        if (state.modules.byId[moduleId]) {
+          state.modules.byId[moduleId].testIds = state.modules.byId[moduleId].testIds.filter(id => id !== testId);
+        }
+      }
+    },
+
+    /* ---------- Removals ---------- */
+    removeResource: (
+      state,
+      action: PayloadAction<{ resourceId: string; chapterId: string }>
+    ) => {
+      const { resourceId, chapterId } = action.payload;
+
+      delete state.resources.byId[resourceId];
+      state.resources.allIds = state.resources.allIds.filter(id => id !== resourceId);
+
+      if (state.chapters.byId[chapterId]) {
+        state.chapters.byId[chapterId].resourceIds =
+          state.chapters.byId[chapterId].resourceIds.filter(
+            (id) => id !== resourceId
+          );
+      }
+    },
+
+    removeModule: (state, action: PayloadAction<{ moduleId: string }>) => {
+      const { moduleId } = action.payload;
+
+      const module = state.modules.byId[moduleId];
+      if (!module) return;
+
+      // Remove all chapters in the module
+      const chapterIds = module.chapterIds;
+      chapterIds.forEach((chapterId) => {
+        // Remove resources in each chapter
+        const resourceIds = state.chapters.byId[chapterId]?.resourceIds || [];
+        resourceIds.forEach((resourceId) => {
+          delete state.resources.byId[resourceId];
+        });
+        state.resources.allIds = state.resources.allIds.filter(
+          (id) => !resourceIds.includes(id)
+        );
+
+        delete state.chapters.byId[chapterId];
+      });
+      state.chapters.allIds = state.chapters.allIds.filter(
+        (id) => !chapterIds.includes(id)
+      );
+
+      // Remove assignments in the module
+      const assignmentIds = module.assignmentIds || [];
+      assignmentIds.forEach(id => {
+        delete state.assignments.byId[id];
+      });
+      state.assignments.allIds = state.assignments.allIds.filter(id => !assignmentIds.includes(id));
+
+      // Remove tests in the module
+      const testIds = module.testIds || [];
+      testIds.forEach(id => {
+        delete state.tests.byId[id];
+      });
+      state.tests.allIds = state.tests.allIds.filter(id => !testIds.includes(id));
+
+      delete state.modules.byId[moduleId];
+      state.modules.allIds = state.modules.allIds.filter((id) => id !== moduleId);
+    },
+
+    removeChapter: (state, action: PayloadAction<{ chapterId: string }>) => {
+      const { chapterId } = action.payload;
+      const chapter = state.chapters.byId[chapterId];
+      if (!chapter) return;
+
+      const moduleId = chapter.moduleId;
+
+      // Remove resources in the chapter
+      const resourceIds = chapter.resourceIds;
+      resourceIds.forEach((resourceId) => {
+        delete state.resources.byId[resourceId];
+      });
+      state.resources.allIds = state.resources.allIds.filter(
+        (id) => !resourceIds.includes(id)
+      );
+
+      delete state.chapters.byId[chapterId];
+      state.chapters.allIds = state.chapters.allIds.filter((id) => id !== chapterId);
+
+      if (state.modules.byId[moduleId]) {
+        state.modules.byId[moduleId].chapterIds = state.modules.byId[moduleId].chapterIds.filter(
+          (id) => id !== chapterId
+        );
+      }
+    },
+  },
+});
+
+/* ================= Exports ================= */
+
+export const {
+  addModule,
+  addChapter,
+  addResource,
+  updateResource,
+  removeResource,
+  addAssignment,
+  updateAssignment,
+  removeAssignment,
+  removeModule,
+  removeChapter,
+  updateChapter,
+  addTest,
+  removeTest
+} = resourcesSlice.actions;
+
+export default resourcesSlice.reducer;

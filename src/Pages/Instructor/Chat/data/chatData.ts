@@ -1,0 +1,146 @@
+import type { Chat } from "./chat.types";
+
+export const chats: Chat[] = [
+  {
+    id: "sarah",
+    type: "individual",
+    name: "Sarah",
+    messages: [
+      {
+        id: "1",
+        sender: "student",
+         name: "sarah",
+        role: "Student",
+        text: "Thank you for the feedback on my essay!",
+        time: "2:31 PM",
+        likes: 2,
+        liked: false,
+        saved: false,
+        replies: [],
+      },
+      {
+        id: "2",
+        sender: "me",
+        role: "Instructor",
+        name: "Radha Krishnan",
+        text: "You're welcome Sarah. Keep improving ",
+        time: "2:33 PM",
+        likes: 1,
+        liked: false,
+        saved: false,
+        replies: [],
+      },
+    ],
+  },
+
+  {
+    id: "swetha",
+    type: "individual",
+    name: "Swetha",
+    messages: [],
+  },
+
+  {
+    id: "aila",
+    type: "individual",
+    name: "Aila",
+    messages: [],
+  },
+
+  {
+    id: "batch01",
+    type: "group",
+    name: "Batch-01",
+    members: [
+      "You (Instructor)",
+      "Kaviya",
+      "Nila",
+      "Zara",
+      "Ashraf",
+      "Varsha",
+      "Sakthi",
+      "Harish",
+      "Hari Priya",
+    ],
+    messages: [
+      {
+        id: "3",
+        sender: "student",
+        name: "Tim David",
+        role: "Student",
+        title:"My assignment progress",
+        text: "We submitted the assignment.",
+        time: "2:30 PM",
+        likes: 3,
+        liked: false,
+        saved: false,
+        pinned:true,
+        replies: [
+          {
+            id: "r1",
+            sender: "me",
+            name: "Radha Krishnan",
+            role: "Instructor",
+            text: "Great! I will review it today.",
+            time: "2:35 PM",
+            likes: 1,
+            liked: false,
+            saved: false,
+          },
+        ],
+      },
+      {
+  id: "4",
+  sender: "student",
+  name: "Anita Sharma",
+  role: "Student",
+  title:"supervised and unsupervised",
+  text: "Can you explain the difference between supervised and unsupervised learning?",
+  time: "3:00 PM",
+  likes: 5,
+  liked: false,
+  saved: false,
+  replies: [
+    {
+      id: "r2",
+      sender: "me",
+      name: "Radha Krishnan",
+      role: "Instructor",
+      text: "Supervised learning uses labeled data, while unsupervised learning works with unlabeled data to find patterns.",
+      time: "3:05 PM",
+      likes: 4,
+      liked: false,
+      saved: false,
+    },
+  ],
+},
+{
+  id: "5",
+  sender: "student",
+  name: "Rahul Verma",
+  role: "Student",
+  title:"frontend and backend development",
+  text: "What is the difference between frontend and backend development?",
+  time: "3:20 PM",
+  likes: 2,
+  liked: false,
+  saved: false,
+  replies: [
+    {
+      id: "r3",
+      sender: "me",
+      name: "Radha Krishnan",
+      role: "Instructor",
+      text: "Frontend focuses on what users see and interact with, while backend handles server logic, databases, and APIs.",
+      time: "3:25 PM",
+      likes: 3,
+      liked: false,
+      saved: false,
+    },
+  ],
+}
+
+      
+    ],
+  },
+];
