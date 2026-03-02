@@ -1,4 +1,4 @@
-import { Clock, TickCircle, Teacher } from "iconsax-react";
+import { Clock, TickCircle, Teacher, NotificationBing } from "iconsax-react";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNotifications } from "../../../context/StudentNotification/NotificationContext";
@@ -143,33 +143,43 @@ const StudentNotificationPopup = ({ onClose }: StudentNotificationPopupProps) =>
 
         {/* Content */}
         <div className="p-6 flex-1 overflow-y-auto space-y-6">
-
-          {todayNotifications.length > 0 && (
-            <div>
-              <h4 className="text-[#F67300] text-[14px] md:text-base font-semibold mb-4">
-                Today
-              </h4>
-              <div className="space-y-4">
-                {todayNotifications.map(item => (
-                  <NotificationItem key={item.id} item={item} />
-                ))}
+          {notifications.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full w-full text-center mt-20">
+              <div className="w-[64px] h-[64px] bg-[#FFF0EF] rounded-full flex items-center justify-center mb-6">
+                <NotificationBing size={32} color="#EF7A02" />
               </div>
+              <h3 className="text-[#626262] text-base font-medium mb-1">No Notifications Found</h3>
+              <p className="text-[#989898] text-sm max-w-[200px]">You don't have any notifications right now.</p>
             </div>
-          )}
+          ) : (
+            <>
+              {todayNotifications.length > 0 && (
+                <div>
+                  <h4 className="text-[#F67300] text-[14px] md:text-base font-semibold mb-4">
+                    Today
+                  </h4>
+                  <div className="space-y-4">
+                    {todayNotifications.map(item => (
+                      <NotificationItem key={item.id} item={item} />
+                    ))}
+                  </div>
+                </div>
+              )}
 
-          {yesterdayNotifications.length > 0 && (
-            <div>
-              <h4 className="text-[#F67300] text-[14px] md:text-base font-semibold mb-4">
-                Yesterday
-              </h4>
-              <div className="space-y-4">
-                {yesterdayNotifications.map(item => (
-                  <NotificationItem key={item.id} item={item} />
-                ))}
-              </div>
-            </div>
+              {yesterdayNotifications.length > 0 && (
+                <div>
+                  <h4 className="text-[#F67300] text-[14px] md:text-base font-semibold mb-4">
+                    Yesterday
+                  </h4>
+                  <div className="space-y-4">
+                    {yesterdayNotifications.map(item => (
+                      <NotificationItem key={item.id} item={item} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
-
         </div>
       </motion.div>
     </>

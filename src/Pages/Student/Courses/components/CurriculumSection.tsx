@@ -24,19 +24,19 @@ const CurriculumSection: React.FC<CurriculumSectionProps> = ({ modules, expanded
             {modules.map((module) => (
                 <div
                     key={module.id}
-                    className="border border-gray-200 rounded-xl  bg-white hover:border-gray-300 transition-colors"
+                    className="border border-[#F2EEF4] rounded-xl  bg-white hover:border-gray-300 transition-colors"
                 >
                     <button
                         onClick={() => toggleModule(module.id)}
                         className="w-full flex items-center justify-between p-5 text-left cursor-pointer"
                     >
-                        <span className="font-medium text-gray-900 text-lg">
-                            Module : {module.id} <span className="ml-2 text-gray-700 font-normal">{module.title}</span>
+                        <span className="font-medium text-[#333333] text-base ">
+                            Module : {module.id} <span className="ml-2 text-[#333333] font-medium">{module.title}</span>
                         </span>
                         {expandedModules.includes(module.id) ? (
-                            <ChevronUp className="w-5 h-5 text-gray-400" />
+                            <ChevronUp className="w-5 h-5 text-[#626262]" />
                         ) : (
-                            <ChevronDown className="w-5 h-5 text-gray-400" />
+                            <ChevronDown className="w-5 h-5 text-[#626262]" />
                         )}
                     </button>
 
@@ -45,7 +45,7 @@ const CurriculumSection: React.FC<CurriculumSectionProps> = ({ modules, expanded
                             {module.lessons.map((lesson) => (
                                 <div
                                     key={lesson.id}
-                                    onClick={() => handleLessonClick(lesson.id)}
+                                    // onClick={() => handleLessonClick(lesson.id)}
                                     className="flex items-center gap-4 p-4 border border-[#F2EEF4] rounded-xl hover:border-gray-300 transition-colors bg-white cursor-pointer"
                                 >
                                     <div className={`w-6 h-6 rounded-full flex items-center justify-center  ${lesson.isCompleted
@@ -54,7 +54,7 @@ const CurriculumSection: React.FC<CurriculumSectionProps> = ({ modules, expanded
                                         }`}>
                                         <Check className="w-3.5 h-3.5" />
                                     </div>
-                                    <span className="text-gray-700 font-medium">{lesson.id} {lesson.title}</span>
+                                    <span className="text-[#4d4d4d] font-medium text-sm">{lesson.id} {lesson.title}</span>
                                 </div>
                             ))}
                         </div>

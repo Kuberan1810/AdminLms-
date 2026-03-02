@@ -9,11 +9,13 @@ import {
   ChevronDown
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Settings() {
   const [pushEnabled, setPushEnabled] = useState(true);
   const [emailEnabled, setEmailEnabled] = useState(false);
 
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const goPreviousPage = () => {
@@ -22,7 +24,7 @@ export default function Settings() {
 
   return (
     <div className="min-h-screen w-full  flex items-center justify-center  ">
-      
+
       {/* Responsive Container */}
       <div className="
         w-full 
@@ -48,19 +50,22 @@ export default function Settings() {
           {/* Profile Card */}
           <div className="bg-white rounded-xl p-5 flex items-center gap-4  hover:shadow-md transition">
             <div className="relative">
-              <img
+              {/* <img
                 src="https://randomuser.me/api/portraits/women/44.jpg"
                 alt="profile"
                 className="w-16 h-16 rounded-full object-cover"
-              />
+              /> */}
+              <div className="w-16 h-16 rounded-full bg-[#EF7A02] flex items-center justify-center text-white text-3xl font-semibold">
+                {user?.name ? user.name.charAt(0).toUpperCase() : 'S'}
+              </div>
               <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
             </div>
             <div>
               <p className="text-base font-medium">
-                Name of the Instructor
+                {user?.name || "Student Name"}
               </p>
               <p className="text-sm text-gray-500">
-                Instructor Id
+                Student
               </p>
             </div>
           </div>
@@ -84,14 +89,12 @@ export default function Settings() {
 
                 <button
                   onClick={() => setPushEnabled(!pushEnabled)}
-                  className={`w-12 h-6 flex items-center rounded-full p-1 transition cursor-pointer ${
-                    pushEnabled ? "bg-orange-500" : "bg-gray-300"
-                  }`}
+                  className={`w-12 h-6 flex items-center rounded-full p-1 transition cursor-pointer ${pushEnabled ? "bg-orange-500" : "bg-gray-300"
+                    }`}
                 >
                   <div
-                    className={`bg-white w-5 h-5 rounded-full  transform transition cursor-pointer ${
-                      pushEnabled ? "translate-x-6" : "translate-x-0"
-                    }`}
+                    className={`bg-white w-5 h-5 rounded-full  transform transition cursor-pointer ${pushEnabled ? "translate-x-6" : "translate-x-0"
+                      }`}
                   />
                 </button>
               </div>
@@ -107,14 +110,12 @@ export default function Settings() {
 
                 <button
                   onClick={() => setEmailEnabled(!emailEnabled)}
-                  className={`w-12 h-6 flex items-center rounded-full p-1 transition cursor-pointer ${
-                    emailEnabled ? "bg-orange-500" : "bg-gray-300"
-                  }`}
+                  className={`w-12 h-6 flex items-center rounded-full p-1 transition cursor-pointer ${emailEnabled ? "bg-orange-500" : "bg-gray-300"
+                    }`}
                 >
                   <div
-                    className={`bg-white w-5 h-5 rounded-full shadow-md transform transition cursor-pointer ${
-                      emailEnabled ? "translate-x-6" : "translate-x-0"
-                    }`}
+                    className={`bg-white w-5 h-5 rounded-full shadow-md transform transition cursor-pointer ${emailEnabled ? "translate-x-6" : "translate-x-0"
+                      }`}
                   />
                 </button>
               </div>
@@ -163,11 +164,11 @@ export default function Settings() {
 
           {/* Logout */}
           <div className="flex justify-center">
-<button className="w-1/2 border border-orange-500 text-orange-500 py-3 rounded-lg text-sm md:text-base hover:bg-orange-50 transition font-medium cursor-pointer">
-            Log Out
-          </button>
+            <button className="w-1/2 border border-orange-500 text-orange-500 py-3 rounded-lg text-sm md:text-base hover:bg-orange-50 transition font-medium cursor-pointer">
+              Log Out
+            </button>
           </div>
-          
+
 
         </div>
       </div>

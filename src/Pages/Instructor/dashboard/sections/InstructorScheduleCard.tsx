@@ -100,8 +100,8 @@ const InstructorScheduleCard = ({
             setSessionId(dynamicSessionId);
             setIsLive(true);
 
-            // Automatically open the instructor's host link
-            const hostLink = res.data?.host_link || res.data?.data?.host_link || res.data?.meet_link || res.data?.data?.meet_link;
+            // Automatically open the instructor's host link (meet_link in response)
+            const hostLink = res.data?.meet_link;
 
             if (hostLink) {
                 const meetWindow = window.open(hostLink, "_blank");
@@ -109,7 +109,7 @@ const InstructorScheduleCard = ({
                     alert("Please allow popups to open the live class.");
                 }
             } else {
-                console.warn("Host link not provided in response:", res.data);
+                console.warn("meet_link not provided in response:", res.data);
             }
 
         } catch (error: any) {

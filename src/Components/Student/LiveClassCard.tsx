@@ -5,13 +5,13 @@ interface LiveClassCardProps {
     title: string;
     instructor: string;
     topic: string;
-    studentsCount: number;
+    studentsCount?: number;
     onJoin?: () => void;
 }
 
 const LiveClassCard = ({ code, title, instructor, topic, studentsCount, onJoin }: LiveClassCardProps) => {
     return (
-        <div className="boxStyle w-fit">
+        <div className="boxStyle sm:w-fit ">
             <div className="mb-4">
                 <h3 className="md:text-lg text-base font-semibold text-[#333333] mb-1 ">
                     {code} - {title}

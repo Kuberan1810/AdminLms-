@@ -207,21 +207,34 @@ export const useLiveClass = () => {
 
     const fetchLiveSession = async () => {
         try {
-            const res = await API_BASE.get("/sessions/active", {
-                headers: { 'ngrok-skip-browser-warning': 'true' },
-            });
-            // backend should return current live session if exists
-
-            if (res.data && res.data.status === "live") {
-                setLiveClassId(res.data.session_id);
-                setJoinUrl(res.data.join_url);
-                setShowPopup(true);
-            } else {
-                setLiveClassId(null);
-                setJoinUrl(null);
+            const batches = ["Batch-A", "Batch-B"];
+            for (const batch of batches) {
+                try {
+                    const res = await API_BASE.get("/sessions/active", {
+                        params: { course_id: 1, batch_name: batch },
+                        headers: { 'ngrok-skip-browser-warning': 'true' },
+                    });
+                    
+                    const data = res.data?.data || res.data;
+                    
+                    if (data?.session_id && (data?.guest_link || data?.meet_link || data?.join_url || data?.join_enabled)) {
+                        setLiveClassId(data.session_id);
+                        setJoinUrl(data.guest_link || data.meet_link || data.join_url);
+                        setShowPopup(true);
+                        return; // Found a live session, exit loop
+                    }
+                } catch {
+                    // Try next batch if current fails
+                }
             }
+            
+            // If the loop finishes without returning, no live session was found
+            setLiveClassId(null);
+            setJoinUrl(null);
         } catch (error) {
             console.error("Live session check failed", error);
+            setLiveClassId(null);
+            setJoinUrl(null);
         }
     };
 
@@ -237,7 +250,10 @@ export const useLiveClass = () => {
 
     const joinClass = () => {
         if (joinUrl) {
-            window.open(joinUrl, "_blank");
+            const meetWindow = window.open(joinUrl, "_blank");
+            if (!meetWindow) {
+                alert("Please allow popups to open the live class.");
+            }
         }
     };
 

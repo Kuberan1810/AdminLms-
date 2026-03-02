@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 
-import {
-    AlertCircle
-} from 'lucide-react';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
 import CurriculumSection from './components/CurriculumSection';
 import ResourcesTabSection from './components/ResourcesTabSection';
 import FAQsTabSection from './components/FAQsTabSection';
@@ -12,6 +10,7 @@ import CourseInfoWidget from './components/CourseInfoWidget';
 import { coursesData } from './CourseDetailsData';
 
 const CourseDetails = () => {
+    const navigate = useNavigate()
     const { id } = useParams<{ id: string }>();
     const [activeTab, setActiveTab] = useState('Curriculum');
     const [expandedModules, setExpandedModules] = useState<number[]>([1, 2, 3]);
@@ -37,37 +36,51 @@ const CourseDetails = () => {
                 <div className="flex-1">
                     {/* Header */}
                     <div className="mb-8">
-                        <h1 className="text-2xl font-medium text-gray-900 mb-4">{course.title}</h1>
-                        <p className="text-gray-600 mb-6 leading-relaxed">
+                        <div className="flex  items-center gap-2 mb-2 ">
+
+                            <div className='hover:bg-gray-100 p-2 rounded-full cursor-pointer'>
+                                <ArrowLeft color='#333' onClick={() => navigate(-1)} />
+                            </div>
+
+                            <div>
+                                <h1 className="lg:text-2xl md:text-xl text-lg font-medium text-[#333] ">{course.title}</h1>
+
+                            </div>
+
+                        </div>
+                        <p className="text-[#4d4d4d] font-medium leading-relaxed mb-6">
                             {course.description}
                         </p>
 
                         <div className="flex items-center gap-3 mb-8">
-                            <img
+                            {/* <img
                                 src={course.instructor.image}
                                 alt={course.instructor.name}
                                 className="w-10 h-10 rounded-full object-cover"
-                            />
+                            /> */}
+                            <div className="w-10 h-10 rounded-full bg-[#EF7A02] flex items-center justify-center text-white text-lg font-medium">
+                                {course.instructor.name.charAt(0).toUpperCase()}
+                            </div>
                             <div>
-                                <h3 className="font-medium text-gray-900">{course.instructor.name}</h3>
-                                <p className="text-xs text-gray-500">{course.instructor.role}</p>
+                                <h3 className="font-semibold text-[#333333]">{course.instructor.name}</h3>
+                                <p className="md:text-sm text-xs  text-[#626262]">{course.instructor.role}</p>
                             </div>
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex gap-10 border-b border-gray-200 mb-6">
+                        <div className="flex gap-10 border-b border-[#F2EEF4] mb-6">
                             {['Curriculum', 'Resources', 'FAQs'].map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
                                     className={`pb-3 text-sm font-medium transition-colors relative cursor-pointer ${activeTab === tab
-                                        ? 'text-orange-500'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                        ? 'text-[#F67300]'
+                                        : 'text-[#727272] hover:text-[#626262]'
                                         }`}
                                 >
                                     {tab}
                                     {activeTab === tab && (
-                                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500 rounded-t-full" />
+                                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#F67300] rounded-t-full" />
                                     )}
                                 </button>
                             ))}
@@ -78,10 +91,10 @@ const CourseDetails = () => {
                         {/* Curriculum Accordion */}
                         {activeTab === 'Curriculum' && (
                             <>
-                                <div className="bg-red-50 border border-red-100 rounded-xl p-4 mb-6 flex items-center gap-3 text-red-600">
+                                {/* <div className="bg-red-50 border border-red-100 rounded-xl p-4 mb-6 flex items-center gap-3 text-red-600">
                                     <AlertCircle className="w-5 h-5 " />
                                     <span className="font-medium text-sm">You Missed the Live class on Jan 02, 05:30 PM</span>
-                                </div>
+                                </div> */}
                                 <CurriculumSection
                                     modules={modules}
                                     expandedModules={expandedModules}

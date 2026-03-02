@@ -1,6 +1,6 @@
 import React from 'react';
 import pdf_img from '../../../../assets/Images/Enrolled_Courses/pdf_img.svg';
-import { ImportCurve } from 'iconsax-react';
+import { ImportCurve, FolderCross } from 'iconsax-react';
 
 interface Resource {
     id: number;
@@ -10,10 +10,10 @@ interface Resource {
 
 const ResourcesTabSection: React.FC = () => {
     const resources: Resource[] = [
-        { id: 4, name: 'Agent Architecture 4.pdf', size: '2.4MB' },
-        { id: 3, name: 'Agent Architecture 3.pdf', size: '2.4MB' },
-        { id: 2, name: 'Agent Architecture 2.pdf', size: '2.4MB' },
-        { id: 1, name: 'Agent Architecture 1.pdf', size: '2.4MB' },
+        // { id: 4, name: 'Agent Architecture 4.pdf', size: '2.4MB' },
+        // { id: 3, name: 'Agent Architecture 3.pdf', size: '2.4MB' },
+        // { id: 2, name: 'Agent Architecture 2.pdf', size: '2.4MB' },
+        // { id: 1, name: 'Agent Architecture 1.pdf', size: '2.4MB' },
     ];
 
     const handleDownload = (resourceName: string) => {
@@ -29,6 +29,18 @@ const ResourcesTabSection: React.FC = () => {
         URL.revokeObjectURL(url);
     };
 
+    if (resources.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-10 w-full text-center">
+                <div className="w-[64px] h-[64px] bg-[#FFF0EF] rounded-full flex items-center justify-center mb-6">
+                    <FolderCross size={32} color="#EF7A02" />
+                </div>
+                <h3 className="text-[#626262] text-base font-medium mb-2">No Resources Found</h3>
+                <p className="text-[#989898] text-sm ">There are no resources available for this class.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col gap-4">
             {resources.map((resource) => (
@@ -41,7 +53,7 @@ const ResourcesTabSection: React.FC = () => {
                             <img src={pdf_img} alt="PDF" className="w-[30px]   object-contain" />
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-[#000000] text-[18px] font-medium leading-tight"    >
+                            <span className="text-[#333333] text-[18px] font-medium leading-tight"    >
                                 {resource.name}
                             </span>
                             <div className="flex items-center gap-2">
@@ -56,7 +68,7 @@ const ResourcesTabSection: React.FC = () => {
                         onClick={() => handleDownload(resource.name)}
                         className="text-[#989898] hover:text-[#EF7A02] transition-colors cursor-pointer"
                     >
-                        <ImportCurve className="w-6 h-6" color='#626262'/>
+                        <ImportCurve className="w-6 h-6" color='#626262' />
                     </button>
                 </div>
             ))}

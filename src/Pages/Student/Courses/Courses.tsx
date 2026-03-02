@@ -39,8 +39,8 @@ const Courses = () => {
 
   // Same schedule combos as UpcomingScheduleCard (backend needs both params)
   const schedules = [
-    { course_id: 1, batch_name: "Batch-A", title: "AI / ML Frontier Engineer", instructor: "Ms Samantha William" },
-    { course_id: 1, batch_name: "Batch-B", title: "AI / ML Frontier Engineer", instructor: "Ms Samantha William" },
+    { course_id: 1, batch_name: "Batch-A", title: "AI / ML Frontier Engineer", instructor: "Naveenkumar S" },
+    { course_id: 1, batch_name: "Batch-B", title: "AI / ML Frontier Engineer", instructor: "Naveenkumar S" },
   ];
 
   /* ================= LEAVE API ================= */
@@ -85,7 +85,7 @@ const Courses = () => {
         if (data?.session_id) {
           foundSession = {
             session_id: data.session_id,
-            join_url: data.meet_link || data.join_url,
+            join_url: data.guest_link || data.meet_link || data.join_url,
             live: true,
             course_id: schedule.course_id,
             batch_name: schedule.batch_name,
@@ -136,7 +136,10 @@ const Courses = () => {
       const meetWindow = window.open(wrapperUrl, "_blank");
       console.log("Window:", meetWindow ? "opened" : "BLOCKED");
 
-      if (!meetWindow) return;
+      if (!meetWindow) {
+        alert("Please allow popups to open the live class.");
+        return;
+      }
 
       meetWindowRef.current = meetWindow;
       joinedSessionIdRef.current = liveSession.session_id;
@@ -170,9 +173,9 @@ const Courses = () => {
   const liveClass = {
     code: "AM101",
     title: liveSession?.course_name || "AI / ML Frontier AI Engineer",
-    instructor: liveSession?.instructor || "ED Donner",
-    topic: liveSession?.topic || "AI safety & real-world use cases",
-    studentsCount: liveSession?.students_count || 200,
+    instructor: liveSession?.instructor || "Naveenkumar S",
+    topic: liveSession?.topic || "Introduction to the world of AI",
+    // studentsCount: liveSession?.students_count || 200,
   };
 
   return (

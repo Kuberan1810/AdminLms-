@@ -29,7 +29,7 @@ export interface CourseData {
         instructor: {
             name: string;
             role: string;
-            image: string;
+            image?: string;
         };
         duration: string;
         enrolled: string;
@@ -56,80 +56,80 @@ export interface CourseData {
 
 const am101Data: CourseData = {
     course: {
-        title: "AM101- AI / ML Frontier AI Engineer",
-        description: "The AI / ML Frontier AI Engineer course is designed to equip learners with the skills required to build, deploy, and scale real-world AI and machine learning solutions. This course covers the complete AI/ML lifecycle—from data preparation and model development to deployment and monitoring in production environments.",
+        title: "1 - AI/ML frontier Engineer",
+        description: "Builds advanced AI and Machine Learning systems to solve complex real-world problems using cutting-edge technologies like deep learning and generative AI. Focuses on research, experimentation, and deploying scalable AI solutions in production.",
         instructor: {
-            name: "Ed Donner",
-            role: "Lead AI Instructor",
-            image: "https://i.pravatar.cc/150?u=EdDonner" // Placeholder
+            name: "Naveenkumar S",
+            role: "CEO of Coirei",
+            // image: "https://i.pravatar.cc/150?u=EdDonner" // Placeholder
         },
-        duration: "12 weeks",
-        enrolled: "1,240 Students",
-        community: "Active"
+    duration: "14 weeks",
+        enrolled: "60 Students",
+        community: "Soon"
     },
     liveClass: {
         code: "AM101",
         title: "AI / ML Frontier AI Engineer",
-        instructor: "ED Donner",
-        topic: "AI safety & real-world use cases",
+        instructor: "Naveenkumar S",
+        topic: "Introduction to the world of AI",
         studentsCount: 200
     },
     upcomingClasses: [
         {
             code: "AM101",
             title: "AI / ML Frontier AI Engineer",
-            instructor: "ED Donner",
-            topic: "AI safety & real-world use cases",
-            date: "Today 01:00 PM - 2:30 PM",
+            instructor: "Naveenkumar S",
+            topic: "Introduction to the world of AI",
+            date: "Today 07:30 PM - 08:30 PM",
             reminderOn: true
         },
         {
             code: "AM101",
             title: "AI / ML Frontier AI Engineer",
-            instructor: "ED Donner",
-            topic: "AI safety & real-world use cases",
+            instructor: "Naveenkumar S",
+            topic: "Introduction to the world of AI",
             date: "Tomorrow 10:30 AM - 11:30 AM",
             reminderOn: false
         }
     ],
     modules: [
         {
-            id: 3,
+            id: 1,
             title: "Frontier AI Systems & Deployment",
             content: "...",
             lessons: [
-                { id: '3.5', title: 'AI safety & real-world use cases', type: 'video', isCompleted: false },
-                { id: '3.4', title: 'AI Agents (LangChain, CrewAI, AutoGen)', type: 'video', isCompleted: true },
-                { id: '3.3', title: 'Tool-using autonomous agents', type: 'video', isCompleted: true },
-                { id: '3.2', title: 'API & Web App integration (FastAPI/Flask)', type: 'video', isCompleted: true },
-                { id: '3.1', title: 'Model deployment & basics of MLOps', type: 'video', isCompleted: true },
+                { id: '1.1', title: 'introduction to the world of AI', type: 'video', isCompleted: false },
+                // { id: '3.4', title: 'AI Agents (LangChain, CrewAI, AutoGen)', type: 'video', isCompleted: true },
+                // { id: '3.3', title: 'Tool-using autonomous agents', type: 'video', isCompleted: true },
+                // { id: '3.2', title: 'API & Web App integration (FastAPI/Flask)', type: 'video', isCompleted: true },
+                // { id: '3.1', title: 'Model deployment & basics of MLOps', type: 'video', isCompleted: true },
             ]
         },
-        {
-            id: 2,
-            title: "Generative AI & LLM Engineering",
-            content: "...",
-            lessons: [
-                { id: '2.3', title: 'Transformer Architecture Deep Dive', type: 'video', isCompleted: true },
-                { id: '2.2', title: 'Prompt Engineering Techniques', type: 'video', isCompleted: true },
-                { id: '2.1', title: 'Introduction to Large Language Models', type: 'video', isCompleted: true },
-            ]
-        },
-        {
-            id: 1,
-            title: "AI & ML Foundations",
-            content: "...",
-            lessons: [
-                { id: '1.2', title: 'Neural Networks Fundamentals', type: 'video', isCompleted: true },
-                { id: '1.1', title: 'Mathematics for Machine Learning', type: 'video', isCompleted: true },
-            ]
-        },
+        // {
+        //     id: 2,
+        //     title: "Generative AI & LLM Engineering",
+        //     content: "...",
+        //     lessons: [
+        //         { id: '2.3', title: 'Transformer Architecture Deep Dive', type: 'video', isCompleted: true },
+        //         { id: '2.2', title: 'Prompt Engineering Techniques', type: 'video', isCompleted: true },
+        //         { id: '2.1', title: 'Introduction to Large Language Models', type: 'video', isCompleted: true },
+        //     ]
+        // },
+        // {
+        //     id: 1,
+        //     title: "AI & ML Foundations",
+        //     content: "...",
+        //     lessons: [
+        //         { id: '1.2', title: 'Neural Networks Fundamentals', type: 'video', isCompleted: true },
+        //         { id: '1.1', title: 'Mathematics for Machine Learning', type: 'video', isCompleted: false },
+        //     ]
+        // },
     ],
     assignments: [
-        { id: '1', title: 'AM101 - AI / ML Frontier Ai Engineer', dueDate: 'Jan 17, 26', dueTime: '9:00 - 10:00 am', status: 'In Progress' },
-        { id: '2', title: 'AM101 - AI / ML Frontier Ai Engineer', dueDate: 'Jan 15, 26', dueTime: '9:00 - 10:00 am', status: 'Completed' },
-        { id: '3', title: 'AM101 - AI / ML Frontier Ai Engineer', dueDate: 'Jan 16, 26', dueTime: '9:00 - 10:00 am', status: 'In Progress' },
-        { id: '4', title: 'AM101 - AI / ML Frontier Ai Engineer', dueDate: 'Jan 15, 26', dueTime: '9:00 - 10:00 am', status: 'Over Due' },
+        // { id: '1', title: 'AM101 - AI / ML Frontier Ai Engineer', dueDate: 'Jan 17, 26', dueTime: '9:00 - 10:00 am', status: 'In Progress' },
+        // { id: '2', title: 'AM101 - AI / ML Frontier Ai Engineer', dueDate: 'Jan 15, 26', dueTime: '9:00 - 10:00 am', status: 'Completed' },
+        // { id: '3', title: 'AM101 - AI / ML Frontier Ai Engineer', dueDate: 'Jan 16, 26', dueTime: '9:00 - 10:00 am', status: 'In Progress' },
+        // { id: '4', title: 'AM101 - AI / ML Frontier Ai Engineer', dueDate: 'Jan 15, 26', dueTime: '9:00 - 10:00 am', status: 'Over Due' },
     ]
 };
 
@@ -142,9 +142,9 @@ const ss102Data: CourseData = {
             role: "Senior Systems Architect",
             image: "https://i.pravatar.cc/150?u=SarahChen"
         },
-        duration: "10 weeks",
-        enrolled: "980 Students",
-        community: "Active"
+        duration: "14 weeks",
+        enrolled: "60 Students",
+        community: "Soon"
     },
     liveClass: {
         code: "SS102",
@@ -223,8 +223,8 @@ const q1103Data: CourseData = {
             image: "https://i.pravatar.cc/150?u=JamesWright"
         },
         duration: "14 weeks",
-        enrolled: "620 Students",
-        community: "Active"
+        enrolled: "60 Students",
+        community: "Soon"
     },
     liveClass: {
         code: "Q1103",
@@ -302,17 +302,17 @@ export const upcomingClasses = [
     {
         code: "AM101",
         title: "AI / ML Frontier AI Engineer",
-        instructor: "ED Donner",
-        topic: "AI safety & real-world use cases",
-        date: "Today 01:00 PM - 2:30 PM",
+        instructor: "Naveenkumar S",
+        topic: "Introduction to the world of AI",
+        date: "04 Mar,  07:30 PM - 08:30 PM",
         reminderOn: true,
     },
-    {
-        code: "AM101",
-        title: "AI / ML Frontier AI Engineer",
-        instructor: "ED Donner",
-        topic: "AI safety & real-world use cases",
-        date: "Tomorrow 10:30 AM - 11:30 AM",
-        reminderOn: false,
-    },
+    // {
+    //     code: "AM101",
+    //     title: "AI / ML Frontier AI Engineer",
+    //     instructor: "Naveenkumar S",
+    //     topic: "Introduction to the world of AI",
+    //     date: "Tomorrow 10:30 AM - 11:30 AM",
+    //     reminderOn: false,
+    // },
 ];

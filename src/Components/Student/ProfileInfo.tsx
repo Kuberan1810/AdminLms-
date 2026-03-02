@@ -7,7 +7,7 @@ interface ProfileInfoProps {
     onClick: () => void;
 }
 
-const ProfileInfo = ({ image, role, onClick }: ProfileInfoProps) => {
+const ProfileInfo = ({ role, onClick }: ProfileInfoProps) => {
     const { user } = useAuth();
 
     return (
@@ -18,15 +18,14 @@ const ProfileInfo = ({ image, role, onClick }: ProfileInfoProps) => {
       "
             onClick={onClick}
         >
-            {/* Avatar */}
-            <img
-                src={image}
-                alt="profile"
-                className="
-          w-9 h-9 sm:w-10 sm:h-10
-          rounded-full object-cover
-        "
-            />
+            {/* Avatar Initial */}
+            <div className="
+              w-9 h-9 sm:w-10 sm:h-10
+              rounded-full bg-[#EF7A02] flex items-center justify-center
+              text-white text-lg font-semibold
+            ">
+                {user?.name ? user.name.charAt(0).toUpperCase() : 'S'}
+            </div>
 
             {/* Name + Role (hide on mobile) */}
             <div className="hidden sm:block">

@@ -13,13 +13,15 @@ interface Schedule {
   title: string;
   time: string;
   date: string;
+  class?: string;
   instructor: string;
 }
 
 interface ActiveSessionData {
   session_id: number;
   join_enabled: boolean;
-  meet_link: string;
+  meet_link?: string;
+  guest_link?: string;
 }
 
 /* ===================== SCHEDULE DATA ===================== */
@@ -30,9 +32,10 @@ const schedules: Schedule[] = [
     course_id: 1,
     batch_name: "Batch-A",
     title: "AI / ML Frontier Engineer",
-    time: "9:00 - 10:00 am",
-    date: "Jan 15, 26",
-    instructor: "Ms Samantha William",
+    time: "7:00 - 08:30 pm",
+    date: "March 02, 26",
+    class: "introduction to the world of AI",
+    instructor: "Naveenkumar S",
   },
   {
     id: 2,
@@ -40,8 +43,8 @@ const schedules: Schedule[] = [
     batch_name: "Batch-B",
     title: "AI / ML Frontier Engineer",
     time: "03:00 - 04:00 pm",
-    date: "Jan 15, 26",
-    instructor: "Ms Samantha William",
+    date: "March 04, 26",
+    instructor: "Naveenkumar S",
   },
 ];
 
@@ -119,12 +122,12 @@ const UpcomingScheduleCard = () => {
             headers: { 'ngrok-skip-browser-warning': 'true' },
           });
 
-          const data: ActiveSessionData | null = res.data?.data || res.data;
+          const data: ActiveSessionData & { guest_link?: string } | null = res.data?.data || res.data;
 
-          if (data?.join_enabled && data?.meet_link) {
+          if (data?.join_enabled && (data?.guest_link || data?.meet_link)) {
             updated[schedule.batch_name] = {
               session_id: data.session_id,
-              meet_link: data.meet_link,
+              meet_link: (data.guest_link || data.meet_link) as string,
             };
           }
         } catch {
@@ -187,7 +190,10 @@ const UpcomingScheduleCard = () => {
       console.log("Opening wrapper:", wrapperUrl);
 
       const meetWindow = window.open(wrapperUrl, "_blank");
-      if (!meetWindow) return;
+      if (!meetWindow) {
+        alert("Please allow popups to open the live class.");
+        return;
+      }
 
       meetWindowRef.current = meetWindow;
       joinedSessionIdRef.current = sessionData.session_id;
@@ -232,10 +238,12 @@ const UpcomingScheduleCard = () => {
           >
             {/* Schedule Info */}
             <div>
-              <h4 className="font-semibold text-primary mb-2">
+              <h4 className="font-semibold text-primary mb-1">
                 {item.title}
               </h4>
-
+              <p className=" text-sm text-[#4d4d4d] mb-2.5 md:mb-2 capitalize">
+                {item.class}
+              </p>
               <div className="flex gap-4 text-sm text-[#626262]">
                 <div className="flex items-center gap-1">
                   <span className="iconStyle">
@@ -251,7 +259,7 @@ const UpcomingScheduleCard = () => {
                   {item.date}
                 </div>
               </div>
-
+              
               <div className="mt-2 text-sm text-gray-600 mb-2.5 md:mb-0">
                 {item.instructor}
               </div>

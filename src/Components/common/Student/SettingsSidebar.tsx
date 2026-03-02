@@ -69,11 +69,18 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                     {/* ================= Profile ================= */}
                     <div className="bg-white rounded-xl p-5 flex items-center gap-4 border border-[#F2EEF4]">
                         <div className="relative">
-                            <img
+                            {/* <img
                                 src="https://randomuser.me/api/portraits/women/44.jpg"
                                 alt="profile"
                                 className="w-16 h-16 rounded-full object-cover"
-                            />
+                            /> */}
+                            <div className="
+              w-9 h-9 sm:w-10 sm:h-10
+              rounded-full bg-[#EF7A02] flex items-center justify-center
+              text-white text-lg font-semibold
+            ">
+                                {user?.name ? user.name.charAt(0).toUpperCase() : 'S'}
+                            </div>
                             <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
                         </div>
                         <div>

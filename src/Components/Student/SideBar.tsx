@@ -15,11 +15,11 @@ import {
 const PlatformList = [
   { label: "Dashboard", icon: Home3, path: "/student/dashboard" },
   { label: "Courses", icon: DocumentText1, path: "/student/courses" },
-  { label: "Assignments", icon: Note1, path: "/student/assignments" },
-  { label: "Community", icon: People, path: "/student/community" },
-  { label: "Chat", icon: Messages3, path: "/student/chat" },
-  { label: "Test", icon: ClipboardText, path: "/student/test" },
-  { label: "Attendance", icon: CalendarTick, path: "/student/attendance" },
+  { label: "Assignments", icon: Note1, path: "/student/assignments", comingSoon: true },
+  { label: "Community", icon: People, path: "/student/community", comingSoon: true },
+  { label: "Chat", icon: Messages3, path: "/student/chat", comingSoon: true },
+  { label: "Test", icon: ClipboardText, path: "/student/test", comingSoon: true },
+  { label: "Attendance", icon: CalendarTick, path: "/student/attendance", comingSoon: true },
 ];
 
 type Props = {
@@ -29,29 +29,41 @@ type Props = {
 
 export default function Sidebar({ collapsed, setCollapsed }: Props) {
   return (
-    
-      <>
-        {/* ================= MOBILE BOTTOM NAV ================= */}
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-[#F3F5F7] md:hidden flex justify-around py-4">
-          {PlatformList.map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink key={item.label} to={item.path}>
-                {({ isActive }) => (
+
+    <>
+      {/* ================= MOBILE BOTTOM NAV ================= */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-[#F3F5F7] md:hidden flex justify-around py-4">
+        {PlatformList.map((item) => {
+          const Icon = item.icon;
+          return (
+            <NavLink
+              key={item.label}
+              to={item.path}
+              onClick={(e) => item.comingSoon && e.preventDefault()}
+              className={`relative flex flex-col items-center justify-center ${item.comingSoon ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              {({ isActive }) => (
+                <>
                   <Icon
                     size={24}
-                    variant={isActive ? "Bold" : "Outline"}
-                    color={isActive ? "#F67300" : "#626262"}
+                    variant={isActive && !item.comingSoon ? "Bold" : "Outline"}
+                    color={isActive && !item.comingSoon ? "#F67300" : "#626262"}
                   />
-                )}
-              </NavLink>
-            );
-          })}
-        </div>
+                  {item.comingSoon && (
+                    <span className="absolute -top-2.5 -right-3 text-[8px]  bg-[#F3F5F7] text-[#808080] px-1 rounded-full font-bold">
+                      Soon
+                    </span>
+                  )}
+                </>
+              )}
+            </NavLink>
+          );
+        })}
+      </div>
 
-        {/* ================= TABLET + DESKTOP SIDEBAR ================= */}
-        <aside
-          className={`
+      {/* ================= TABLET + DESKTOP SIDEBAR ================= */}
+      <aside
+        className={`
           hidden md:block
           h-screen bg-white border-r border-[#F3F5F7]
           transition-all duration-300
@@ -63,89 +75,98 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
           /* tablet overlay ONLY when expanded */
           ${!collapsed ? "md:fixed md:top-0 md:left-0 md:z-50" : "md:relative"}
         `}
-        >
-          {/* ===== HEADER ===== */}
-          <div
-            className={`
+      >
+        {/* ===== HEADER ===== */}
+        <div
+          className={`
             flex items-center px-4 pt-6 mb-6
             ${collapsed ? "justify-center" : "justify-between"}
           `}
-          >
-            {!collapsed && (
-              <img src={CoireiLogo} alt="CoireiLogo" className="w-25" />
-            )}
+        >
+          {!collapsed && (
+            <img src={CoireiLogo} alt="CoireiLogo" className="w-25" />
+          )}
 
-            <button onClick={() => setCollapsed(!collapsed)} className="px-4 py-2.5 hover:bg-[#fafafa] rounded-lg cursor-pointer">
-              <PanelRight size={22} color="#626262" />
-            </button>
-          </div>
+          <button onClick={() => setCollapsed(!collapsed)} className="px-4 py-2.5 hover:bg-[#fafafa] rounded-lg cursor-pointer">
+            <PanelRight size={22} color="#626262" />
+          </button>
+        </div>
 
-          {/* ===== NAV ===== */}
-          <nav className="space-y-4 px-2">
-            {PlatformList.map((item) => {
-              const Icon = item.icon;
+        {/* ===== NAV ===== */}
+        <nav className="space-y-4 px-2">
+          {PlatformList.map((item) => {
+            const Icon = item.icon;
 
-              return (
-                <NavLink
-                  key={item.label}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `
-                  flex items-center rounded-xl transition
+            return (
+              <NavLink
+                key={item.label}
+                to={item.path}
+                onClick={(e) => item.comingSoon && e.preventDefault()}
+                className={({ isActive }) =>
+                  `
+                  flex items-center rounded-xl transition w-full
                   ${collapsed
-                      ? "justify-center px-4 py-2.5"
-                      : "gap-3 px-4 py-2.5"
-                    }
-                  ${isActive
-                      ? "bg-[#FAFAFA] text-[#F67300] font-semibold "
-                      : "text-[#626262]"
-                    }
-                  ${!collapsed && "hover:bg-[#FAFAFA]"}
-                `
+                    ? "justify-center px-4 py-2.5"
+                    : "gap-3 px-4 py-2.5"
                   }
-                >
-                  {({ isActive }) => (
-                    <>
-                      {/* ICON */}
-                      <div
-                        className={`
+                  ${isActive && !item.comingSoon
+                    ? "bg-[#FAFAFA] text-[#F67300] font-semibold "
+                    : "text-[#626262]"
+                  }
+                  ${!collapsed && !item.comingSoon && "hover:bg-[#FAFAFA]"}
+                  ${item.comingSoon ? "opacity-60 cursor-not-allowed" : ""}
+                `
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {/* ICON */}
+                    <div
+                      className={`
                         flex items-center justify-center
                         ${collapsed
-                            ? " rounded-lg px-4 py-2.5 hover:bg-[#FAFAFA]"
-                            : ""
-                          }
+                          ? " rounded-lg px-4 py-2.5 hover:bg-[#FAFAFA]"
+                          : ""
+                        }
                       `}
-                      >
-                        {item.label === "Courses" ? (
-                          isActive ? (
-                            <DocumentText size={24} variant="Bold" color="#F67300" />
-                          ) : (
-                            <DocumentText1 size={24} color="#626262" />
-                          )
+                    >
+                      {item.label === "Courses" ? (
+                        isActive && !item.comingSoon ? (
+                          <DocumentText size={24} variant="Bold" color="#F67300" />
                         ) : (
-                          <Icon
-                            size={24}
-                            variant={isActive ? "Bold" : "Outline"}
-                            color={isActive ? "#F67300" : "#626262"}
-                          />
-                        )}
-                      </div>
+                          <DocumentText1 size={24} color="#626262" />
+                        )
+                      ) : (
+                        <Icon
+                          size={24}
+                          variant={isActive && !item.comingSoon ? "Bold" : "Outline"}
+                          color={isActive && !item.comingSoon ? "#F67300" : "#626262"}
+                        />
+                      )}
+                    </div>
 
-                      {/* TEXT */}
-                      {!collapsed && (
+                    {/* TEXT */}
+                    {!collapsed && (
+                      <div className="flex items-center justify-between w-full">
                         <span className="text-xl font-medium">
                           {item.label}
                         </span>
-                      )}
-                    </>
-                  )}
-                </NavLink>
-              );
-            })}
-          </nav>
-        </aside>
-      </>
-    
+                        {item.comingSoon && (
+                          <span className="text-[10px] bg-[#F3F5F7] text-[#808080] px-2 py-0.5 rounded-full font-medium ml-2">
+                            Soon
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
+
 
   );
 }

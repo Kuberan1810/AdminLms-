@@ -1,6 +1,6 @@
 export interface Course {
     [x: string]: any;
-    id: number;              // 👈 unified
+    id: number;
     course_id: string;
     course_name: string;
     duration_months: number;

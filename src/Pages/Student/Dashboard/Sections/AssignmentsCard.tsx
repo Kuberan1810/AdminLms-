@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
-import { Clock, ArrowLeft2, ArrowRight2, Calendar } from "iconsax-react";
+import { useMemo, useState, useEffect } from "react";
+import { Clock, ArrowLeft2, ArrowRight2, Calendar, Note1 } from "iconsax-react";
 import BtnCom from "../../../../Components/Student/BtnCom";
 import { useNavigate, useParams } from "react-router-dom";
+import { getAttendanceCalendar } from "../../../../store/attendanceStore";
 
 /* ===================== TYPES ===================== */
 
@@ -19,38 +20,38 @@ interface Assignment {
 /* ===================== DUMMY DATA ===================== */
 
 const assignments: Assignment[] = [
-  {
-    id: 1,
-    title: "AM101 - AI / ML Frontier Ai Engineer",
-    date: "2026-02-01",
-    dueDate: "Jan 15, 26",
-    dueTime: "9:00 - 10:00 am",
-    status: "In progress",
-  },
-  {
-    id: 2,
-    title: "SS102 - System and Software System Pro",
-    date: "2026-02-01",
-    dueDate: "Jan 15, 26",
-    dueTime: "9:00 - 10:00 am",
-    status: "Completed",
-  },
-  {
-    id: 3,
-    title: "SS102 - System and Software System Pro",
-    date: "2026-02-01",
-    dueDate: "Jan 16, 26",
-    dueTime: "9:00 - 10:00 am",
-    status: "In progress",
-  },
-  {
-    id: 4,
-    title: "AM101 - AI / ML Frontier Ai Engineer",
-    date: "2026-02-01",
-    dueDate: "Jan 14, 26",
-    dueTime: "9:00 - 10:00 am",
-    status: "Over due",
-  },
+  // {
+  //   id: 1,
+  //   title: "AM101 - AI / ML Frontier Ai Engineer",
+  //   date: "2026-02-01",
+  //   dueDate: "Jan 15, 26",
+  //   dueTime: "9:00 - 10:00 am",
+  //   status: "In progress",
+  // },
+  // {
+  //   id: 2,
+  //   title: "SS102 - System and Software System Pro",
+  //   date: "2026-02-01",
+  //   dueDate: "Jan 15, 26",
+  //   dueTime: "9:00 - 10:00 am",
+  //   status: "Completed",
+  // },
+  // {
+  //   id: 3,
+  //   title: "SS102 - System and Software System Pro",
+  //   date: "2026-02-01",
+  //   dueDate: "Jan 16, 26",
+  //   dueTime: "9:00 - 10:00 am",
+  //   status: "In progress",
+  // },
+  // {
+  //   id: 4,
+  //   title: "AM101 - AI / ML Frontier Ai Engineer",
+  //   date: "2026-02-01",
+  //   dueDate: "Jan 14, 26",
+  //   dueTime: "9:00 - 10:00 am",
+  //   status: "Over due",
+  // },
 ];
 
 /* ===================== STATUS STYLE ===================== */
@@ -59,17 +60,6 @@ const statusStyle: Record<Status, string> = {
   "In progress": "bg-[#FFEDDE] text-[#F67300]",
   Completed: "bg-[#E5F1E8] text-[#2A9A46]",
   "Over due": "bg-[#FEE2E2] text-[#FF1313]",
-};
-
-/* ===================== TEMP ATTENDANCE ===================== */
-
-const tempAttendance: Record<number, "present" | "absent"> = {
-  1: "present",
-  2: "present",
-  3: "present",
-  4: "absent",
-  5: "present",
-  6: "absent",
 };
 
 /* ===================== COMPONENT ===================== */
@@ -84,6 +74,19 @@ function AssignmentsCard() {
   const [weekDate, setWeekDate] = useState(today);
   const [selectedDate, setSelectedDate] = useState(today);
   const [filter, setFilter] = useState<"All" | Status>("All");
+  const [attendanceMap, setAttendanceMap] = useState<Record<string, "present" | "absent">>({});
+
+  // Fetch initial attendance on mount
+  useEffect(() => {
+    setAttendanceMap(getAttendanceCalendar());
+
+    const handleUpdate = () => {
+      setAttendanceMap(getAttendanceCalendar());
+    };
+
+    window.addEventListener("attendance-updated", handleUpdate);
+    return () => window.removeEventListener("attendance-updated", handleUpdate);
+  }, []);
 
   const headerDate = selectedDate.toLocaleDateString("en-US", {
     weekday: "long",
@@ -101,6 +104,10 @@ function AssignmentsCard() {
       d.setDate(start.getDate() + i);
       d.setHours(0, 0, 0, 0);
 
+      const dKeyLocal = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+        .toISOString()
+        .split("T")[0]; // "YYYY-MM-DD" local format for lookup
+
       let className = "bg-white border border-[#E5E7EB] text-gray-600";
       const dayIndex = d.getDay();
       const isToday = d.getTime() === today.getTime();
@@ -108,10 +115,11 @@ function AssignmentsCard() {
       if (isToday) className = "text-[#F67300] bg-[#FFEAD8] border";
       else if (dayIndex === 0) className = "bg-[#FFFD3720] text-primary";
       else if (d < today) {
-        className =
-          tempAttendance[dayIndex] === "present"
-            ? "text-[#3EA465] bg-[#3EA46510]"
-            : "text-[#CE1919] bg-[#CE191910]";
+        if (attendanceMap[dKeyLocal] === "present") {
+          className = "text-[#3EA465] bg-[#3EA46510]";
+        } else if (attendanceMap[dKeyLocal] === "absent") {
+          className = "text-[#CE1919] bg-[#CE191910]";
+        }
       }
 
       return {
@@ -122,7 +130,7 @@ function AssignmentsCard() {
         className,
       };
     });
-  }, [weekDate, today]);
+  }, [weekDate, today, attendanceMap]);
 
   const filteredAssignments = assignments.filter(a => {
     const matchDate = a.date === selectedDate.toISOString().split("T")[0];
@@ -147,7 +155,8 @@ function AssignmentsCard() {
           <p className="text-[#626262] md:text-xl text-base">{headerDate}</p>
         </div>
         <div className="md:flex hidden">
-          <BtnCom label="View all" onClick={() => navigate("/student/assignments")} />
+          {/* <BtnCom label="View all" onClick={() => navigate("/student/assignments")} /> */}
+          <BtnCom label="View all" />
         </div>
 
         {/* Mobile-only arrows in header */}
@@ -220,43 +229,53 @@ function AssignmentsCard() {
 
       {/* ================= Assignment List ================= */}
       <div className={`space-y-5 ${filteredAssignments.length > 0 ? "h-100 overflow-y-auto scrollbar-hide" : ""}`}>
-        {filteredAssignments.map(item => (
-          /* 🔒 WRAPPER ONLY FOR MOBILE — DESKTOP CARD UNTOUCHED */
-          <div key={item.id} className="max-lg:block">
-            <div
-              onClick={() => navigate(`/student/assignment/${assignmentId}`)}
-              className="boxStyle flex flex-col md:flex-row justify-between items-center bg-[#FAFAFA]! cursor-pointer"
-            >
-              <div className="max-lg:w-full">
-                <h4 className="md:text-lg text-base   font-semibold text-primary mb-2.5">
-                  {item.title}
-                </h4>
-                <div className="flex flex-col md:flex-row justify-center gap-5 ">
-                  <div className="flex items-center gap-2 text-[#626262] text-sm">
-                    <div className="iconStyle">
-                      <Calendar size="16" color="#626262" />
-                    </div>
-                    <span>Due date: {item.dueDate}</span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-[#626262] text-sm">
-                    <div className="iconStyle">
-                      <Clock size="16" color="#626262" />
-                    </div>
-                    <span>Due time: {item.dueTime}</span>
-                  </div>
-
-                </div>
-              </div>
-
-              <span
-                className={`px-7 py-2.5 rounded-full text-sm ${statusStyle[item.status]} max-lg:mt-4`}
-              >
-                {item.status}
-              </span>
+        {filteredAssignments.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+            <div className="p-4 bg-[#FFF0EF] rounded-full mb-4">
+              <Note1 size={32} color="#EF7A02" />
             </div>
+            <p className="text-[#626262] text-base font-medium">No Assignments Found</p>
+            <p className="text-[#989898] text-sm mt-1">There are no assignments scheduled for this date.</p>
           </div>
-        ))}
+        ) : (
+          filteredAssignments.map(item => (
+            /* 🔒 WRAPPER ONLY FOR MOBILE — DESKTOP CARD UNTOUCHED */
+            <div key={item.id} className="max-lg:block">
+              <div
+                onClick={() => navigate(`/student/assignment/${assignmentId}`)}
+                className="boxStyle flex flex-col md:flex-row justify-between items-center bg-[#FAFAFA]! cursor-pointer"
+              >
+                <div className="max-lg:w-full">
+                  <h4 className="md:text-lg text-base   font-semibold text-primary mb-2.5">
+                    {item.title}
+                  </h4>
+                  <div className="flex flex-col md:flex-row justify-center gap-5 ">
+                    <div className="flex items-center gap-2 text-[#626262] text-sm">
+                      <div className="iconStyle">
+                        <Calendar size="16" color="#626262" />
+                      </div>
+                      <span>Due date: {item.dueDate}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-[#626262] text-sm">
+                      <div className="iconStyle">
+                        <Clock size="16" color="#626262" />
+                      </div>
+                      <span>Due time: {item.dueTime}</span>
+                    </div>
+
+                  </div>
+                </div>
+
+                <span
+                  className={`px-7 py-2.5 rounded-full text-sm ${statusStyle[item.status]} max-lg:mt-4`}
+                >
+                  {item.status}
+                </span>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </section>
   );

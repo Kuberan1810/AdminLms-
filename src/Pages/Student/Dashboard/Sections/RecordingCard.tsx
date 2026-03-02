@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { Clock, Calendar, InfoCircle } from "iconsax-react";
+import { InfoCircle, VideoRemove } from "iconsax-react";
 import { motion } from "framer-motion";
-import { recordingcard } from "../data/DashboardData";
 
 
 
 const RecordingCard = () => {
     const [showTooltip, setShowTooltip] = useState(false);
-    const { date, duration } = recordingcard;
+    // const { date, duration } = recordingcard;
 
     useEffect(() => {
         if (showTooltip) {
@@ -37,53 +36,21 @@ const RecordingCard = () => {
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             className="bg-[#808080] text-white text-xs rounded-xl px-4 py-3 relative"
                         >
-                            <p>Watch recordings of classes you missed so you never fall behind on your lessons.</p>
+                            <p>Recording will be updated tomorrow. Please check back later.</p>
                             <div className="absolute -top-1.5 right-3 w-3 h-3 bg-[#808080] rotate-45 shadow-lg" />
                         </motion.div>
                     </div>
                 </div>
             </div>
 
-            {/* Content */}
-            <div className=" space-y-2  mb-5">
-                <p className="text-[#333333] text-xl font-semibold mb-5">
-                    You missed a class yesterday
-                </p>
-
-                <p className="text-base font-semimedium text-[#808080]">
-                    AI / ML Live Class – Neural Networks
-                </p>
-            </div>
-
-            {/* Meta info */}
-            <div className=" flex flex-wrap justify-between gap-4 text-[#626262] mb-7.5">
-                <div className=" flex gap-1.5 justify-between items-center">
-                    <div className="iconStyle">
-                        <Calendar size="12" color="#626262" />
-
-                    </div>
-                    <span className="text-[14px]">{date}</span>
+            {/* Empty State Content */}
+            <div className="flex flex-col items-center justify-center flex-1 w-full text-center">
+                <div className="w-[64px] h-[64px] bg-[#FFF0EF] rounded-full flex items-center justify-center mb-6">
+                    <VideoRemove size={32} color="#EF7A02" />
                 </div>
-
-                <div className=" flex gap-1.5 justify-between items-center">
-                    <div className="iconStyle">
-                        <Clock size="12" color="#626262" />
-
-                    </div>
-                    <span className="text-[14px]">{duration}</span>
-                </div>
+                <h3 className="text-[#626262] text-base font-medium mb-1">No Recordings Found</h3>
+                <p className="text-[#989898] text-sm max-w-[200px]">You haven't missed any classes.</p>
             </div>
-
-            {/* CTA */}
-            <button
-                className=" w-full rounded-2xl
-          bg-[#F67300] hover:bg-[#ff7a05]
-          text-white font-medium py-2.5
-          transition cursor-pointer
-        "
-            >
-                Watch Recording
-            </button>
         </div>
     );
 };
