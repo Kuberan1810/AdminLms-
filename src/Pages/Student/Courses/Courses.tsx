@@ -91,7 +91,7 @@ const Courses = () => {
             batch_name: schedule.batch_name,
             course_name: data.course_name || schedule.title,
             instructor: data.instructor || schedule.instructor,
-            topic: data.topic || "Live Session",
+            topic: data.topic || "Introduction to the world of AI",
             students_count: data.students_count || 0,
           };
           break;
