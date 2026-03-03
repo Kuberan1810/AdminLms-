@@ -18,7 +18,7 @@ const LiveClassRoom = () => {
 
     useEffect(() => {
         // Set page title
-        document.title = "Live Class — CoiRei LMS";
+        document.title = "Live Class — Coirei LMS";
     }, []);
 
     if (!meetUrl) {

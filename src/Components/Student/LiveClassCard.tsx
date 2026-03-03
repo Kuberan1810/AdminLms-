@@ -16,8 +16,8 @@ const LiveClassCard = ({ code, title, instructor, topic, studentsCount, onJoin }
                 <h3 className="md:text-lg text-base font-semibold text-[#333333] mb-1 ">
                     {code} - {title}
                 </h3>
-                <p className="text-sm md:text-base text-[#626262]  ">Instructor:  <span className="text-[#EF7A02] font-medium">{instructor}</span></p>
-                <p className="text-sm md:text-base text-[#626262] mt-1 ">Lesson name: <span className="text-[#EF7A02] font-medium">{topic} </span> </p>
+                <p className="text-sm md:text-base text-[#626262]  capitalize">Instructor:  <span className="text-[#EF7A02] font-medium">{instructor}</span></p>
+                <p className="text-sm md:text-base text-[#626262] mt-1 capitalize ">Lesson name: <span className="text-[#EF7A02] font-medium">{topic} </span> </p>
             </div>
 
             <div className="flex items-center gap-2 text-sm text-gray-500 mb-5">

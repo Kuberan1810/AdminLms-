@@ -33,8 +33,8 @@ const schedules: Schedule[] = [
     batch_name: "Batch-A",
     title: "AI / ML Frontier Engineer",
     time: "7:30 - 08:30 pm",
-    date: "March 02, 26",
-    class: "introduction to the world of AI",
+    date: "March 04, 26",
+    class: "introduction to programming with python",
     instructor: "Naveenkumar S",
   },
   {
@@ -43,7 +43,7 @@ const schedules: Schedule[] = [
     batch_name: "Batch-B",
     title: "AI / ML Frontier Engineer",
     time: "07:30 - 08:30 pm",
-    date: "March 04, 26",
+    date: "March 06, 26",
     instructor: "Naveenkumar S",
   },
 ];
@@ -148,6 +148,41 @@ const UpcomingScheduleCard = () => {
     const interval = setInterval(checkActiveSessions, 5000);
     return () => clearInterval(interval);
   }, [checkActiveSessions]);
+
+  /* ================= AUTO-LEAVE WHEN SESSION ENDS ================= */
+
+  useEffect(() => {
+    if (!joinedSessionIdRef.current) return;
+
+    // Check if the joined session is STILL in the liveSessions list
+    const isSessionStillActive = Object.values(liveSessions).some(
+      (session) => session.session_id === joinedSessionIdRef.current
+    );
+
+    // If it's missing (instructor ended it), force leave
+    if (!isSessionStillActive && !hasLeftRef.current) {
+      console.log("Session ended by instructor — auto-leaving");
+
+      // Stop the tab-close polling check
+      if (windowCheckRef.current) {
+        clearInterval(windowCheckRef.current);
+        windowCheckRef.current = null;
+      }
+
+      // Close the meet tab if it's still open
+      if (meetWindowRef.current && !meetWindowRef.current.closed) {
+        try {
+          meetWindowRef.current.close();
+        } catch (e) {
+          console.error("Could not auto-close meet window:", e);
+        }
+      }
+      meetWindowRef.current = null;
+
+      // Trigger the backend leave logic
+      triggerLeave(joinedSessionIdRef.current);
+    }
+  }, [liveSessions, triggerLeave]);
 
   /* ================= CLEANUP ON UNMOUNT ================= */
 
@@ -259,7 +294,7 @@ const UpcomingScheduleCard = () => {
                   {item.date}
                 </div>
               </div>
-              
+
               <div className="mt-2 text-sm text-gray-600 mb-2.5 md:mb-0">
                 {item.instructor}
               </div>

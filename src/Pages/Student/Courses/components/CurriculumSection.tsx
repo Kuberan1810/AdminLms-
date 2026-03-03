@@ -30,7 +30,7 @@ const CurriculumSection: React.FC<CurriculumSectionProps> = ({ modules, expanded
                         onClick={() => toggleModule(module.id)}
                         className="w-full flex items-center justify-between p-5 text-left cursor-pointer"
                     >
-                        <span className="font-medium text-[#333333] text-base ">
+                        <span className="font-medium text-[#333333] text-base capitalize">
                             Module : {module.id} <span className="ml-2 text-[#333333] font-medium">{module.title}</span>
                         </span>
                         {expandedModules.includes(module.id) ? (
@@ -54,7 +54,7 @@ const CurriculumSection: React.FC<CurriculumSectionProps> = ({ modules, expanded
                                         }`}>
                                         <Check className="w-3.5 h-3.5" />
                                     </div>
-                                    <span className="text-[#4d4d4d] font-medium text-sm">{lesson.id} {lesson.title}</span>
+                                    <span className="text-[#4d4d4d] font-medium text-sm capitalize">{lesson.id} {lesson.title}</span>
                                 </div>
                             ))}
                         </div>

@@ -63,7 +63,7 @@ const am101Data: CourseData = {
             role: "CEO of Coirei",
             // image: "https://i.pravatar.cc/150?u=EdDonner" // Placeholder
         },
-    duration: "14 weeks",
+    duration: "12 weeks",
         enrolled: "60 Students",
         community: "Soon"
     },
@@ -71,7 +71,7 @@ const am101Data: CourseData = {
         code: "AM101",
         title: "AI / ML Frontier AI Engineer",
         instructor: "Naveenkumar S",
-        topic: "Introduction to the world of AI",
+        topic: "introduction to programming with python",
         studentsCount: 200
     },
     upcomingClasses: [
@@ -98,8 +98,8 @@ const am101Data: CourseData = {
             title: "Frontier AI Systems & Deployment",
             content: "...",
             lessons: [
-                { id: '1.1', title: 'introduction to the world of AI', type: 'video', isCompleted: false },
-                // { id: '3.4', title: 'AI Agents (LangChain, CrewAI, AutoGen)', type: 'video', isCompleted: true },
+                { id: '1.1', title: 'introduction to the world of AI', type: 'video', isCompleted: true },
+                { id: '1.2', title: 'introduction to programming with python', type: 'video', isCompleted: false },
                 // { id: '3.3', title: 'Tool-using autonomous agents', type: 'video', isCompleted: true },
                 // { id: '3.2', title: 'API & Web App integration (FastAPI/Flask)', type: 'video', isCompleted: true },
                 // { id: '3.1', title: 'Model deployment & basics of MLOps', type: 'video', isCompleted: true },
@@ -303,7 +303,7 @@ export const upcomingClasses = [
         code: "AM101",
         title: "AI / ML Frontier AI Engineer",
         instructor: "Naveenkumar S",
-        topic: "Introduction to the world of AI",
+        topic: "Introduction to programming with python",
         date: "04 Mar,  07:30 PM - 08:30 PM",
         reminderOn: true,
     },

@@ -86,7 +86,7 @@ const Header = () => {
       <div className="flex-1  self-start ">
         <h1
           className="
-            text-[22px] sm:text-[26px] lg:text-[30px]
+            text-[22px] sm:text-[26px] lg:text-[28px]
             font-medium text-[#333333]
           "
         >

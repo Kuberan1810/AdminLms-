@@ -91,7 +91,7 @@ const Courses = () => {
             batch_name: schedule.batch_name,
             course_name: data.course_name || schedule.title,
             instructor: data.instructor || schedule.instructor,
-            topic: data.topic || "Introduction to the world of AI",
+            topic: data.topic,
             students_count: data.students_count || 0,
           };
           break;
@@ -110,6 +110,36 @@ const Courses = () => {
     const interval = setInterval(checkActiveSessions, 8000);
     return () => clearInterval(interval);
   }, [checkActiveSessions]);
+
+  /* ================= AUTO-LEAVE WHEN SESSION ENDS ================= */
+
+  useEffect(() => {
+    if (!joinedSessionIdRef.current) return;
+
+    // Is the currently joined session still valid in the state?
+    const isSessionStillActive = liveSession && liveSession.session_id === joinedSessionIdRef.current;
+
+    // If missing (instructor ended it), auto-leave
+    if (!isSessionStillActive && !hasLeftRef.current) {
+      console.log("Session ended by instructor — auto-leaving");
+
+      if (windowCheckRef.current) {
+        clearInterval(windowCheckRef.current);
+        windowCheckRef.current = null;
+      }
+
+      if (meetWindowRef.current && !meetWindowRef.current.closed) {
+        try {
+          meetWindowRef.current.close();
+        } catch (e) {
+          console.error("Could not auto-close meet window:", e);
+        }
+      }
+      meetWindowRef.current = null;
+
+      triggerLeave(joinedSessionIdRef.current);
+    }
+  }, [liveSession, triggerLeave]);
 
   /* ================= JOIN ================= */
 
@@ -174,7 +204,7 @@ const Courses = () => {
     code: "AM101",
     title: liveSession?.course_name || "AI / ML Frontier AI Engineer",
     instructor: liveSession?.instructor || "Naveenkumar S",
-    topic: liveSession?.topic || "Introduction to the world of AI",
+    topic: liveSession?.topic || "introduction to programming with python",
     // studentsCount: liveSession?.students_count || 200,
   };
 

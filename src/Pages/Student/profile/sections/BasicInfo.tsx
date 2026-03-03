@@ -3,11 +3,11 @@ import { Mail, Phone, User, Lock, Eye, EyeOff } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../../../store/store";
 import { updateStudentInfo } from "../../../../store/slices/StudentSlice";
-
+import { useAuth } from "../../../../context/AuthContext";
 const BasicInfo = () => {
     const dispatch = useDispatch();
     const studentInfo = useSelector((state: RootState) => state.student);
-
+    const { user } = useAuth();
     // State management
     const [tempInfo, setTempInfo] = React.useState(studentInfo);
     const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -17,13 +17,13 @@ const BasicInfo = () => {
     const [passwordEditMode, setPasswordEditMode] = React.useState(false); // Restored state
     const [code, setCode] = React.useState('+91');
 
-    const countryCodes = [
-        { name: "India", code: "+91" },
-        { name: "United States", code: "+1" },
-        { name: "United Kingdom", code: "+44" },
-        { name: "Australia", code: "+61" },
-        { name: "Canada", code: "+1" },
-    ];
+    // const countryCodes = [
+    //     { name: "India", code: "+91" },
+    //     { name: "United States", code: "+1" },
+    //     { name: "United Kingdom", code: "+44" },
+    //     { name: "Australia", code: "+61" },
+    //     { name: "Canada", code: "+1" },
+    // ];
 
     const handleSave = () => {
         if (tempInfo.password && tempInfo.password !== confirmPassword && confirmPassword !== "") {
@@ -53,25 +53,25 @@ const BasicInfo = () => {
     };
 
     // Helper to check password strictness for UI feedback (optional, based on design)
-    const hasUpperCase = /[A-Z]/.test(tempInfo.password);
-    const hasNumber = /[0-9]/.test(tempInfo.password);
-    const hasChars = tempInfo.password.length >= 8; // Assuming 8 as standard for "At least 1 Characters" implies length or special char? Design says "At least 1 Characters" which is vague, assuming length.
+    // const hasUpperCase = /[A-Z]/.test(tempInfo.password);
+    // const hasNumber = /[0-9]/.test(tempInfo.password);
+    // const hasChars = tempInfo.password.length >= 8; // Assuming 8 as standard for "At least 1 Characters" implies length or special char? Design says "At least 1 Characters" which is vague, assuming length.
 
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_0px_rgba(0,0,0,0.05)] border border-gray-100">
+        <div className="boxStyle">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6 bg-[#FFF5EB] p-4 rounded-lg sticky top-0 z-10 shadow-sm border border-orange-100">
+            <div className="flex items-center justify-between mb-6 bg-[#F6730010] p-4 rounded-lg sticky top-0 z-10 shadow-sm border border-orange-100">
                 <div className="flex items-center gap-2 text-[#F67300] font-medium">
                     <User size={20} />
                     <span className="text-base text-[#F67300]">Contact Information</span>
                 </div>
 
-                <button
+                {/* <button
                     onClick={handleSave}
                     className="px-6 py-2 text-sm bg-[#F67300] text-white rounded-xl hover:bg-orange-700 font-medium font-md transition-all duration-300 ease-in-out active:scale-95 shadow-md hover:shadow-lg"
                 >
                     Save
-                </button>
+                </button> */}
             </div>
 
             <div className="space-y-6 px-1">
@@ -84,7 +84,7 @@ const BasicInfo = () => {
                     <div>
                         <input
                             type="email"
-                            value={tempInfo.email}
+                            value={user?.email}
                             onChange={(e) => handleChange('email', e.target.value)}
                             className="border border-[#d3d3d3] rounded-lg px-4 py-2 w-full max-w-md focus:outline-none focus:border-[#F67300] focus:ring-1 focus:ring-orange-200 text-[#333333] transition-all duration-300"
                         />
@@ -92,7 +92,7 @@ const BasicInfo = () => {
                 </div>
 
                 {/* Phone */}
-                <div className="flex flex-col gap-2">
+                {/* <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
                         <Phone size={16} className="text-[#F67300]" />
                         <span className="text-[#F67300] font-medium">Phone:</span>
@@ -120,10 +120,10 @@ const BasicInfo = () => {
                             className="border border-[#d3d3d3] rounded-lg px-4 py-2 w-full flex-1 min-w-[150px] focus:outline-none focus:border-[#F67300] focus:ring-1 focus:ring-orange-200 text-[#333333] transition-all duration-300"
                         />
                     </div>
-                </div>
+                </div> */}
 
-                {/* Password Section */}
-                <div className="flex flex-col gap-2 mt-2">
+               {/* password */}
+                {/* <div className="flex flex-col gap-2 mt-2">
                     <div className="flex items-center gap-2">
                         <Lock size={16} className="text-[#F67300]" />
                         <span className="text-[#F67300] font-medium">Password:</span>
@@ -144,7 +144,7 @@ const BasicInfo = () => {
                         </div>
                     ) : (
                         <div className="space-y-4 w-full max-w-md">
-                            {/* New Password */}
+                          
                             <div className="space-y-1">
                                 <label className="text-xs font-medium text-gray-500">New Password</label>
                                 <div className="relative">
@@ -165,7 +165,6 @@ const BasicInfo = () => {
                                 </div>
                             </div>
 
-                            {/* Requirements */}
                             <div className="ml-1 space-y-1">
                                 <p className="text-xs text-[#333333] mb-1">Password must contain:</p>
                                 <div className="flex items-center gap-2">
@@ -182,7 +181,6 @@ const BasicInfo = () => {
                                 </div>
                             </div>
 
-                            {/* Confirm Password */}
                             <div className="space-y-1">
                                 <label className="text-xs font-medium text-gray-500">Confirm New Password</label>
                                 <div className="relative">
@@ -206,7 +204,6 @@ const BasicInfo = () => {
                                 )}
                             </div>
 
-                            {/* Actions */}
                             <div className="flex justify-end gap-2 pt-2">
                                 <button
                                     onClick={handlePasswordCancel}
@@ -214,13 +211,11 @@ const BasicInfo = () => {
                                 >
                                     Cancel
                                 </button>
-                                {/* Save logic is handled by main Save button, but usually password change is separate or combined? 
-                                    User said "Save" button is in header. So these inputs just update the temp state which gets saved on main Save.
-                                */}
+                                
                             </div>
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
         </div>
     )
