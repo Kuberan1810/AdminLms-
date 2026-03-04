@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { SearchNormal1, NotificationBing, Setting } from "iconsax-react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import CoireiLogo from "../../assets/Images/home/coirei-logo-orange.png";
 import { headerMap, profile } from "../../data/HeaderData";
 import ProfileInfo from "../Student/ProfileInfo";
@@ -11,19 +11,23 @@ import { useAuth } from "../../context/AuthContext";
 import { AnimatePresence } from "framer-motion";
 import StudentNotificationPopup from "../common/Student/StudentNotificationPopup.tsx";
 import SettingsSidebar from "../common/Student/SettingsSidebar.tsx";
-import {useNotifications } from "../../context/StudentNotification/NotificationContext.tsx";
+import { useNotifications } from "../../context/StudentNotification/NotificationContext.tsx";
+import GlobalSearchDropdown from "../common/GlobalSearchDropdown";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [showConfirmLogout, setShowConfirmLogout] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showSearchPopup, setShowSearchPopup] = useState(false);
 
 
   const ref = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   const path = location.pathname.split("/")[2];
   // gets: dashboard, profile, courses
@@ -51,6 +55,9 @@ const Header = () => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
       }
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSearchPopup(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () =>
@@ -64,11 +71,9 @@ const Header = () => {
 
 
 
-  const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
     const checkScreen = () => {
-      setIsMobile(window.innerWidth < 768);
+      // setIsMobile(window.innerWidth < 768);
     };
 
     checkScreen();
@@ -79,7 +84,7 @@ const Header = () => {
 
 
   return (
-   
+
     <header className="w-full flex flex-col-reverse sm:flex-row items-center justify-between px-4 sm:px-5 py-4 sm:py-5 gap-4 lg:gap-0">
 
       {/* ================= LEFT – TITLE ================= */}
@@ -120,23 +125,48 @@ const Header = () => {
           gap-3 sm:gap-4 lg:gap-5
           flex-wrap lg:flex-nowrap">
           {/* SEARCH – hide on mobile */}
-          <div
-            className="
-            hidden md:flex
-            items-center gap-2
-            px-3 py-2.5 lg:py-3
-            border border-[#F2EEF4]
-            rounded-[15px]
-            text-sm text-[#626262]
-            bg-white
-          "
-          >
-            <SearchNormal1 size={18} color="#626262" />
-            <input
-              type="text"
-              placeholder="Search for classes, assignments"
-              className="outline-none w-44 md:w-52 lg:w-60 bg-transparent"
-            />
+          <div className="relative" ref={searchRef}>
+            <div
+              className="
+              hidden md:flex
+              items-center gap-2
+              px-3 py-2.5 lg:py-3
+              border border-[#F2EEF4]
+              rounded-[15px]
+              text-sm text-[#626262]
+              bg-white
+            "
+            >
+              <SearchNormal1 size={18} color="#626262" />
+              <input
+                type="text"
+                placeholder="Search for classes, assignments"
+                className="outline-none w-44 md:w-52 lg:w-60 bg-transparent"
+                value={searchParams.get("search") || ""}
+                onFocus={() => setShowSearchPopup(true)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value) {
+                    searchParams.set("search", value);
+                    setShowSearchPopup(true);
+                  } else {
+                    searchParams.delete("search");
+                    setShowSearchPopup(false);
+                  }
+                  setSearchParams(searchParams, { replace: true });
+                }}
+              />
+            </div>
+            {/* Global Search Popup */}
+            <AnimatePresence>
+              {showSearchPopup && searchParams.get("search") && (
+                <GlobalSearchDropdown
+                  query={searchParams.get("search") || ""}
+                  role="student"
+                  onClose={() => setShowSearchPopup(false)}
+                />
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Notification */}
@@ -217,8 +247,8 @@ const Header = () => {
           onConfirm={handleLogout}
         />
       )}
-      </header>
-   
+    </header>
+
   );
 };
 

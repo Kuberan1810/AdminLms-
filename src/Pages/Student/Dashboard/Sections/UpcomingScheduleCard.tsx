@@ -32,7 +32,7 @@ const schedules: Schedule[] = [
     course_id: 1,
     batch_name: "Batch-A",
     title: "AI / ML Frontier Engineer",
-    time: "7:30 - 08:30 pm",
+    time: "8:30 - 09:30 pm",
     date: "March 04, 26",
     class: "introduction to programming with python",
     instructor: "Naveenkumar S",
@@ -194,12 +194,6 @@ const UpcomingScheduleCard = () => {
 
 
 
-  /* ================================================================
-     STEP 2: JOIN — when student clicks "Join" button
-     POST /sessions/join → attendance tracking starts
-     Then open the stored meet_link from /active in new tab
-     ================================================================ */
-
   const handleJoin = useCallback(async (courseId: number, batchName: string) => {
     const sessionData = liveSessions[batchName];
     if (!sessionData) return;
@@ -220,11 +214,11 @@ const UpcomingScheduleCard = () => {
         return;
       }
 
-      // Open same-origin wrapper page (NOT the raw meet URL)
-      const wrapperUrl = `/student/live-class?url=${encodeURIComponent(meetLink)}`;
-      console.log("Opening wrapper:", wrapperUrl);
+      // Now open the window AFTER the API call completes
+      // We open the meetLink directly instead of an iframe wrapper to avoid camera/mic permission issues
+      const meetWindow = window.open(meetLink, "_blank");
 
-      const meetWindow = window.open(wrapperUrl, "_blank");
+      // If popup blocker stopped it, alert the user
       if (!meetWindow) {
         alert("Please allow popups to open the live class.");
         return;
@@ -306,13 +300,18 @@ const UpcomingScheduleCard = () => {
                 <button
                   onClick={() => handleJoin(item.course_id, item.batch_name)}
                   disabled={isJoining}
-                  className={`px-7 py-2.5 rounded-xl text-white text-sm font-semibold md:w-fit w-full transition-all
+                  className={`px-7 py-2.5 rounded-xl text-white text-sm font-semibold md:w-fit w-full transition-all flex items-center justify-center gap-2
                     ${isJoining
                       ? "bg-orange-300 cursor-not-allowed"
                       : "bg-[#F67300] hover:bg-[#ff7a05] cursor-pointer"
                     }`}
                 >
-                  {isJoining ? "Joining..." : "Join"}
+                  {isJoining ? (
+                    <>
+                      <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                      Joining
+                    </>
+                  ) : "Join"}
                 </button>
               ) : (
                 <>

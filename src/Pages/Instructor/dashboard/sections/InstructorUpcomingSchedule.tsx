@@ -135,6 +135,7 @@
 
 import { useMemo, useState } from "react";
 import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
+import { useSearchParams } from "react-router-dom";
 import BtnCom from "../../../../Components/Student/BtnCom";
 import InstructorScheduleCard from "./InstructorScheduleCard";
 
@@ -199,10 +200,21 @@ const InstructorUpcomingSchedule = () => {
         setWeekDate(d);
     };
 
-    /* ===== FILTER BY DATE ===== */
+    const [searchParams] = useSearchParams();
+    const searchQuery = (searchParams.get("search") || "").toLowerCase();
+
+    /* ===== FILTER BY DATE & SEARCH ===== */
     const selectedKey = toDateKey(selectedDate);
     const filteredSchedules = schedules.filter(
-        (s) => s.date === selectedKey
+        (s) => {
+            const matchesDate = s.date === selectedKey;
+            if (!matchesDate) return false;
+
+            if (!searchQuery) return true;
+            const matchesSearch = s.title.toLowerCase().includes(searchQuery) ||
+                s.batch.toLowerCase().includes(searchQuery);
+            return matchesSearch;
+        }
     );
 
     return (

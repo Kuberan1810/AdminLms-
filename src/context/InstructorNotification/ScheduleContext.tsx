@@ -28,25 +28,35 @@ export const useSchedule = () => {
 };
 
 // Initial Dummy Data
+const today = new Date();
+
+const formattedDate = today.toISOString().split("T")[0]; // YYYY-MM-DD
+
+const displayDate = today.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "2-digit",
+});
+
 const initialSchedules: Schedule[] = [
     {
         id: 1,
         title: "AM101 - AI / ML Frontier AI Engineer",
         batch: "Batch-A",
-        time: "9:00 - 10:30 am",
-        date: "2026-02-09",
-        displayDate: "Feb 09, 26",
+        time: "8:30 - 09:30 am",
+        date: formattedDate,
+        displayDate: displayDate,
         status: "join",
     },
-    {
-        id: 2,
-        title: "AM101 - AI / ML Frontier AI Engineer",
-        batch: "Batch-B",
-        time: "5:30 - 7:00 pm",
-        date: "2026-02-09",
-        displayDate: "Feb 09, 26",
-        status: "soon",
-    },
+    // {
+    //     id: 2,
+    //     title: "AM101 - AI / ML Frontier AI Engineer",
+    //     batch: "Batch-B",
+    //     time: "5:30 - 7:00 pm",
+    //     date: formattedDate,
+    //     displayDate: displayDate,
+    //     status: "soon",
+    // },
 ];
 
 export const ScheduleProvider = ({ children }: { children: ReactNode }) => {

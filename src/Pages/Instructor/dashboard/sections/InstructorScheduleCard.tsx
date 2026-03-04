@@ -1,6 +1,7 @@
 import { Clock, Calendar } from "iconsax-react";
 import { useState, useEffect, useCallback } from "react";
 import API_BASE from "../../../../config/axios";
+import JoinClassModal from "./JoinClassModal";
 
 /* ===================== TYPES ===================== */
 
@@ -30,6 +31,9 @@ const InstructorScheduleCard = ({
     const [sessionId, setSessionId] = useState<number | null>(null);
     const [isLive, setIsLive] = useState(false);
     const [initialChecking, setInitialChecking] = useState(true);
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalLink, setModalLink] = useState("");
 
     /* ================= CHECK ACTIVE SESSION ================= */
 
@@ -69,8 +73,6 @@ const InstructorScheduleCard = ({
         }
     }, [checkActiveSession, status]);
 
-    /* ================= START CLASS ================= */
-
     const startClass = async () => {
         if (loading || isLive) return;
 
@@ -104,10 +106,8 @@ const InstructorScheduleCard = ({
             const hostLink = res.data?.meet_link;
 
             if (hostLink) {
-                const meetWindow = window.open(hostLink, "_blank");
-                if (!meetWindow) {
-                    alert("Please allow popups to open the live class.");
-                }
+                setModalLink(hostLink);
+                setModalOpen(true);
             } else {
                 console.warn("meet_link not provided in response:", res.data);
             }
@@ -192,32 +192,49 @@ const InstructorScheduleCard = ({
                         <button
                             onClick={startClass}
                             disabled={loading || isLive || initialChecking}
-                            className={`px-7 py-2.5 rounded-xl text-white text-sm font-semibold w-full md:w-fit
+                            className={`px-7 py-2.5 rounded-xl text-white text-sm font-semibold w-full md:w-fit flex items-center justify-center gap-2
             ${loading || isLive || initialChecking
                                     ? "bg-orange-300 cursor-not-allowed"
                                     : "bg-[#F67300] hover:bg-[#ff7a05] cursor-pointer"
                                 }`}
                         >
-                            {loading && !isLive ? "Starting..." : "Start"}
+                            {loading && !isLive ? (
+                                <>
+                                    <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                                    Starting...
+                                </>
+                            ) : "Start"}
                         </button>
 
                         {/* END BUTTON */}
                         <button
                             onClick={endClass}
                             disabled={loading || !isLive || initialChecking}
-                            className={`px-7 py-2.5 rounded-xl text-white text-sm font-semibold w-full md:w-fit
+                            className={`px-7 py-2.5 rounded-xl text-white text-sm font-semibold w-full md:w-fit flex items-center justify-center gap-2
             ${loading || !isLive || initialChecking
                                     ? "bg-red-300 cursor-not-allowed"
                                     : "bg-[#f60800] hover:bg-[#f6080090] cursor-pointer"
                                 }`}
                         >
-                            {loading && isLive ? "Ending..." : "End"}
+                            {loading && isLive ? (
+                                <>
+                                    <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                                    Ending...
+                                </>
+                            ) : "End"}
                         </button>
 
                     </div>
                 </div>
 
             </div>
+
+            <JoinClassModal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                meetLink={modalLink}
+                isInstructor={true}
+            />
         </div>
     );
 };

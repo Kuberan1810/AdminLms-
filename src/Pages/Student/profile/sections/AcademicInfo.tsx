@@ -61,7 +61,7 @@ const SectionCard = ({
   return (
     <div className="boxStyle mb-5">
       <div className="flex items-center justify-between mb-4 bg-[#FFF5EB] p-4 rounded-xl shadow-sm border border-orange-100">
-        <h2 className="text-[#F67300] font-semibold text-lg ">{title}</h2>
+        <h2 className="text-[#F67300] font-semibold text-lg  w-full">{title}</h2>
 
         {hasFilter && onFilterChange && filterValue && (
           <div ref={dropdownRef} className="relative z-10 w-full md:w-auto">
@@ -191,7 +191,7 @@ const AcademicInfo = () => {
             ].map((course, i) => (
               <div
                 key={i}
-                className="boxStyle px-6 md:px-8 flex flex-col md:flex-row justify-between md:items-center gap-4 transition-all "
+                className="boxStyle px-6 md:px-8 flex flex-row justify-between md:items-center gap-4 transition-all "
               >
                 <div className="text-md font-medium text-primary">Course ID
                   <p className="text-sm font-medium text-[#626262] ">{course.code}</p></div>

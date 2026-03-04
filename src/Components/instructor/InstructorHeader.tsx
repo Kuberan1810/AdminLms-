@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { SearchNormal1, NotificationBing, Setting } from "iconsax-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useMatch } from "react-router-dom";
 import { headerMap, profile } from "../../data/HeaderData";
@@ -15,7 +15,8 @@ import QuickActionsModal from "./QuickActionsModal";
 import NotificationPopup from "../common/Instructor/NotificationPopup";
 import SettingsSidebar from "../common/Instructor/SettingsSidebar";
 import { useInstructorNotifications } from "../../context/InstructorNotification/InstructorNotificationContext";
-import { ArrowBigLeft, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import GlobalSearchDropdown from "../common/GlobalSearchDropdown";
 
 const InstructorHeader = () => {
   /* ================= STATE ================= */
@@ -24,15 +25,18 @@ const InstructorHeader = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [showConfirmLogout, setShowConfirmLogout] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
+  const [showSearchPopup, setShowSearchPopup] = useState(false);
   const { unreadCount } = useInstructorNotifications();
   /* ================= HOOKS ================= */
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
 
   /* ================= REFS ================= */
   const profileRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   /* ================= HEADER DATA ================= */
   const batchMatch = useMatch("/instructor/batch-details/:batchName");
@@ -106,7 +110,7 @@ const InstructorHeader = () => {
       subtitle: "View and analyze student Assginments submission.",
     };
   }
-  
+
 
   /* ================= OUTSIDE CLICK HANDLER ================= */
   useEffect(() => {
@@ -123,6 +127,9 @@ const InstructorHeader = () => {
         !notificationRef.current.contains(e.target as Node)
       ) {
         setShowNotifications(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSearchPopup(false);
       }
     };
 
@@ -165,7 +172,7 @@ const InstructorHeader = () => {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl font-normal text-[#626262] whitespace-nowrap">
-              {header.subtitle} 
+              {header.subtitle}
               {isDashboard && user?.name}
             </p>
           </div>
@@ -184,13 +191,39 @@ const InstructorHeader = () => {
 
         <div className="flex gap-5 justify-between">
           {/* SEARCH */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-2.5 lg:py-3 border border-[#F2EEF4] rounded-[15px] text-sm text-[#626262] bg-white">
-            <SearchNormal1 size={18} color="#626262" />
-            <input
-              type="text"
-              placeholder="Search for classes, assignments"
-              className="outline-none w-40 md:w-52 lg:w-60 bg-transparent"
-            />
+          <div className="relative" ref={searchRef}>
+            <div className="hidden md:flex items-center gap-2 px-3 py-2.5 lg:py-3 border border-[#F2EEF4] rounded-[15px] text-sm text-[#626262] bg-white">
+              <SearchNormal1 size={18} color="#626262" />
+              <input
+                type="text"
+                placeholder="Search for classes, assignments"
+                className="outline-none w-40 md:w-52 lg:w-60 bg-transparent"
+                value={searchParams.get("search") || ""}
+                onFocus={() => setShowSearchPopup(true)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value) {
+                    searchParams.set("search", value);
+                    setShowSearchPopup(true);
+                  } else {
+                    searchParams.delete("search");
+                    setShowSearchPopup(false);
+                  }
+                  setSearchParams(searchParams, { replace: true });
+                }}
+              />
+            </div>
+
+            {/* Global Search Popup */}
+            <AnimatePresence>
+              {showSearchPopup && searchParams.get("search") && (
+                <GlobalSearchDropdown
+                  query={searchParams.get("search") || ""}
+                  role="instructor"
+                  onClose={() => setShowSearchPopup(false)}
+                />
+              )}
+            </AnimatePresence>
           </div>
 
           {/* ================= NOTIFICATION ================= */}

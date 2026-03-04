@@ -5,81 +5,81 @@
 
 
 body {
-    font-family: "Urbanist", sans-serif;
-    background-color: #FAFAFA;
+  font-family: "Urbanist", sans-serif;
+  background-color: #FAFAFA;
 }
 
 .iconStyle {
-    padding: 4px;
-    border-radius: 5px;
-    background-color: #fff;
-    color: #626262;
-    border: 1px solid #F3F5F7;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #626262;
+  border: 1px solid #F3F5F7;
 }
 
 .boxStyle {
-    background: #fff;
-    padding: 28px;
-    border: 1px solid #F2EEF4;
-    border-radius: 28px;
+  background: #fff;
+  padding: 28px;
+  border: 1px solid #F2EEF4;
+  border-radius: 28px;
 }
 
 
 .text-primary {
-    color: #333;
+  color: #333;
 }
 
 .text-secondary {
-    color: #626262;
+  color: #626262;
 
 }
 
 .orange {
-    background-color: #F67300;
+  background-color: #F67300;
 }
 
 
 @media (max-width: 767px) {
-    .iconStyle {
-        padding: 6px;
-        /* touch friendly */
-        border-radius: 6px;
-    }
+  .iconStyle {
+    padding: 6px;
+    /* touch friendly */
+    border-radius: 6px;
+  }
 
-    .boxStyle {
-        padding: 16px;
-        /* compact */
-        border-radius: 16px;
-    }
+  .boxStyle {
+    padding: 16px;
+    /* compact */
+    border-radius: 16px;
+  }
 }
 
 
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
-    opacity: 0;
-    display: none;
-    -webkit-appearance: none;
+  opacity: 0;
+  display: none;
+  -webkit-appearance: none;
 }
 
 input[type="time"]::-webkit-datetime-edit-ampm-field,
 input[type="time"]::-webkit-clear-button,
 input[type="time"]::-webkit-inner-spin-button {
-    display: none;
+  display: none;
 }
 
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-    -ms-overflow-style: none;
+  -ms-overflow-style: none;
 
-    scrollbar-width: none;
+  scrollbar-width: none;
 }
 
 .scrollbar-hide {
-    -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
 }

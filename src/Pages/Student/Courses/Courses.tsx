@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import LiveClassCard from "../../../Components/Student/LiveClassCard";
 import UpcomingClassCard from "../../../Components/Student/UpcomingClassCard";
 import EnrolledClasses from "../Dashboard/Sections/EnrolledClasses";
@@ -196,6 +196,9 @@ const Courses = () => {
     }
   };
 
+  const [searchParams] = useSearchParams();
+  const searchQuery = (searchParams.get("search") || "").toLowerCase();
+
   const isLive = liveSession !== null;
 
   /* ================= FALLBACK LIVE DATA ================= */
@@ -208,12 +211,31 @@ const Courses = () => {
     // studentsCount: liveSession?.students_count || 200,
   };
 
+  /* ================= FILTER DATA ================= */
+  const filteredCourses = courses.filter((course: any) => {
+    if (!searchQuery) return true;
+    const title = (course.title || course.course_name || "").toLowerCase();
+    const instructor = (course.instructor || course.instructor_name || "").toLowerCase();
+    return title.includes(searchQuery) || instructor.includes(searchQuery);
+  });
+
+  const filteredUpcomingClasses = upcomingClasses.filter((cls) => {
+    if (!searchQuery) return true;
+    const title = (cls.title || "").toLowerCase();
+    const instructor = (cls.instructor || "").toLowerCase();
+    const topic = (cls.topic || "").toLowerCase();
+
+    return title.includes(searchQuery) ||
+      instructor.includes(searchQuery) ||
+      topic.includes(searchQuery);
+  });
+
   return (
     <div className="space-y-5 md:mb-0 mb-10">
 
       {/*  SAME COMPONENT AS DASHBOARD (ONLY DIFFERENCE = onCardClick) */}
       <EnrolledClasses
-        classes={courses}
+        classes={filteredCourses}
         isLoading={isLoading}
         onCardClick={(courses) =>
           navigate(`/student/courses/${courses.id}`)
@@ -247,11 +269,15 @@ const Courses = () => {
         <h2 className="text-[20px] font-medium text-gray-900 mb-5">
           Upcoming Classes
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {upcomingClasses.map((cls, index) => (
-            <UpcomingClassCard key={index} {...cls} />
-          ))}
-        </div>
+        {filteredUpcomingClasses.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredUpcomingClasses.map((cls, index) => (
+              <UpcomingClassCard key={index} {...cls} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No upcoming classes match your search.</p>
+        )}
       </section>
 
     </div>

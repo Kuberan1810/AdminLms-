@@ -23,7 +23,7 @@ const ProfilePage: React.FC = () => {
         </div>
 
         {/* Top Profile Card */}
-        <div className="boxStyle mb-6 flex flex-col md:flex-row items-center md:items-center gap-6 relative">
+        <div className="boxStyle mb-5 flex flex-col md:flex-row items-center md:items-center md:gap-5 gap-3 relative">
           {/* Image */}
           <div className="relative">
             {/* <div className="w-[80px] h-[80px] rounded-full overflow-hidden">
@@ -37,7 +37,7 @@ const ProfilePage: React.FC = () => {
               <Camera size={14} color="white" />
             </div> */}
             <div className="
-              w-9 h-9 sm:w-12 sm:h-12
+             w-12 h-12
               rounded-full bg-[#EF7A02] flex items-center justify-center
               text-white text-lg font-semibold
             ">

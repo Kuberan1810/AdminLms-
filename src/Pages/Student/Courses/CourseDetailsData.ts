@@ -60,7 +60,7 @@ const am101Data: CourseData = {
         description: "Builds advanced AI and Machine Learning systems to solve complex real-world problems using cutting-edge technologies like deep learning and generative AI. Focuses on research, experimentation, and deploying scalable AI solutions in production.",
         instructor: {
             name: "Naveenkumar S",
-            role: "CEO of Coirei",
+            role: "Instructor",
             // image: "https://i.pravatar.cc/150?u=EdDonner" // Placeholder
         },
     duration: "12 weeks",
@@ -80,7 +80,7 @@ const am101Data: CourseData = {
             title: "AI / ML Frontier AI Engineer",
             instructor: "Naveenkumar S",
             topic: "Introduction to the world of AI",
-            date: "Today 07:30 PM - 08:30 PM",
+            date: "Today 08:30 PM - 09:30 PM",
             reminderOn: true
         },
         {

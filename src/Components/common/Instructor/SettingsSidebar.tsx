@@ -172,7 +172,7 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                                         Privacy Policy
                                     </span>
                                 </div>
-                                <ChevronRight strokeWidth={1.5} size={18}  color="#333"/>
+                                <ChevronRight strokeWidth={1.5} size={18} color="#333" />
                             </div>
 
                         </div>

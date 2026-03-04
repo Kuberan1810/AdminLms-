@@ -3,6 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import api from "../../../config/axios";
+// import CoireiLogo from "../../../assets/Images/home/coirei-logo-orange.png"
+// import skillpointLogo from "../../../assets/Images/home/skillpointLogo.svg"
+// import ColabLogo from "../../../assets/Images/home/ColabLogo.svg"
+import ColabrationLogo from "../../../assets/Images/home/ColabrationLogo.svg"
+import LoginBanner from "../../../assets/Images/login/loginBanner.png"
+
+
+
+
+
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -56,6 +67,16 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-[#F6FAFF] flex items-center justify-center px-6">
+
+      <div className="flex  gap-3 absolute top-6 left-6">
+        {/* <img src={CoireiLogo} alt="CoireiLogo" className="md:w-20  w-15 md:h-1 h-10" />
+        <img src={skillpointLogo} alt="skillpointLogo" className="md:w-20  w-15 md:h-11 h-10" /> */}
+        {/* <img src={ColabLogo} alt="ColabLogo" className="w-40" /> */}
+        
+        <img src={ColabrationLogo} alt="ColabrationLogo" className="w-40" />
+
+      </div> 
+
       <div className="w-full max-w-6xl bg-white rounded-2xl 
         shadow-[0_8px_24px_rgba(0,0,0,0.06)] 
         flex overflow-hidden">
@@ -64,7 +85,7 @@ const Login = () => {
         <div className="hidden md:flex w-1/2 items-center justify-center 
                   bg-white border-r border-gray-200">
           <img
-            src="https://img.freepik.com/free-vector/privacy-policy-concept-illustration_114360-7853.jpg"
+            src={LoginBanner}
             alt="Login"
             className="max-w-md"
           />
@@ -72,7 +93,7 @@ const Login = () => {
 
         {/* RIGHT */}
         <div className="w-full md:w-1/2 px-12 py-14">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-8 text-center">
+          <h2 className="text-2xl font-semibold text-[#333333] mb-8 text-center">
             Login
           </h2>
 
