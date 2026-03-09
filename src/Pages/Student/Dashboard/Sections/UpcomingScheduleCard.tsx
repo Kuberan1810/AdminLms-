@@ -33,8 +33,8 @@ const schedules: Schedule[] = [
     batch_name: "Batch-A",
     title: "AI / ML Frontier Engineer",
     time: "8:00 - 09:00 pm",
-    date: "March 04, 26",
-    class: "introduction to programming with python",
+    date: "March 09, 26",
+    class: "Python Data Types",
     instructor: "Naveenkumar S",
   },
   {
@@ -43,9 +43,20 @@ const schedules: Schedule[] = [
     batch_name: "Batch-B",
     title: "AI / ML Frontier Engineer",
     time: "08:00 - 09:00 pm",
-    date: "March 06, 26",
+    date: "March 10, 26",
+    class: "Conditional Statements",
     instructor: "Naveenkumar S",
   },
+  // {
+  //   id: 3,
+  //   course_id: 1,
+  //   batch_name: "Batch-A",
+  //   title: "AI / ML Frontier Engineer",
+  //   time: "08:00 - 09:00 pm",
+  //   date: "March 12, 26",
+  //   class: "Functions",
+  //   instructor: "Naveenkumar S",
+  // }
 ];
 
 /* ===================== COMPONENT ===================== */

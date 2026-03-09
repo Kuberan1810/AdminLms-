@@ -6,14 +6,19 @@ interface Props {
 }
 
 const ProtectedRoute = ({ allowedRole }: Props) => {
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, isLoading } = useAuth();
 
-    // 🔒 NOT LOGGED IN
+    // ⏳ Wait for session restore before making any redirect decision
+    if (isLoading) {
+        return null; // or a spinner: <FullPageSpinner />
+    }
+
+    // 🔒 Not logged in
     if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
     }
 
-    // 🔒 WRONG ROLE
+    // 🔒 Wrong role
     if (user?.role !== allowedRole) {
         return <Navigate to="/login" replace />;
     }

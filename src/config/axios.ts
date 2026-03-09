@@ -1,8 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./api";
 
-// ✅ Global default — applies to ALL axios calls everywhere
-axios.defaults.headers.common['ngrok-skip-browser-warning'] = 'true';
+// ─── Axios Instance ───────────────────────────────────────────────────────────
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -13,47 +12,29 @@ const api = axios.create({
     },
 });
 
-// 🔐 token auto attach (optional)
+// ─── Request Interceptor — attach Bearer token ────────────────────────────────
+
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 });
 
+// ─── Response Interceptor — auto-logout on 401 ───────────────────────────────
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            // Token rejected by server — wipe session and redirect to login
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user");
+            window.location.replace("/login");
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default api;
-
-
-// import axios from "axios";
-
-// const api = axios.create({
-//     baseURL: "https://maya-phonogramic-dayton.ngrok-free.dev",
-//     withCredentials: true, // 🔥 IMPORTANT if backend uses cookies
-// });
-
-// api.interceptors.request.use((config) => {
-//     const token = localStorage.getItem("access_token");
-
-//     if (token) {
-//         config.headers.Authorization = `Bearer ${token}`;
-//     }
-
-//     // OPTIONAL: if backend expects role header
-//     config.headers["x-user-role"] = "instructor";
-
-//     return config;
-// });
-
-// export default api;
-
-
-// import axios from "axios";
-
-// const api = axios.create({
-//     baseURL: "https://maya-phonogramic-dayton.ngrok-free.dev",
-//     withCredentials: true, // 🔥 REQUIRED for cookie auth
-// });
-
-// export default api;
-

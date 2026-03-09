@@ -17,7 +17,7 @@ import LoginBanner from "../../../assets/Images/login/loginBanner.png"
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,10 +44,8 @@ const Login = () => {
 
       const data = res.data;
 
-      // 🔐 store auth
-      localStorage.setItem("token", data.access_token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      setUser(data.user);
+      // 🔐 store auth via AuthContext (uses sessionStorage)
+      login(data.access_token, data.user);
 
       // 🔁 ROLE BASED REDIRECT
       if (data.user.role === "student") {
@@ -72,10 +70,10 @@ const Login = () => {
         {/* <img src={CoireiLogo} alt="CoireiLogo" className="md:w-20  w-15 md:h-1 h-10" />
         <img src={skillpointLogo} alt="skillpointLogo" className="md:w-20  w-15 md:h-11 h-10" /> */}
         {/* <img src={ColabLogo} alt="ColabLogo" className="w-40" /> */}
-        
+
         <img src={ColabrationLogo} alt="ColabrationLogo" className="w-40" />
 
-      </div> 
+      </div>
 
       <div className="w-full max-w-6xl bg-white rounded-2xl 
         shadow-[0_8px_24px_rgba(0,0,0,0.06)] 

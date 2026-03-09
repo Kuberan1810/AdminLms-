@@ -1,18 +1,23 @@
 
 import { coursesData } from './CourseDetailsData';
-import { CalendarRemove, FolderCross } from 'iconsax-react';
-import pdf_img from '../../../assets/Images/Enrolled_Courses/pdf_img.svg';
+import { CalendarRemove, FolderCross, Calendar, ImportCurve, Video, Clock, Note1 } from 'iconsax-react';
+import PdfIcon from '../../../assets/Images/icon/pdfIcon.svg';
 import clock_img from '../../../assets/Images/Enrolled_Courses/Clock.png';
 // import form_img from '../../assets/Images/Enrolled_Courses/Form.png';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import {
     ArrowLeft,
-    Download,
-    Calendar,
     Check,
-    ClipboardList
 } from 'lucide-react';
+
+// Status badge colours — matches Dashboard AssignmentsCard
+const assignmentStatusStyle: Record<string, string> = {
+    "Completed": "bg-[#E5F1E8] text-[#2A9A46]",
+    "In progress": "bg-[#FFEDDE] text-[#F67300]",
+    "Over due": "bg-[#FEE2E2] text-[#FF1313]",
+    "Pending": "bg-[#FFEDDE] text-[#F67300]",
+};
 import { useLiveClass } from '../../../hooks/useLiveClass';
 
 const LessonDetails = () => {
@@ -41,28 +46,17 @@ const LessonDetails = () => {
     // Mock data for the rest of the page
     const lessonData = {
         title: currentLessonTitle || 'AI Agents (LangChain, CrewAI, AutoGen)',
-        content: 'AI Agents are systems that use LLMs to plan, act, and collaborate autonomously. LangChain builds tool-using agents for workflows and RAG. CrewAI enables role-based multi-agent teamwork. AutoGen focuses on conversation-driven agents that interact with each other and humans to solve complex tasks.',
-        keyTopics: [
+        content: currentLesson?.content || 'AI Agents are systems that use LLMs to plan, act, and collaborate autonomously. LangChain builds tool-using agents for workflows and RAG. CrewAI enables role-based multi-agent teamwork. AutoGen focuses on conversation-driven agents that interact with each other and humans to solve complex tasks.',
+        keyTopics: currentLesson?.keyTopics || [
             'Introduction to AI Agents',
             'Agent Architecture & Planning',
             'Tools, Memory & RAG',
             'Multi-Agent Collaboration',
-            'Frameworks Overview'
+            'Frameworks Overview (LangChain, CrewAI, AutoGen)',
         ],
-        resources: lessonId === '3.4' ? [] : [
-            { id: 1, name: 'Agent Architecture .pdf', type: 'PDF' },
-            { id: 2, name: 'Class Notes 2.0.pdf', type: 'PDF' },
-            { id: 3, name: 'Class Notes 2.0.pdf', type: 'PDF' }
-        ],
-        recordedClasses: lessonId === '3.4' ? [] : [
-            { id: 1, title: 'Introduction to Agents', instructor: 'Dr. John Doe', date: 'Jan 15, 2024', duration: '1h 30m' }
-        ],
-        assignments: lessonId === '3.4' ? [] : [
-            { id: 1, title: 'Convert text into embeddi...', dueDate: '2 Jan', status: 'Completed' },
-            { id: 2, title: 'Convert text into embeddi...', dueDate: '2 Jan', status: 'Pending' },
-            { id: 3, title: 'Convert text into embeddi...', dueDate: '2 Jan', status: 'Pending' },
-            { id: 4, title: 'Convert text into embeddi...', dueDate: '2 Jan', status: 'Pending' },
-        ],
+        resources: [],
+        recordedClasses: [],
+        assignments: [],
     };
 
     const handleDownload = (resourceName: string) => {
@@ -94,15 +88,15 @@ const LessonDetails = () => {
                         <div className={`rounded-full p-1 flex items-center justify-center w-[24px] h-[24px] ${isCompleted ? 'bg-[#EF7A02]' : 'bg-[#E0E0E0]'}`}>
                             <Check className="w-[14px] h-[14px] text-white" strokeWidth={3} />
                         </div>
-                        <h1 className="text-base md:text-lg font-semibold text-[#333333]"     >
+                        <h1 className="text-base  md:text-lg md:text-lgmd:text-lg font-semibold text-[#333333] capitalize"     >
                             {lessonData.title}
                         </h1>
                     </div>
                     {!isCompleted && (
                         <div className="flex items-center gap-4">
                             <div className="flex items-center gap-2     text-[#333333] text-[14px]">
-                                <Calendar width="16" height="16" />
-                                <span>Today 07:30 PM - 08:30 PM</span>
+                                <Calendar size={16} color='#333333' />
+                                <span >Today 07:30 PM - 08:30 PM</span>
                             </div>
                             <button
                                 onClick={liveClassId ? joinClass : undefined}
@@ -118,132 +112,142 @@ const LessonDetails = () => {
                 <div className="space-y-8">
                     {/* Class Content */}
                     <section>
-                        <h2 className="text-[#333333] text-[16px] md:t-lg font-normal mb-[20px]" >Class Content:</h2>
-                        <p className="    text-[#333333]     text-[#333333] text-[16px] font-normal" >
+                        <h2 className="text-[#333333] text-base  md:text-lg md:text-lgmd:t-lg font-semibold md:mb-3 mb-2" >Class Content:</h2>
+                        <p className="text-[#626262]  text-sm md:text-base font-medium" >
                             {lessonData.content}
                         </p>
                     </section>
 
                     {/* Key Topics */}
                     <section>
-                        <h2 className="    text-[#333333] text-[16px] font-normal mb-[20px]" >Key Topic:</h2>
+                        <h2 className="text-[#333333] text-base  md:text-lg md:text-lgmd:t-lg font-semibold md:mb-3 mb-2" >Key Topic:</h2>
                         <ol className="list-decimal list-inside space-y-2 ml-2">
                             {lessonData.keyTopics.map((topic, index) => (
-                                <li key={index} className="    text-[#333333] text-[16px] font-normal" >
+                                <li key={index} className="text-[#626262]  text-sm md:text-base font-medium" >
                                     {topic}
                                 </li>
                             ))}
                         </ol>
                     </section>
 
-                    {isCompleted && (
-                        <>
-                            {/* Resources */}
-                            <section>
-                                <h2 className="    text-[#333333] text-[16px] font-normal mb-[20px]" >Resources</h2>
-                                {lessonData.resources.length > 0 ? (
-                                    <div className="flex flex-col gap-4">
-                                        {lessonData.resources.map((resource) => (
-                                            <div key={resource.id} className="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-[28px] transition-shadow pr-8">
-                                                <div className="flex items-center gap-6">
-                                                    <div className="w-[88px] h-[88px] bg-[#FFF0EF] rounded-[24px] flex items-center justify-center">
-                                                        <img src={pdf_img} alt="PDF" className="w-[45px] h-auto object-contain" />
-                                                    </div>
-                                                    <div className="flex flex-col gap-1">
-                                                        <span className="    text-[#333333] text-[18px] font-medium"     >{resource.name}</span>
-                                                        <span className="text-[#989898] text-[16px]"     >2.4MB</span>
-                                                    </div>
-                                                </div>
-                                                <Download
-                                                    className="w-6 h-6 text-[#989898] cursor-pointer hover:text-[#EF7A02] transition-colors"
-                                                    onClick={() => handleDownload(resource.name)}
-                                                />
+                    {/* Resources */}
+                    <section>
+                        <h2 className="text-[#333333] text-base md:text-lg font-semibold md:mb-3 mb-2">Resources</h2>
+                        {isCompleted && lessonData.resources.length > 0 ? (
+                            <div className="space-y-3 sm:w-fit">
+                                {lessonData.resources.map((resource) => (
+                                    <a
+                                        key={resource.id}
+                                        href="#"
+                                        onClick={(e) => { e.preventDefault(); handleDownload(resource.name); }}
+                                        className="group flex items-center justify-between transition-all duration-300 cursor-pointer sm:rounded-3xl rounded-[20px] gap-10 py-1 pr-5 pl-1 border border-[#F2EEF4]"
+                                        aria-label={`Download ${resource.name}`}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className="sm:px-6.5 sm:py-5 px-4 py-3 sm:rounded-3xl rounded-[20px] bg-[#FEE2E2]">
+                                                <img src={PdfIcon} alt="PDF file icon" className="min-w-6 min-h-6" />
                                             </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="flex flex-col items-center justify-center py-10 w-full text-center">
-                                        <div className="w-[100px] h-[100px] bg-[#FFF0EF] rounded-full flex items-center justify-center mb-6">
-                                            <FolderCross size={48} color="#EF7A02" />
+                                            <div>
+                                                <h4 className="text-sm md:text-lg font-medium text-[#4D4D4D] group-hover:text-[#333] transition-colors">
+                                                    {resource.name}
+                                                </h4>
+                                                <p className="text-xs md:text-base text-[#808080] mt-1">2.4 MB</p>
+                                            </div>
                                         </div>
-                                        <h3 className="text-[#626262] text-xl font-medium mb-2">No Resources Found</h3>
-                                        <p className="text-[#989898] text-base">There are no resources available for this class.</p>
-                                    </div>
-                                )}
-                            </section>
-
-                            {/* Recorded Class */}
-                            {lessonData.recordedClasses && lessonData.recordedClasses.length > 0 ? (
-                                <section>
-                                    <h2 className="  text-[#333333] text-[16px] font-normal mb-[20px]" >Recorded Class</h2>
-                                    <div className="space-y-4">
-                                        {lessonData.recordedClasses.map((session: any, index: number) => (
-                                            <div key={session.id} className="bg-white border border-gray-100 rounded-[20px] p-6 flex flex-col md:flex-row md:items-center justify-between transition-shadow">
-                                                <div className="space-y-2">
-                                                    <h3 className="text-lg font-semibold text-gray-900">Session {index + 1}: {session.title}</h3>
-                                                    <p className="text-sm text-gray-500">Instructor : {session.instructor}</p>
-                                                    <div className="flex flex-wrap gap-4 mt-2">
-                                                        <div className="flex items-center gap-2 text-gray-500 text-sm">
-                                                            <Calendar className="w-4 h-4" />
-                                                            {session.date}
-                                                        </div>
-                                                        <div className="flex items-center gap-2 text-gray-500 text-sm">
-                                                            <img src={clock_img} alt="Duration" className="w-4 h-4" />
-                                                            {session.duration}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button className="mt-4 md:mt-0 text-[#6B5AED] font-medium transition-colors hover:text-[#5849CB]" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '20px', lineHeight: '100%', letterSpacing: '0%' }}>
-                                                    View Recording
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </section>
-                            ) : (
-                                <div className="flex flex-col items-center justify-center py-10 w-full text-center">
-                                    <div className="w-[100px] h-[100px] bg-[#FFF0EF] rounded-full flex items-center justify-center mb-6">
-                                        <CalendarRemove size={48} color="#EF7A02" />
-                                    </div>
-                                    <h3 className="text-[#626262] text-xl font-medium mb-2">No Recorded Classes Found</h3>
-                                    <p className="text-[#989898] text-base">There are no recorded classes available for this lesson.</p>
+                                        <ImportCurve size="16" color="#808080" />
+                                    </a>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-10 w-full text-center">
+                                <div className="p-4 bg-[#FFF0EF] rounded-full mb-4">
+                                    <FolderCross size={32} color="#EF7A02" />
                                 </div>
-                            )}
+                                <p className="text-[#626262] text-base font-medium">No Resources Found</p>
+                                <p className="text-[#989898] text-sm mt-1">There are no resources available for this class.</p>
+                            </div>
+                        )}
+                    </section>
 
-                            {/* Assignments */}
-                            <section>
-                                <h2 className="    text-[#333333] text-[16px] font-normal mb-[20px]" >Assignments</h2>
-                                {lessonData.assignments.length > 0 ? (
-                                    <div className="space-y-3">
-                                        {lessonData.assignments.map((assignment, index) => (
-                                            <div key={assignment.id} className="bg-white border border-gray-100 rounded-[20px] p-5 flex items-center justify-between transition-shadow font-urbanist">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-full bg-[#EF7A02] flex items-center justify-center flex-shrink-0">
-                                                        <ClipboardList className="w-5 h-5 text-white" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="font-semibold text-gray-900 text-sm">Assignment {index + 1}: {assignment.title}</h3>
-                                                        <p className="text-[12px] text-gray-500 font-medium">Due date : {assignment.dueDate}</p>
-                                                    </div>
-                                                </div>
-                                                <span className="bg-[#E7F7EF] text-[#00A34D] px-4 py-1.5 rounded-full text-xs font-semibold">
-                                                    {assignment.status}
-                                                </span>
+                    {/* Recorded Class */}
+                    <section>
+                        <h2 className="text-[#333333] text-base md:text-lg font-semibold md:mb-3 mb-2">Recorded Class</h2>
+                        {isCompleted && lessonData.recordedClasses && lessonData.recordedClasses.length > 0 ? (
+                            <div className="space-y-3">
+                                {lessonData.recordedClasses.map((session: any, index: number) => (
+                                    <div
+                                        key={session.id}
+                                        className="group flex flex-col sm:flex-row sm:items-center justify-between transition-all duration-300 cursor-pointer sm:rounded-3xl rounded-[20px] sm:gap-10 gap-3 sm:py-1 py-3 sm:pr-5 pr-4 sm:pl-1 pl-3 border border-[#F2EEF4]"
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className="sm:px-6.5 sm:py-5 px-4 py-3 sm:rounded-3xl rounded-[20px] bg-[#EF7A0220] shrink-0">
+                                                <Video size={28} color='#EF7A02' />
                                             </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="flex flex-col items-center justify-center py-10 w-full text-center">
-                                        <div className="w-[100px] h-[100px] bg-[#FFF0EF] rounded-full flex items-center justify-center mb-6">
-                                            <CalendarRemove size={48} color="#EF7A02" />
+                                            <div>
+                                                <h4 className="text-sm md:text-lg font-medium text-[#4D4D4D] group-hover:text-[#333] transition-colors">
+                                                    Session {index + 1}: {session.title}
+                                                </h4>
+                                                <p className="text-xs md:text-base text-[#808080] mt-1">
+                                                    {session.instructor} · {session.date} · {session.duration}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <h3 className="text-[#626262] text-xl font-medium mb-2">No Assignments Found</h3>
-                                        <p className="text-[#989898] text-base">There are no assignments scheduled for this date.</p>
+                                        <span className="sm:text-[#fe5700] font-semibold text-sm whitespace-nowrap transition-colors sm:w-fit w-full text-center sm:p-0 p-2 rounded-full hover:text-[#ff7b34] text-white bg-[#fe5700] sm:bg-transparent">
+                                            View Recording
+                                        </span>
                                     </div>
-                                )}
-                            </section>
-                        </>
-                    )}
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-10 w-full text-center">
+                                <div className="p-4 bg-[#FFF0EF] rounded-full mb-4">
+                                    <CalendarRemove size={32} color="#EF7A02" />
+                                </div>
+                                <p className="text-[#626262] text-base font-medium">No Recorded Classes Found</p>
+                                <p className="text-[#989898] text-sm mt-1">There are no recorded classes available for this lesson.</p>
+                            </div>
+                        )}
+                    </section>
+
+                    {/* Assignments */}
+                    <section>
+                        <h2 className="text-[#333333] text-base md:text-lg font-semibold md:mb-3 mb-2">Assignments</h2>
+                        {isCompleted && lessonData.assignments.length > 0 ? (
+                            <div className="space-y-5">
+                                {lessonData.assignments.map((assignment) => (
+                                    <div
+                                        key={assignment.id}
+                                        className="bg-[#FAFAFA] border border-[#F2EEF4] rounded-[20px] p-5 flex flex-col md:flex-row justify-between items-start md:items-center cursor-pointer transition-shadow"
+                                    >
+                                        <div className="md:w-auto w-full">
+                                            <h4 className="md:text-lg text-base font-semibold text-[#333333] mb-2.5">
+                                                {assignment.title}
+                                            </h4>
+                                            <div className="flex items-center gap-2 text-[#626262] text-sm">
+                                                <div className="w-8 h-8 rounded-[8px] border border-[#F2EEF4] bg-white flex items-center justify-center">
+                                                    <Calendar size="16" color="#626262" />
+                                                </div>
+                                                <span>Due date: {assignment.dueDate}</span>
+                                            </div>
+                                        </div>
+                                        <span
+                                            className={`px-7 py-2.5 rounded-full text-sm font-medium max-md:mt-4 ${assignmentStatusStyle[assignment.status] ?? "bg-[#FFEDDE] text-[#F67300]"}`}
+                                        >
+                                            {assignment.status}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-10 w-full text-center">
+                                <div className="p-4 bg-[#FFF0EF] rounded-full mb-4">
+                                    <Note1 size={32} color="#EF7A02" />
+                                </div>
+                                <p className="text-[#626262] text-base font-medium">No Assignments Found</p>
+                                <p className="text-[#989898] text-sm mt-1">There are no assignments scheduled for this lesson.</p>
+                            </div>
+                        )}
+                    </section>
                 </div>
             </div>
         </div>

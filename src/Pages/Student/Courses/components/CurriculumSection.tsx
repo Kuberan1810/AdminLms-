@@ -45,7 +45,7 @@ const CurriculumSection: React.FC<CurriculumSectionProps> = ({ modules, expanded
                             {module.lessons.map((lesson) => (
                                 <div
                                     key={lesson.id}
-                                    // onClick={() => handleLessonClick(lesson.id)}
+                                    onClick={() => handleLessonClick(lesson.id)}
                                     className="flex items-center gap-4 p-4 border border-[#F2EEF4] rounded-xl hover:border-gray-300 transition-colors bg-white cursor-pointer"
                                 >
                                     <div className={`w-6 h-6 rounded-full flex items-center justify-center  ${lesson.isCompleted

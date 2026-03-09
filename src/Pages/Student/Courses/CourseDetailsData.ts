@@ -12,6 +12,8 @@ export interface Lesson {
     duration?: string;
     type: 'video' | 'article' | 'quiz';
     isCompleted?: boolean;
+    content?: string;
+    keyTopics?: string[];
 }
 
 export interface Module {
@@ -98,11 +100,75 @@ const am101Data: CourseData = {
             title: "Frontier AI Systems & Deployment",
             content: "...",
             lessons: [
-                { id: '1.1', title: 'introduction to the world of AI', type: 'video', isCompleted: true },
-                { id: '1.2', title: 'introduction to programming with python', type: 'video', isCompleted: false },
-                // { id: '3.3', title: 'Tool-using autonomous agents', type: 'video', isCompleted: true },
-                // { id: '3.2', title: 'API & Web App integration (FastAPI/Flask)', type: 'video', isCompleted: true },
-                // { id: '3.1', title: 'Model deployment & basics of MLOps', type: 'video', isCompleted: true },
+                { 
+                    id: '1.1', 
+                    title: 'introduction to the world of AI', 
+                    type: 'video', 
+                    isCompleted: true,
+                    content: 'In this introductory lesson, we will explore the fundamental concepts of Artificial Intelligence (AI). We will discuss its history, evolution, and various real-world applications across different industries. You will gain a clear understanding of machine learning verses deep learning.',
+                    keyTopics: [
+                        'What is AI, Machine Learning, and Deep Learning?',
+                        'Brief history and evolution of AI',
+                        'Real-world applications and use cases',
+                        'Ethical considerations in AI'
+                    ]
+                },
+                { 
+                    id: '1.2', 
+                    title: 'introduction to programming with python', 
+                    type: 'video', 
+                    isCompleted: true,
+                    content: 'This lesson covers the basics of Python programming, a language widely used in AI. We will go over how to install Python, set up your Integrated Development Environment (IDE), and write your first script. By the end, you will be comfortable running basic Python commands.',
+                    keyTopics: [
+                        'What is Python and where it is used',
+                        'Installing Python / using IDE (VS Code / Jupyter)',
+                        'Running Python scripts',
+                        'Basic syntax, Variables, and Comments',
+                        'Input and Output (print(), input())'
+                    ]
+                },
+                { 
+                    id: '1.3', 
+                    title: 'Python Data Types', 
+                    type: 'video', 
+                    isCompleted: false,
+                    content: 'Understand how data is stored and manipulated in Python. We will explore numeric types, strings, booleans, and compound data types like lists, tuples, dictionaries, and sets. Practice exercises will include storing student details and performing list operations.',
+                    keyTopics: [
+                        'Numeric types (int, float), Strings, and Booleans',
+                        'Type conversion and basic string operations',
+                        'Lists, Tuples, Dictionaries, and Sets',
+                        'Practice: Store student details in dictionary',
+                        'Practice: List operations (append, remove, indexing)'
+                    ]
+                },
+                { 
+                    id: '1.4', 
+                    title: ' Conditional Statements', 
+                    type: 'video', 
+                    isCompleted: false,
+                    content: 'Learn how to implement decision-making logic in your Python programs. This module covers conditional statements such as if, else, elif, and nested conditions. You will also learn about logical and comparison operators to build complex conditions.',
+                    keyTopics: [
+                        'if, if else, and elif statements',
+                        'Nested conditions',
+                        'Logical operators (and, or, not)',
+                        'Comparison operators',
+                        'Practice: Check if number is even or odd, Grade calculator'
+                    ]
+                },
+                { 
+                    id: '1.5', 
+                    title: 'Functions', 
+                    type: 'video', 
+                    isCompleted: false,
+                    content: 'Discover how to write reusable and organized code using functions. We will cover defining functions, passing arguments, return values, and scopes. You will also practice writing functions to calculate logic like checking prime numbers or computing factorials.',
+                    keyTopics: [
+                        'What are functions and Defining functions (def)',
+                        'Parameters, arguments, and return values',
+                        'Default arguments and Lambda functions',
+                        'Scope (local vs global)',
+                        'Practice: Function to calculate factorial'
+                    ]
+                },
             ]
         },
         // {

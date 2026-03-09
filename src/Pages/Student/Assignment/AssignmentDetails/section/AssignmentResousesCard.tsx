@@ -29,8 +29,8 @@ const ResourceCard: React.FC<Props> = ({ resource }) => {
             <div className="flex items-center gap-4">
                 <div
                     className={`sm:px-6.5 sm:py-5 px-4 py-3 sm:rounded-3xl rounded-[20px] ${resource.type === "pdf"
-                            ? "bg-[#FEE2E2]"
-                            : "bg-[#ECF9FC]"
+                        ? "bg-[#FEE2E2]"
+                        : "bg-[#ECF9FC]"
                         }`}
                 >
                     {resource.type === "pdf" ? (
