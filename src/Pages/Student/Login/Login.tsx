@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import api from "../../../config/axios";
-// import CoireiLogo from "../../../assets/Images/home/coirei-logo-orange.png"
+import CoireiLogo from "../../../assets/Images/home/coirei-logo-orange.png"
 // import skillpointLogo from "../../../assets/Images/home/skillpointLogo.svg"
 // import ColabLogo from "../../../assets/Images/home/ColabLogo.svg"
 import ColabrationLogo from "../../../assets/Images/home/ColabrationLogo.svg"
@@ -71,7 +71,7 @@ const Login = () => {
         <img src={skillpointLogo} alt="skillpointLogo" className="md:w-20  w-15 md:h-11 h-10" /> */}
         {/* <img src={ColabLogo} alt="ColabLogo" className="w-40" /> */}
 
-        <img src={ColabrationLogo} alt="ColabrationLogo" className="w-40" />
+        <img src={CoireiLogo} alt="CoireiLogo" className="w-20" />
 
       </div>
 
@@ -85,7 +85,7 @@ const Login = () => {
           <img
             src={LoginBanner}
             alt="Login"
-            className="max-w-md"
+            className="w-full h-[500px]"
           />
         </div>
 

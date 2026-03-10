@@ -34,7 +34,7 @@ const schedules: Schedule[] = [
     title: "AI / ML Frontier Engineer",
     time: "8:00 - 09:00 pm",
     date: "March 09, 26",
-    class: "Python Data Types",
+    class: "Conditional Statements",
     instructor: "Naveenkumar S",
   },
   {
@@ -44,7 +44,7 @@ const schedules: Schedule[] = [
     title: "AI / ML Frontier Engineer",
     time: "08:00 - 09:00 pm",
     date: "March 10, 26",
-    class: "Conditional Statements",
+    class: "Functions",
     instructor: "Naveenkumar S",
   },
   // {

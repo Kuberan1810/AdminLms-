@@ -131,7 +131,7 @@ const am101Data: CourseData = {
                     id: '1.3', 
                     title: 'Python Data Types', 
                     type: 'video', 
-                    isCompleted: false,
+                    isCompleted: true,
                     content: 'Understand how data is stored and manipulated in Python. We will explore numeric types, strings, booleans, and compound data types like lists, tuples, dictionaries, and sets. Practice exercises will include storing student details and performing list operations.',
                     keyTopics: [
                         'Numeric types (int, float), Strings, and Booleans',
