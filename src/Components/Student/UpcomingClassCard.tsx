@@ -25,7 +25,7 @@ const UpcomingClassCard = ({ code, title, instructor, topic, date, reminderOn = 
 
             <div className="flex items-center gap-2 text-sm text-[#626262] mb-6">
                 <div className='iconStyle'>
-                    <Calendar2 size={16} color='#626262' />
+                    <Calendar2 size={16} color="currentColor" />
                 </div>
                 <span>{date}</span>
             </div>
@@ -33,8 +33,8 @@ const UpcomingClassCard = ({ code, title, instructor, topic, date, reminderOn = 
             <button
                 onClick={() => setIsReminderOn(!isReminderOn)}
                 className={`w-full py-2.5 px-4 rounded-xl border text-sm font-medium transition-colors cursor-pointer ${isReminderOn
-                    ? 'bg-white text-gray-700 border-[#F2EEF4] hover:bg-gray-100'
-                    : 'bg-[#fe7500] text-white hover:bg-[#ff820d]'
+                    ? 'bg-white text-gray-700 border-[#F2EEF4] hover:bg-gray-100! dark:bg-[#3B3B3B]! dark:border-[#4B4B4B]! dark:text-white! dark:hover:bg-[#4B4B4B]!'
+                    : 'bg-[#fe7500] text-white hover:bg-[#ff820d] dark:bg-[#fe7500]! dark:text-white! dark:hover:bg-[#ff820d]! dark:border-[#fe7500]! dark:hover:border-[#fe7500]!'
                     }`}
             >
                 {isReminderOn ? 'Reminder On' : 'Set Reminder'}

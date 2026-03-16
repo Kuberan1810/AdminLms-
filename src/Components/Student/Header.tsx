@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { SearchNormal1, NotificationBing, Setting } from "iconsax-react";
+import { Sun, Moon } from "lucide-react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import CoireiLogo from "../../assets/Images/home/coirei-logo-orange.png";
 import { headerMap, profile } from "../../data/HeaderData";
@@ -24,6 +25,9 @@ const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showSearchPopup, setShowSearchPopup] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.theme === "dark" || document.documentElement.classList.contains("dark");
+  });
 
 
   const ref = useRef<HTMLDivElement>(null);
@@ -85,14 +89,14 @@ const Header = () => {
 
   return (
 
-    <header className="w-full flex flex-col-reverse sm:flex-row items-center justify-between px-4 sm:px-5 py-4 sm:py-5 gap-4 lg:gap-0">
+    <header className="w-full flex flex-col-reverse sm:flex-row items-center justify-between px-4 sm:px-5 py-4 sm:py-5 gap-4 lg:gap-0 bg-white dark:bg-[#1E1E1E] transition-colors duration-300 sm:border-b sm:border-[#F2EEF4] dark:sm:border-[#3B3B3B] sm:mb-5">
 
       {/* ================= LEFT – TITLE ================= */}
       <div className="flex-1  self-start ">
         <h1
           className="
             text-[22px] sm:text-[26px] lg:text-[28px]
-            font-medium text-[#333333]
+            font-medium text-[#333333] dark:text-white
           "
         >
           {header.title}
@@ -101,7 +105,7 @@ const Header = () => {
         <p
           className="
             text-base sm:text-lg lg:text-xl
-            font-normal text-[#626262]
+            font-normal text-[#626262] dark:text-[#A3A3A3]
           "
         >
           {header.subtitle}
@@ -131,17 +135,17 @@ const Header = () => {
               hidden md:flex
               items-center gap-2
               px-3 py-2.5 lg:py-3
-              border border-[#F2EEF4]
+              border border-[#F2EEF4] dark:border-[#3B3B3B]
               rounded-[15px]
-              text-sm text-[#626262]
-              bg-white
+              text-sm text-[#626262] dark:text-white
+              bg-white dark:bg-[#2A2A2A]
             "
             >
-              <SearchNormal1 size={18} color="#626262" />
+              <SearchNormal1 size={18} color="currentColor" />
               <input
                 type="text"
                 placeholder="Search for classes, assignments"
-                className="outline-none w-44 md:w-52 lg:w-60 bg-transparent"
+                className="outline-none w-44 md:w-52 lg:w-60 bg-transparent text-[#333333] dark:text-white placeholder-[#626262] dark:placeholder-[#A3A3A3]"
                 value={searchParams.get("search") || ""}
                 onFocus={() => setShowSearchPopup(true)}
                 onChange={(e) => {
@@ -174,7 +178,10 @@ const Header = () => {
             onClick={() => setShowNotifications(true)}
             className="relative p-2 sm:p-2.5 rounded-[10px] bg-white border border-[#F2EEF4] cursor-pointer"
           >
-            <NotificationBing size={24} color="#626262" />
+            <NotificationBing
+              size={24}
+              color={isDarkMode ? "#ffffff" : "#626262"}
+            />
 
             {unreadCount > 0 && (
               <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-semibold bg-[#F67300] text-white rounded-full">
@@ -196,9 +203,9 @@ const Header = () => {
           {/* ================= SETTINGS ================= */}
           <button
             onClick={() => setShowSettings(true)}
-            className="  sm:flex p-2 sm:p-2.5 rounded-[10px] bg-white border border-[#F2EEF4] cursor-pointer"
+            className="  sm:flex p-2 sm:p-2.5 rounded-[10px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#3B3B3B] cursor-pointer text-[#626262] dark:text-white transition-colors"
           >
-            <Setting size={24} color="#626262" />
+            <Setting size={24} color="currentColor" />
           </button>
 
           <AnimatePresence>
@@ -208,6 +215,29 @@ const Header = () => {
               />
             )}
           </AnimatePresence>
+
+          {/* dark mode toggle */}
+          <button
+            onClick={() => {
+              const html = document.documentElement;
+              if (html.classList.contains("dark")) {
+                html.classList.remove("dark");
+                localStorage.theme = "light";
+                setIsDarkMode(false);
+              } else {
+                html.classList.add("dark");
+                localStorage.theme = "dark";
+                setIsDarkMode(true);
+              }
+            }}
+            className="p-2 sm:p-2.5 rounded-[10px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#363636] cursor-pointer flex items-center justify-center transition-colors text-[#626262] dark:text-white"
+          >
+            {isDarkMode ? (
+              <Sun size={24} strokeWidth={1.5} color="currentColor" />
+            ) : (
+              <Moon size={24} strokeWidth={1.5} color="currentColor" />
+            )}
+          </button>
 
           {/* Profile */}
           <div className="relative" ref={ref}>

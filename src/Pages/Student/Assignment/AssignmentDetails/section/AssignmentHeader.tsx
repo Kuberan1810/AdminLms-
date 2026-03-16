@@ -40,10 +40,11 @@ const AssignmentHeader: React.FC<AssignmentHeaderProps> = ({
           onClick={handleBack}
           className="p-1 -ml-1 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
         >
-          <ArrowLeft strokeWidth={1.7} color="#333333" className="md:size-7.5 size-5" />
+            <ArrowLeft strokeWidth={1.7} className="md:size-7.5 size-5 text-gray-500 dark:text-gray-300"  color="#333333" />
+    
         </button>
 
-        <h1 className="lg:text-3xl md:text-2xl text-xl  font-medium text-[#333333] tracking-tight">
+        <h1 className="lg:text-3xl md:text-2xl text-xl  font-medium text-[#333333] tracking-tight dark:text-gray-300">
           {title}
         </h1>
       </div>
@@ -57,10 +58,10 @@ const AssignmentHeader: React.FC<AssignmentHeaderProps> = ({
         <div className="flex gap-1.5 justify-between items-center">
 
           <div className="iconStyle">
-            <CalendarRemove size="16" variant="Outline" color='#626262' />
+            <CalendarRemove size="16" variant="Outline" color="currentColor" />
           </div>
 
-          <span className="text-[14px] text-[#626262]">
+          <span className="text-[14px] text-[#626262] dark:text-gray-300">
             <span>{deadline}</span>
           </span>
           
@@ -68,7 +69,7 @@ const AssignmentHeader: React.FC<AssignmentHeaderProps> = ({
 
       </div>
 
-      <p className="text-sm font-medium text-[#626262] uppercase tracking-wide">
+      <p className="text-sm font-medium text-[#626262] dark:text-gray-100 uppercase tracking-wide">
         {courseCode}
       </p>
     </header>

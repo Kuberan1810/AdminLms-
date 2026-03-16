@@ -30,7 +30,7 @@ const CreateAnnouncementPage = () => {
                 </button>
 
                 <div className="flex w-[84px] h-[84px] bg-white/20 rounded-[30px] items-center justify-center mb-2 md:mb-0">
-                    <NotificationBing size={42} color="white" variant="Bold" />
+                    <NotificationBing size={42} variant="Bold"  color="white" />
                 </div>
 
                 <div className="z-10 flex flex-col items-center md:items-start text-center md:text-left">

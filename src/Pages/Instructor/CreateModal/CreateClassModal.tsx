@@ -21,12 +21,12 @@ const CreateClassModal = ({ onClose, onBack }: CreateClassModalProps) => {
             onClick={onBack}
             className="flex items-center gap-2 text-sm font-medium hover:opacity-80 transition-opacity w-fit"
           >
-            <ArrowLeft size={20} color="white" />
+            <ArrowLeft size={20}  color="white" />
             Back
           </button>
 
           <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-            <DocumentText size={32} color="white" variant="Bold" />
+            <DocumentText size={32} variant="Bold"  color="white" />
           </div>
 
           <div>
@@ -79,7 +79,7 @@ const CreateClassModal = ({ onClose, onBack }: CreateClassModalProps) => {
                     {selectedClass || "E.g Advanced AI"}
                   </span>
 
-                  <ArrowDown2 size={14} color="#626262" />
+                  <ArrowDown2 size={14}  color="#626262" />
                 </div>
 
                 {classOpen && (
@@ -172,7 +172,7 @@ const CreateClassModal = ({ onClose, onBack }: CreateClassModalProps) => {
       rounded-lg border border-[#F2F2F2]
       flex items-center justify-center pointer-events-none"
     >
-      <Calendar size={16} color="#626262" />
+      <Calendar size={16}  color="#626262" />
     </div>
   </div>
 </div>

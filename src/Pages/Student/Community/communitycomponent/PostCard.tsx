@@ -60,7 +60,7 @@ const PostCard = ({
 
   return (
     <>
-      <div className="w-full bg-white rounded-2xl border border-[#F2EEF4] p-4 space-y-3">
+      <div className="w-full bg-white dark:bg-[#2A2A2A] rounded-2xl border border-[#F2EEF4] dark:border-gray-700 p-4 space-y-3">
 
         {/* HEADER */}
         <div className="flex items-start gap-4">
@@ -71,7 +71,7 @@ const PostCard = ({
           <div className="flex-1">
             <div className="flex justify-between items-start">
               <div>
-                <p className="font-semibold text-[#333333]">
+                <p className="font-semibold text-[#333333] dark:text-white">
                   {post.author}
                 </p>
 
@@ -108,10 +108,10 @@ const PostCard = ({
 
         {/* CONTENT */}
         <div>
-          <p className="font-semibold text-[#333333]">
+          <p className="font-semibold text-[#333333] dark:text-white">
             {post.title}
           </p>
-          <p className="text-sm text-[#626262] leading-relaxed">
+          <p className="text-sm text-[#626262] dark:text-gray-300 leading-relaxed">
             {post.description}
           </p>
         </div>
@@ -147,11 +147,11 @@ const PostCard = ({
         )}
 
         {/* TAG */}
-        <span className="inline-block bg-gray-100 text-xs border border-[#F2EEF4] px-2 py-1 rounded-full">
+        <span className="inline-block bg-gray-100 dark:bg-gray-700 text-xs border border-[#F2EEF4] dark:border-gray-600 px-2 py-1 rounded-full">
           {post.tag}
         </span>
 
-        <div className="border-t border-[#F2EEF4] " />
+        <div className="border-t border-[#F2EEF4] dark:border-gray-600" />
 
         {/* ACTIONS */}
         <div className="flex justify-between text-sm">
@@ -190,9 +190,9 @@ const PostCard = ({
 
         {/* COMMENTS SECTION */}
         {isOpen && (
-          <div className="border-t border-[#F2EEF4] pt-3 space-y-2">
+          <div className="border-t border-[#F2EEF4] dark:border-gray-600 pt-3 space-y-2">
 
-            <p className="text-sm font-medium text-gray-800">
+            <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
               Comments
             </p>
 
@@ -206,7 +206,7 @@ const PostCard = ({
                 placeholder="Write a comment..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                className="flex-1 bg-gray-100 border border-[#F2EEF4] rounded-full py-2.5 px-4 text-sm focus:outline-none focus:border-orange-400"
+                className="flex-1 bg-gray-100 border border-[#F2EEF4] dark:bg-[#2A2A2A]  rounded-full py-2.5 px-4 text-sm focus:outline-none border-orange-400"
               />
             </form>
 
@@ -237,7 +237,7 @@ const PostCard = ({
                       </span>
                     </div>
 
-                    <p className="text-[14px] text-gray-700 mt-1 leading-6">
+                    <p className="text-[14px] text-gray-700 dark:text-gray-300 mt-1 leading-6">
                       {comment.text}
                     </p>
 
@@ -266,7 +266,7 @@ const PostCard = ({
 
       {showDeleteModal && createPortal(
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-[100]">
-          <div className="bg-white rounded-2xl p-6 w-[90%] max-w-sm shadow-xl space-y-4">
+          <div className="bg-white dark:bg-[#2A2A2A] rounded-2xl p-6 w-[90%] max-w-sm shadow-xl space-y-4">
             <h3 className="text-lg font-semibold text-[#333]">Delete Post?</h3>
             <p className="text-sm text-[#626262]">
               Are you sure you want to delete this post?

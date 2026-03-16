@@ -74,7 +74,7 @@ export default function TestSection() {
 <div className="p-6 w-full">
   <div>
       <button onClick={() => window.history.back()} className="flex items-center gap-2 text-sm text-gray-600 mb-4 cursor-pointer">
-        <ArrowLeft2 size={16} color="black"/> Back to Batch
+        <ArrowLeft2 size={16} color="black" /> Back to Batch
       </button>
   </div>
       {/* Header */}

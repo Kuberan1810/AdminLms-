@@ -33,6 +33,33 @@ export const chats: Chat[] = [
     ],
   },
 
+    {
+    id: "Alex",
+    type: "individual",
+    name: "Alex",
+    messages: [],
+  },
+
+  {
+    id: "aiza",
+    type: "individual",
+    name: "Aiza",
+    messages: [],
+  }, 
+  
+  {
+    id: "stefi",
+    type: "individual",
+    name: "Stefi",
+    messages: [],
+  },
+
+  {
+    id: "harish",
+    type: "individual",
+    name: "Harish",
+    messages: [],
+  },
   {
     id: "swetha",
     type: "individual",
@@ -46,6 +73,7 @@ export const chats: Chat[] = [
     name: "Aila",
     messages: [],
   },
+  
 
   {
     id: "batch01",

@@ -193,11 +193,10 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-50 rounded-xl ">
-      <div className="flex justify-between items-center px-3 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col h-full bg-gray-50 dark:bg-[#1E1E1E] rounded-xl transition-colors">  
+        <div className="flex justify-between items-center px-3 sm:px-6 py-3 sm:py-4 bg-white dark:bg-[#1E1E1E] border-b border-gray-200 dark:border-gray-700">        <div className="flex items-center gap-4">
           {onBack && (
-            <button onClick={onBack}>
+            <button onClick={onBack} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
               <ChevronLeft size={20} />
             </button>
           )}
@@ -207,10 +206,10 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
           </div>
 
           <div>
-            <h2 className="text-sm font-semibold text-gray-900">
+            <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
               {chat.name}
             </h2>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               {chat.type === "group"
                 ? "Batch • AML01 - AI"
                 : "AML01 - AI"}
@@ -221,14 +220,13 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
         {chat.type === "group" && onViewMembers && (
           <button
             onClick={onViewMembers}
-            className="px-4 py-2 text-xs border border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100"
-          >
+            className="px-4 py-2 text-xs border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#333]" >
             View Members
           </button>
         )}
 
         {chat.type === "individual" && (
-          <button className="px-4 py-2 text-xs border border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100">
+          <button className="px-4 py-2 text-xs border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#333]" >
             View Profile
           </button>
         )}
@@ -265,7 +263,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
                         className={`p-1 rounded-xl text-sm leading-6
                         ${isMe
                             ? "bg-[#FF7A00] text-white rounded-br-sm"
-                            : "bg-gray-200 text-gray-800 rounded-bl-sm"
+                            : "bg-gray-200 dark:bg-[#2A2A2A] text-gray-800 dark:text-gray-200 rounded-bl-sm"
                           }`}
                       >
                         {msg.image && (
@@ -296,7 +294,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
           messages.map((msg) => (
             <div key={msg.id} className="mb-4">
 
-              <div className="relative border border-gray-100 bg-white p-4 rounded-xl">
+              <div className="relative border border-gray-100 dark:border-gray-700 bg-white dark:bg-[#2A2A2A] p-4 rounded-xl">
                 {currentUserRole === "Instructor" && (
                   <button
                     onClick={() => handlePin(msg.id)}
@@ -325,16 +323,16 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
 
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-sm font-semibold text-gray-900">
+                        <p className="text-sm font-semibold dark:text-white text-gray-900">
                           {msg.name}
                         </p>
 
                         <div className="flex gap-2 items-center mt-1">
-                          <span className="px-2 py-0.5 text-xs text-orange-500 bg-orange-50 rounded-full">
+                          <span className="px-2 py-0.5 text-xs text-orange-500 dark:text-orange-400 bg-orange-50 dark:bg-[#3D2B20] rounded-full">
                             {msg.role}
                           </span>
 
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
                             {msg.time}
                           </span>
                         </div>
@@ -343,7 +341,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
                   </div>
                   <div className="flex-1">
                     {msg.title && (
-                      <h3 className="text-[17px] font-semibold text-gray-900">
+                      <h3 className="text-[17px] font-semibold text-gray-900 dark:text-white">
                         {msg.title}
                       </h3>
                     )}
@@ -353,13 +351,13 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
                         <img
                           src={msg.image}
                           alt="sent"
-                          className="rounded-lg max-h-60 object-contain border border-gray-200"
+                          className="rounded-lg max-h-60 object-contain border border-gray-200 dark:border-gray-700"
                         />
                       </div>
                     )}
 
                     {msg.text && (
-                      <p className=" text-sm text-gray-800 leading-6">
+                      <p className=" text-sm text-gray-800 dark:text-gray-200 leading-6">
                         {msg.text}
                       </p>
                     )}
@@ -373,19 +371,18 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
                             </div>
 
                             <div className="flex-1">
-                              <p className="text-xs font-semibold text-gray-900">
+                              <p className="text-xs font-semibold text-gray-900 dark:text-white">
                                 {reply.name}
                               </p>
-                              <div className="flex gap-1">
-                                <p className="w-15 px-1.5 justify-center text-xs text-[#0088FF] bg-[#D9FFFB] rounded-xl">
+                              <div className="flex gap-1 items-center">
+                                <p className="w-15 px-1.5 py-0.5 text-center justify-center text-xs text-[#0088FF] dark:text-[#66b2ff] bg-[#D9FFFB] dark:bg-[#002f5c] rounded-xl border border-transparent dark:border-[#004f99]">
                                   {reply.role}
                                 </p>
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
                                   {reply.time}
-
                                 </span>
                               </div>
-                              <p className="mt-1 text-sm text-gray-800">
+                              <p className="mt-1 text-sm text-gray-800 dark:text-gray-200">
                                 {reply.text}
                               </p>
                             </div>
@@ -395,7 +392,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
                     )}
                   </div>
                 </div>
-                <hr className="border-gray-200 mt-2" />
+                <hr className="border-gray-200 dark:border-gray-700 mt-2" />
                 <div className="flex items-center gap-6 mt-4 text-xs text-gray-500">
                   <button
                     onClick={() => handleLike(msg.id)}
@@ -452,7 +449,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
                         handleReplySubmit(msg.id);
                       }
                     }}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#FF7A00] focus:outline-none"
+                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#2A2A2A] text-gray-900 dark:text-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#FF7A00] focus:outline-none"
                     placeholder="Write a reply..."
                   />
                   <button
@@ -470,23 +467,23 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
 
       </div>
       {selectedImage && (
-        <div className="px-6 py-2 bg-gray-100 flex items-center gap-3">
-          <img
+        <div className="px-6 py-2 bg-gray-100 dark:bg-[#2A2A2A] flex items-center gap-3">          
+        <img
             src={selectedImage}
             alt="preview"
             className="h-16 rounded-lg"
           />
           <button
             onClick={() => setSelectedImage(null)}
-            className="text-red-500 text-sm"
+            className="text-red-500 dark:text-red-400 text-sm hover:underline"
           > X
           </button>
         </div>
       )}
 
-      <div className="px-6 py-4 border-t border-gray-200 flex gap-4 items-center">
-        <label className="cursor-pointer">
-          <Paperclip size={16} className="hover:text-white"/>
+        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex gap-4 items-center bg-white dark:bg-[#1E1E1E] shrink-0">
+        <label className="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+          <Paperclip size={16} />
           <input
             type="file"
             accept="image/*"
@@ -503,9 +500,11 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
               handleSend();
             }
           }}
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#FF7A00]"
-          placeholder="Type a message..."
-        />
+          className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 
+        bg-white dark:bg-[#2A2A2A] text-gray-900 dark:text-gray-200 
+        rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#FF7A00]"
+        placeholder="Type a message..."
+      />
 
         <button
           onClick={handleSend}
@@ -517,5 +516,6 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
     </div>
   );
 };
+
 
 export default ChatWindow;

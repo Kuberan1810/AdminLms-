@@ -57,7 +57,7 @@ const PostCard = ({
 
   return (
     <>
-      <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-6 space-y-2">
+      <div className="bg-white dark:bg-[#2A2A2A] rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 space-y-2">
 
         {/* Header */}
         <div className="flex items-start gap-3">
@@ -107,7 +107,7 @@ const PostCard = ({
         </div>
 
         <p className="font-medium">{post.title}</p>
-        <p className="text-sm text-gray-500">{post.description}</p>
+        <p className="text-sm text-gray-700 dark:text-gray-300 hover:text-black ">{post.description}</p>
 
         {/* File Preview */}
         {post.file && (
@@ -132,7 +132,7 @@ const PostCard = ({
           {post.tag}
         </span>
 
-        <hr className="border-gray-300/70 my-2" />
+        <hr className="border-gray-200 my-2" />
 
         {/* Actions */}
         <div className="flex items-center justify-between text-sm flex-wrap gap-2">
@@ -172,7 +172,7 @@ const PostCard = ({
 
         {/* Comments Section */}
         {isOpen && (
-          <div className="mt-4 border-t border-gray-200 pt-4 space-y-4">
+          <div className="mt-3 border-t border-gray-200 pt-3 space-y-4">
 
             <p className="text-sm font-medium">Comments</p>
 
@@ -215,7 +215,7 @@ const PostCard = ({
                       {c.role} · {c.time}
                     </span>
                   </p>
-                  <p className="text-sm text-gray-700">{c.text}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white">{c.text}</p>
                 </div>
               </div>
             ))}

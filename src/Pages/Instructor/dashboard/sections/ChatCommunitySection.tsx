@@ -1,15 +1,13 @@
-import { Send } from "iconsax-react"
+import { Send, Note1 } from "iconsax-react"
 import {
 
     SquareArrowOutUpRight,
     Check,
     CheckCheck,
-    Files,
     Paperclip,
     X,
 } from "lucide-react";
 import {
-    useEffect,
     useMemo,
     useRef,
     useState,
@@ -24,11 +22,6 @@ import { HambergerMenu } from "iconsax-react";
 
 import CommunityMobile from "../../Community/CommunityMobile";
 
-
-
-
-
-
 /* ================= MAIN ================= */
 
 export default function ChatCommunitySection() {
@@ -42,17 +35,6 @@ export default function ChatCommunitySection() {
 
     const [tab, setTab] =
         useState<"chat" | "community">(initialTab);
-
-    /* ================= ROUTE SYNC ================= */
-    // useEffect(() => {
-    //     if (tab === "chat") {
-    //         navigate("/instructor/chat", { replace: true });
-    //     } else {
-    //         navigate("/instructor/community", {
-    //             replace: true,
-    //         });
-    //     }
-    // }, [tab]);
 
     return (
         <div className="boxStyle flex flex-col h-162.5">
@@ -87,10 +69,10 @@ export default function ChatCommunitySection() {
             </div>
 
             {/* TABS WITH SLIDING INDICATOR */}
-            <div className="relative flex bg-gray-100 rounded-xl p-1 mb-4 ">
+            <div className="relative flex bg-gray-100 dark:bg-[#1E1E1E] rounded-xl p-1 mb-4 border border-transparent dark:border-[#363636]">
 
                 <div
-                    className={`absolute top-1 bottom-1 w-1/2 bg-white rounded-lg shadow transition-all duration-300 ${tab === "chat"
+                    className={`absolute top-1 bottom-1 w-1/2 bg-white dark:bg-[#2A2A2A] rounded-lg shadow dark:shadow-none transition-all duration-300 ${tab === "chat"
                         ? "left-1"
                         : "left-[50%]"
                         }`}
@@ -99,8 +81,8 @@ export default function ChatCommunitySection() {
                 <button
                     onClick={() => setTab("chat")}
                     className={`relative z-10 flex-1 py-2 text-sm font-medium transition cursor-pointer ${tab === "chat"
-                        ? "text-black"
-                        : "text-gray-500"
+                        ? "text-black dark:text-white"
+                        : "text-gray-500 dark:text-[#A3A3A3]"
                         }`}
                 >
                     Chat
@@ -109,8 +91,8 @@ export default function ChatCommunitySection() {
                 <button
                     onClick={() => setTab("community")}
                     className={`relative z-10 flex-1 py-2 text-sm font-medium transition cursor-pointer ${tab === "community"
-                        ? "text-black"
-                        : "text-gray-500"
+                        ? "text-black dark:text-white"
+                        : "text-gray-500 dark:text-[#A3A3A3]"
                         }`}
                 >
                     Community
@@ -118,12 +100,21 @@ export default function ChatCommunitySection() {
             </div>
 
             <div className="flex-1 overflow-scroll scrollbar-hide">
-                {tab === "chat" ? (
-                    <EnterpriseChat />
-                ) : (
-                    // <EnterpriseCommunity />
-                    // <CommunityContent />
-                    <CommunityMobile />
+                <div className="h-full flex flex-col items-center justify-center py-10 text-center">
+                    <div className="p-4 bg-[#FFF0EF] dark:bg-[#3D2B2A] rounded-full mb-4">
+                        <Note1 size={32} color="#EF7A02" />
+                    </div>
+                    <p className="text-[#626262] dark:text-[#E0E0E0] text-base font-medium">Coming Soon</p>
+                    <p className="text-[#989898] dark:text-[#A3A3A3] text-sm mt-1">This feature will appear in a few days.</p>
+                </div>
+                {false && (
+                    tab === "chat" ? (
+                        <EnterpriseChat />
+                    ) : (
+                        // <EnterpriseCommunity />
+                        // <CommunityContent />
+                        <CommunityMobile />
+                    )
                 )}
             </div>
         </div>
@@ -152,12 +143,6 @@ function EnterpriseChat() {
             ),
         [users, search]
     );
-
-    // useEffect(() => {
-    //     messageRef.current?.scrollIntoView({
-    //         behavior: "smooth",
-    //     });
-    // }, [activeUser.messages]);
 
     const sendMessage = () => {
         if (!input.trim()) return;
@@ -193,14 +178,14 @@ function EnterpriseChat() {
     };
 
     return (
-        <div className="flex h-full bg-white border border-[#F2EEF4] rounded-xl overflow-hidden">
+        <div className="flex h-full bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#363636] rounded-xl overflow-hidden">
 
             {/* ================= SIDEBAR ================= */}
             <div
                 className={`fixed lg:static top-0 left-0 h-full 
         ${collapsed ? "lg:w-[90px]" : "lg:w-[50%]"} 
         w-[85%] sm:w-[60%]
-        bg-white border-r border-[#F2EEF4] 
+        bg-white dark:bg-[#2A2A2A] border-r border-[#F2EEF4] dark:border-[#363636] 
         z-40 transition-all duration-300
         ${mobileOpen
                         ? "translate-x-0"
@@ -208,13 +193,13 @@ function EnterpriseChat() {
                     }`}
             >
                 {/* Search + Hamburger */}
-                <div className="p-4 border-b border-[#F2EEF4] flex items-center gap-3">
+                <div className="p-4 border-b border-[#F2EEF4] dark:border-[#363636] flex items-center gap-3">
                     {!collapsed && (
                         <input
                             placeholder="Search..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full bg-gray-100 px-3 py-2 rounded-lg text-sm outline-none"
+                            className="w-full bg-gray-100 dark:bg-[#1E1E1E] px-3 py-2 rounded-lg text-sm outline-none"
                         />
                     )}
 
@@ -223,11 +208,11 @@ function EnterpriseChat() {
                         className="p-2 rounded-lg hover:bg-[#f7f7f7] transition cursor-pointer hidden lg:block"
                         aria-label="Toggle sidebar"
                     >
-                        <HambergerMenu size={22} color="#626262" />
+                        <HambergerMenu size={22}  color="#626262" />
                     </button>
                     <button
                         onClick={() => {
-                           
+
                             setMobileOpen(false);
                         }}
                         className="p-2 rounded-lg hover:bg-[#f7f7f7] transition cursor-pointer  lg:hidden block"
@@ -251,8 +236,8 @@ function EnterpriseChat() {
                                     setMobileOpen(false);
                                 }}
                                 className={`flex gap-3 p-3 rounded-xl cursor-pointer transition ${selectedId === user.id
-                                    ? "bg-orange-200"
-                                    : "hover:bg-gray-100"
+                                    ? "bg-orange-200 dark:bg-[#3d271d]"
+                                    : "hover:bg-gray-100 dark:hover:bg-[#1E1E1E]"
                                     }`}
                             >
                                 {/* Avatar */}
@@ -296,7 +281,7 @@ function EnterpriseChat() {
             <div className="flex-1 flex flex-col">
 
                 {/* Header */}
-                <div className="px-5 py-3 border-b border-[#F2EEF4] flex justify-between items-center">
+                <div className="px-5 py-3 border-b border-[#F2EEF4] dark:border-[#363636] flex justify-between items-center">
                     <div>
                         <p className="text-sm font-semibold">
                             {activeUser.name}
@@ -316,13 +301,13 @@ function EnterpriseChat() {
                 </div>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50">
+                <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50 dark:bg-[#1E1E1E]">
                     {activeUser.messages.map((m) => (
                         <div
                             key={m.id}
                             className={`max-w-[75%] p-3 rounded-2xl text-sm ${m.from === "instructor"
                                 ? "bg-orange-500 text-white ml-auto"
-                                : "bg-white shadow"
+                                : "bg-white dark:bg-[#333333] shadow dark:shadow-none dark:text-white"
                                 }`}
                         >
                             <p>{m.text}</p>
@@ -347,10 +332,10 @@ function EnterpriseChat() {
                 </div>
 
                 {/* Input */}
-                <div className="border-t border-[#F2EEF4] px-4 py-3 flex gap-2 w-full">
+                <div className="border-t border-[#F2EEF4] dark:border-[#363636] px-4 py-3 flex gap-2 w-full">
                     <div className="flex  justify-center items-center gap-5 w-full">
                         <div className="cursor-pointer">
-                            <Paperclip size={18} color="#626262" />
+                            <Paperclip size={18} className="text-[#626262] dark:text-white" />
                         </div>
                         <input
                             value={input}
@@ -359,14 +344,14 @@ function EnterpriseChat() {
                                 e.key === "Enter" && sendMessage()
                             }
                             placeholder="Type message..."
-                            className="flex-1 bg-gray-100 px-4 py-2 rounded-xl text-sm outline-none"
+                            className="flex-1 bg-gray-100 dark:bg-[#1E1E1E] px-4 py-2 rounded-xl text-sm outline-none"
                         />
                     </div>
                     <button
                         onClick={sendMessage}
                         className="bg-orange-500 px-3 py-3 rounded-full text-white cursor-pointer"
                     >
-                        <Send size={20} color="#fff" />
+                        <Send size={20}  color="#fff" />
                     </button>
                 </div>
             </div>
@@ -377,6 +362,7 @@ function EnterpriseChat() {
 
 /* ================= COMMUNITY ================= */
 
+/*
 function EnterpriseCommunity() {
     const [posts, setPosts] = useState([
         "Explain RAG in simple terms.",
@@ -421,3 +407,4 @@ function EnterpriseCommunity() {
         </div>
     );
 }
+*/

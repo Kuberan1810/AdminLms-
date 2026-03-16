@@ -1,21 +1,13 @@
 import React from "react";
-import { Mail, Phone, User, Lock, Eye, EyeOff } from "lucide-react";
-import { useSelector, useDispatch } from "react-redux";
+import { Mail, User } from "lucide-react";
+import { useSelector } from "react-redux";
 import type { RootState } from "../../../../store/store";
-import { updateStudentInfo } from "../../../../store/slices/StudentSlice";
 import { useAuth } from "../../../../context/AuthContext";
 const BasicInfo = () => {
-    const dispatch = useDispatch();
     const studentInfo = useSelector((state: RootState) => state.student);
     const { user } = useAuth();
     // State management
     const [tempInfo, setTempInfo] = React.useState(studentInfo);
-    const [confirmPassword, setConfirmPassword] = React.useState('');
-    const [passwordError, setPasswordError] = React.useState('');
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-    const [passwordEditMode, setPasswordEditMode] = React.useState(false); // Restored state
-    const [code, setCode] = React.useState('+91');
 
     // const countryCodes = [
     //     { name: "India", code: "+91" },
@@ -25,31 +17,8 @@ const BasicInfo = () => {
     //     { name: "Canada", code: "+1" },
     // ];
 
-    const handleSave = () => {
-        if (tempInfo.password && tempInfo.password !== confirmPassword && confirmPassword !== "") {
-            // Logic to handle password change if fields are filled
-            // If password fields are empty, we might skip password update validation or assume no change
-        }
-        if (tempInfo.password !== confirmPassword && confirmPassword !== "") {
-            setPasswordError('Passwords do not match');
-            return;
-        }
-        dispatch(updateStudentInfo(tempInfo));
-
-    };
-
     const handleChange = (field: keyof typeof tempInfo, value: string) => {
         setTempInfo((prev: typeof tempInfo) => ({ ...prev, [field]: value }));
-    };
-
-    const handlePasswordCancel = () => {
-        setPasswordEditMode(false);
-        setConfirmPassword('');
-        setPasswordError('');
-        setShowPassword(false);
-        setShowConfirmPassword(false);
-        // Reset password field in tempInfo to match studentInfo (or keep clear if that's the desired behavior)
-        setTempInfo(prev => ({ ...prev, password: studentInfo.password }));
     };
 
     // Helper to check password strictness for UI feedback (optional, based on design)
@@ -60,10 +29,10 @@ const BasicInfo = () => {
     return (
         <div className="boxStyle">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6 bg-[#F6730010] p-4 rounded-lg sticky top-0 z-10 shadow-sm border border-orange-100">
+            <div className="flex items-center justify-between mb-6 bg-[#F6730010] dark:bg-[#F6730020] p-4 rounded-lg sticky top-0 z-10 shadow-sm border border-orange-100 dark:border-[#3B3B3B]">
                 <div className="flex items-center gap-2 text-[#F67300] font-medium">
                     <User size={20} />
-                    <span className="text-base text-[#F67300]">Contact Information</span>
+                    <span className="text-base text-[#F67300] dark:text-[#F67300]">Contact Information</span>
                 </div>
 
                 {/* <button
@@ -86,7 +55,7 @@ const BasicInfo = () => {
                             type="email"
                             value={user?.email}
                             onChange={(e) => handleChange('email', e.target.value)}
-                            className="border border-[#d3d3d3] rounded-lg px-4 py-2 w-full max-w-md focus:outline-none focus:border-[#F67300] focus:ring-1 focus:ring-orange-200 text-[#333333] transition-all duration-300"
+                            className="border border-[#d3d3d3] dark:border-[#3B3B3B] rounded-lg px-4 py-2 w-full max-w-md focus:outline-none focus:border-[#F67300] focus:ring-1 focus:ring-orange-200 bg-white dark:bg-[#1E1E1E] text-[#333333] dark:text-white transition-all duration-300"
                         />
                     </div>
                 </div>

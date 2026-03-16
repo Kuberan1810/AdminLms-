@@ -246,7 +246,7 @@ const Courses = () => {
       <section className="boxStyle">
         <div className="flex items-center gap-2 mb-5">
           {isLive && <div className="w-3 h-3 rounded-full bg-orange-600 animate-pulse" />}
-          <h2 className="text-[20px] font-medium text-gray-900">
+          <h2 className="text-[20px] font-medium text-gray-900 dark:text-white">
             Live Now
           </h2>
         </div>
@@ -255,18 +255,18 @@ const Courses = () => {
           <LiveClassCard {...liveClass} onJoin={handleJoin} />
         ) : (
           <div className="flex flex-col items-center justify-center py-10 text-center">
-            <div className="p-4 bg-[#FFF0EF] rounded-full mb-4">
+            <div className="p-4 bg-[#FFF0EF] dark:bg-[#3D2B20] rounded-full mb-4">
               <Video size={32} color="#EF7A02" />
             </div>
-            <p className="text-[#626262] text-base font-medium">No Live Classes</p>
-            <p className="text-[#989898] text-sm mt-1">There are no live classes at the moment</p>
+            <p className="text-[#626262] dark:text-[#E0E0E0] text-base font-medium">No Live Classes</p>
+            <p className="text-[#989898] dark:text-[#A3A3A3] text-sm mt-1">There are no live classes at the moment</p>
           </div>
         )}
       </section>
 
       {/* ================= Upcoming Classes ================= */}
       <section className="boxStyle">
-        <h2 className="text-[20px] font-medium text-gray-900 mb-5">
+        <h2 className="text-[20px] font-medium text-gray-900 dark:text-white mb-5">
           Upcoming Classes
         </h2>
         {filteredUpcomingClasses.length > 0 ? (
@@ -276,7 +276,7 @@ const Courses = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">No upcoming classes match your search.</p>
+          <p className="text-gray-500 dark:text-gray-400">No upcoming classes match your search.</p>
         )}
       </section>
 
@@ -285,4 +285,3 @@ const Courses = () => {
 };
 
 export default Courses;
-

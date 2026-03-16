@@ -18,7 +18,7 @@ const ConfirmLogoutModal = ({ onConfirm, onCancel }: ConfirmLogoutModalProps) =>
                 <div className="flex justify-end gap-3">
                     <button
                         onClick={onCancel}
-                        className="px-4 py-2 rounded-xl text-sm font-medium bg-[#F7F5F9] text-[#333333] hover:bg-[#EFEAF3] cursor-pointer"
+                        className="px-4 py-2 rounded-xl text-sm font-medium bg-[#F7F5F9] text-[#333333] hover:bg-[#EFEAF3] cursor-pointer dark:bg-[#3a3a3a] dark:text-white dark:hover:bg-[#2a2a2a]"
                     >
                         Cancel
                     </button>

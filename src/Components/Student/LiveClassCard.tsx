@@ -22,13 +22,13 @@ const LiveClassCard = ({ code, title, instructor, topic, studentsCount, onJoin }
 
             <div className="flex items-center gap-2 text-sm text-gray-500 mb-5">
                 <div className='iconStyle'>
-                    <Profile2User size={16} color='#626262' />
+                    <Profile2User size={16} color="currentColor" />
                 </div>
                 <span className='text-[#626262] text-sm font-medium'>{studentsCount} Students attending</span>
             </div>
 
             <button onClick={onJoin} className="w-full bg-[#F67300] hover:bg-[#ff8820] text-white font-medium py-2 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer">
-                <Video size={20} color='white' />
+                <Video size={20}  color='white' />
                 Join Class Now
             </button>
         </div>

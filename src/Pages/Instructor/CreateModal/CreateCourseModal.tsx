@@ -16,12 +16,12 @@ const CreateCourseModal = ({ onClose, onBack }: CreateCourseModalProps) => {
                         onClick={onBack}
                         className="flex items-center gap-2 text-sm font-medium hover:opacity-80 transition-opacity w-fit"
                     >
-                        <ArrowLeft size={20} color="white" />
+                        <ArrowLeft size={20}  color="white" />
                         Back
                     </button>
 
                     <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                        <DocumentText size={32} color="white" variant="Bold" />
+                        <DocumentText size={32} variant="Bold"  color="white" />
                     </div>
 
                     <div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowLeft, Camera } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import BasicInfo from "../sections/BasicInfo";
 import AcademicInfo from "../sections/AcademicInfo";
@@ -16,10 +16,10 @@ const ProfilePage: React.FC = () => {
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 hover:bg-gray-100 rounded-full cursor-pointer">
-            <ArrowLeft className="w-5 h-5 cursor-pointer  transition-colors" onClick={() => navigate(-1)} />
+          <div className="p-2 hover:bg-gray-100 dark:hover:bg-[#2A2A2A] rounded-full cursor-pointer">
+            <ArrowLeft className="w-5 h-5 cursor-pointer  transition-colors dark:text-white" onClick={() => navigate(-1)} />
           </div>
-          <h1 className="text-lg font-semibold text-[#333333]">My Profile</h1>
+          <h1 className="text-lg font-semibold text-[#333333] dark:text-white">My Profile</h1>
         </div>
 
         {/* Top Profile Card */}
@@ -48,14 +48,14 @@ const ProfilePage: React.FC = () => {
           {/* User Info */}
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-semibold text-[#333333]">{user?.name} </h2>
+              <h2 className="text-xl font-semibold text-[#333333] dark:text-white">{user?.name} </h2>
 
-              <span className="px-2 py-0.5 rounded-md bg-[#2A9A461A] text-[#2A9A46] text-xs font-medium">
+              <span className="px-2 py-0.5 rounded-md bg-[#2A9A461A] text-[#2A9A46] dark:text-[#4ADE80] text-xs font-medium">
                 Active
               </span>
             </div>
-            <p className="text-sm font-medium text-[#333] mt-1 capitalize ">{user?.role} </p>
-            <p className="text-sm text-[#626262]">{user?.email} </p>
+            <p className="text-sm font-medium text-[#333] dark:text-[#E0E0E0] mt-1 capitalize ">{user?.role} </p>
+            <p className="text-sm text-[#626262] dark:text-[#A3A3A3]">{user?.email} </p>
           </div>
 
           {/* Tab Switcher (Floating/Centered at bottom of card or separate?) 
@@ -63,12 +63,12 @@ const ProfilePage: React.FC = () => {
                 Let's put it at the bottom center of this card container effectively.
             */}
           {/* Tab Switcher */}
-          <div className="mt-6 md:mt-0 md:absolute md:-bottom-5 md:left-1/2 md:transform md:-translate-x-1/2 bg-[#F6F6F6] p-1.5 rounded-xl flex gap-1 shadow-sm w-full md:w-auto justify-center ">
+          <div className="mt-6 md:mt-0 md:absolute md:-bottom-5 md:left-1/2 md:transform md:-translate-x-1/2 bg-[#F6F6F6] dark:bg-[#1E1E1E] p-1.5 rounded-xl flex gap-1 shadow-sm w-full md:w-auto justify-center dark:border dark:border-[#3B3B3B]">
             <button
               onClick={() => setCurrentInfo("BasicInfo")}
               className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-xs md:text-sm font-semibold transition-all duration-300 ease-in-out cursor-pointer ${currentInfo === "BasicInfo"
-                ? "bg-white shadow-sm text-[#333333]"
-                : "text-[#626262] hover:text-black hover:bg-gray-200/50"
+                ? "bg-white dark:bg-[#2A2A2A] shadow-sm text-[#333333] dark:text-white"
+                : "text-[#626262] dark:text-[#A3A3A3] hover:text-black dark:hover:text-white hover:bg-gray-200/50 dark:hover:bg-[#2A2A2A]/50"
                 }`}
             >
               Basic Information
@@ -76,8 +76,8 @@ const ProfilePage: React.FC = () => {
             <button
               onClick={() => setCurrentInfo("AcademicInfo")}
               className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-xs md:text-sm font-semibold transition-all duration-300 ease-in-out cursor-pointer ${currentInfo === "AcademicInfo"
-                ? "bg-white shadow-sm text-[#333333]"
-                : "text-[#626262] hover:text-black hover:bg-gray-200/50"
+                ? "bg-white dark:bg-[#2A2A2A] shadow-sm text-[#333333] dark:text-white"
+                : "text-[#626262] dark:text-[#A3A3A3] hover:text-black dark:hover:text-white hover:bg-gray-200/50 dark:hover:bg-[#2A2A2A]/50"
                 }`}
             >
               Academic Details

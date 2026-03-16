@@ -19,12 +19,12 @@ const CreateAssignmentModal = ({ onClose, onBack }: CreateAssignmentModalProps) 
                         onClick={onBack}
                         className="flex items-center gap-2 text-sm font-medium hover:opacity-80 transition-opacity w-fit cursor-pointer"
                     >
-                        <ArrowLeft size={20} color="white" />
+                        <ArrowLeft size={20}  color="white" />
                         Back
                     </button>
 
                     <div className="w-[84px] h-[84px] bg-white/20 rounded-[24px] flex items-center justify-center">
-                        <ClipboardText size={42} color="white" variant="Bold" />
+                        <ClipboardText size={42} variant="Bold"  color="white" />
                     </div>
 
                     <div>

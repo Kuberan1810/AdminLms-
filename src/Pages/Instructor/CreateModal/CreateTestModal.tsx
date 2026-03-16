@@ -96,12 +96,12 @@ const CreateTestModal = ({ onClose, onBack }: CreateTestModalProps) => {
                 onClick={onBack}
                 className="flex items-center gap-2 text-sm font-medium"
               >
-                <ArrowLeft size={20} color="white" />
+                <ArrowLeft size={20}  color="white" />
                 Back
               </button>
 
               <div className="w-[84px] h-[84px] bg-white/20 rounded-[24px] flex items-center justify-center">
-                <Teacher size={42} color="white" variant="Bold" />
+                <Teacher size={42} variant="Bold"  color="white" />
               </div>
 
               <div>
@@ -235,7 +235,7 @@ const CreateTestModal = ({ onClose, onBack }: CreateTestModalProps) => {
               <div className="max-w-[1700px] mx-auto pt-4 flex justify-between items-center">
                 <div className="flex items-center gap-4">
                   <button onClick={() => setStep(1)}>
-                    <ArrowLeft size={18} color="#100f0f"/>
+                    <ArrowLeft size={18} color="#100f0f" />
                   </button>
 
                   <div>

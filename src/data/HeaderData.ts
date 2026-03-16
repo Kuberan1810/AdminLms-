@@ -23,6 +23,11 @@ export const headerMap: Record<string, { title: string; subtitle: string }> = {
         title: "Chat",
         subtitle: "Conversations with mentors and classmates",
     },
+    "/chats": {
+        title: "Chat",
+        subtitle: "Conversations with mentors and classmates",
+    },
+    
     "/test": {
         title: "Test",
         subtitle: "Attend tests and view performance",
@@ -36,6 +41,7 @@ export const headerMap: Record<string, { title: string; subtitle: string }> = {
         title: "Profile",
         subtitle: "View and update your profile details",
     },
+    
 };
 
 

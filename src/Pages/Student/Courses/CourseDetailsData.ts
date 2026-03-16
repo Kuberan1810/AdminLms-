@@ -25,7 +25,7 @@ export interface Module {
 
 export interface CourseData {
     course: {
-     
+
         title: string;
         description: string;
         instructor: {
@@ -65,7 +65,7 @@ const am101Data: CourseData = {
             role: "Instructor",
             // image: "https://i.pravatar.cc/150?u=EdDonner" // Placeholder
         },
-    duration: "12 weeks",
+        duration: "12 weeks",
         enrolled: "60 Students",
         community: "Soon"
     },
@@ -100,10 +100,10 @@ const am101Data: CourseData = {
             title: "Frontier AI Systems & Deployment",
             content: "...",
             lessons: [
-                { 
-                    id: '1.1', 
-                    title: 'introduction to the world of AI', 
-                    type: 'video', 
+                {
+                    id: '1.1',
+                    title: 'introduction to the world of AI',
+                    type: 'video',
                     isCompleted: true,
                     content: 'In this introductory lesson, we will explore the fundamental concepts of Artificial Intelligence (AI). We will discuss its history, evolution, and various real-world applications across different industries. You will gain a clear understanding of machine learning verses deep learning.',
                     keyTopics: [
@@ -113,10 +113,10 @@ const am101Data: CourseData = {
                         'Ethical considerations in AI'
                     ]
                 },
-                { 
-                    id: '1.2', 
-                    title: 'introduction to programming with python', 
-                    type: 'video', 
+                {
+                    id: '1.2',
+                    title: 'introduction to programming with python',
+                    type: 'video',
                     isCompleted: true,
                     content: 'This lesson covers the basics of Python programming, a language widely used in AI. We will go over how to install Python, set up your Integrated Development Environment (IDE), and write your first script. By the end, you will be comfortable running basic Python commands.',
                     keyTopics: [
@@ -127,10 +127,10 @@ const am101Data: CourseData = {
                         'Input and Output (print(), input())'
                     ]
                 },
-                { 
-                    id: '1.3', 
-                    title: 'Python Data Types', 
-                    type: 'video', 
+                {
+                    id: '1.3',
+                    title: 'Python Data Types',
+                    type: 'video',
                     isCompleted: true,
                     content: 'Understand how data is stored and manipulated in Python. We will explore numeric types, strings, booleans, and compound data types like lists, tuples, dictionaries, and sets. Practice exercises will include storing student details and performing list operations.',
                     keyTopics: [
@@ -141,11 +141,11 @@ const am101Data: CourseData = {
                         'Practice: List operations (append, remove, indexing)'
                     ]
                 },
-                { 
-                    id: '1.4', 
-                    title: ' Conditional Statements', 
-                    type: 'video', 
-                    isCompleted: false,
+                {
+                    id: '1.4',
+                    title: ' Conditional Statements',
+                    type: 'video',
+                    isCompleted: true,
                     content: 'Learn how to implement decision-making logic in your Python programs. This module covers conditional statements such as if, else, elif, and nested conditions. You will also learn about logical and comparison operators to build complex conditions.',
                     keyTopics: [
                         'if, if else, and elif statements',
@@ -155,11 +155,11 @@ const am101Data: CourseData = {
                         'Practice: Check if number is even or odd, Grade calculator'
                     ]
                 },
-                { 
-                    id: '1.5', 
-                    title: 'Functions', 
-                    type: 'video', 
-                    isCompleted: false,
+                {
+                    id: '1.5',
+                    title: 'Functions',
+                    type: 'video',
+                    isCompleted: true,
                     content: 'Discover how to write reusable and organized code using functions. We will cover defining functions, passing arguments, return values, and scopes. You will also practice writing functions to calculate logic like checking prime numbers or computing factorials.',
                     keyTopics: [
                         'What are functions and Defining functions (def)',
@@ -167,6 +167,21 @@ const am101Data: CourseData = {
                         'Default arguments and Lambda functions',
                         'Scope (local vs global)',
                         'Practice: Function to calculate factorial'
+                    ]
+                }, {
+                    id: '1.6',
+                    title: 'OOPS',
+                    type: 'video',
+                    isCompleted: false,
+                    content: 'Learn the fundamentals of Object-Oriented Programming (OOP) and how it helps organize code using objects and classes. In this lesson, you will understand how to create classes, define objects, and use important OOP concepts like encapsulation, inheritance, polymorphism, and abstraction. These concepts make programs more reusable, scalable, and easier to maintain.',
+                    keyTopics: [
+                        'Introduction to Object-Oriented Programming',
+                        'Classes and Objects',
+                        'Constructor (__init__) and instance variables',
+                        'Encapsulation and data hiding',
+                        'Inheritance and code reusability',
+                        'Polymorphism (method overriding)',
+                        'Abstraction and real-world examples',
                     ]
                 },
             ]

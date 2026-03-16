@@ -30,14 +30,13 @@ const EnrollCourses: React.FC<EnrollCoursesProps> = ({
     <div className="boxStyle w-full min-w-0  ">
 
       {/* Header */}
-      <div className="flex justify-between items-center md:mb-5 mb-3">
-        <h2 className="font-semibold md:text-2xl text-primary text-xl">
+      <div className="flex justify-between items-center md:mb-5 mb-3 ">
+        <h2 className="font-semibold md:text-2xl text-gray-800 text-xl dark:text-gray-300">
           My Enrolled Courses
         </h2>
         <BtnCom label="View all" onClick={() => onCourseSelect(null)} />
       </div>
 
-      {/* Scrollable on mobile, grid on desktop */}
       <div className="grid gap-6 xl:grid-cols-3 md:grid-cols-2 max-md:grid-flow-col max-md:auto-cols-[80vw] max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory scrollbar-hide p-2">
         {courses.map((course) => (
           <div key={course.id} className="min-w-70 sm:min-w-65">

@@ -32,11 +32,11 @@ const ResourcesTabSection: React.FC = () => {
     if (resources.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-10 w-full text-center">
-                <div className="w-[64px] h-[64px] bg-[#FFF0EF] rounded-full flex items-center justify-center mb-6">
+                <div className="w-[64px] h-[64px] bg-[#FFF0EF] dark:bg-[#3D2B20] rounded-full flex items-center justify-center mb-6">
                     <FolderCross size={32} color="#EF7A02" />
                 </div>
-                <h3 className="text-[#626262] text-base font-medium mb-2">No Resources Found</h3>
-                <p className="text-[#989898] text-sm ">There are no resources available for this class.</p>
+                <h3 className="text-[#626262] dark:text-[#E0E0E0] text-base font-medium mb-2">No Resources Found</h3>
+                <p className="text-[#989898] dark:text-[#A3A3A3] text-sm ">There are no resources available for this class.</p>
             </div>
         );
     }
@@ -46,18 +46,18 @@ const ResourcesTabSection: React.FC = () => {
             {resources.map((resource) => (
                 <div
                     key={resource.id}
-                    className="flex items-center justify-between px-1 py-1 bg-white border border-[#F2EEF4] rounded-[28px]  pr-5 "
+                    className="flex items-center justify-between px-1 py-1 bg-white dark:bg-[#1E1E1E] border border-[#F2EEF4] dark:border-[#363636] rounded-[28px]  pr-5 "
                 >
                     <div className="flex items-center gap-4">
-                        <div className="p-5 bg-[#FFF0EF] rounded-[24px] flex items-center justify-center ">
+                        <div className="p-5 bg-[#FFF0EF] dark:bg-[#3D2B20] rounded-[24px] flex items-center justify-center ">
                             <img src={pdf_img} alt="PDF" className="w-[30px]   object-contain" />
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-[#333333] text-[18px] font-medium leading-tight"    >
+                            <span className="text-[#333333] dark:text-white text-[18px] font-medium leading-tight"    >
                                 {resource.name}
                             </span>
                             <div className="flex items-center gap-2">
-                                <span className="text-[#989898] text-[14px]"    >
+                                <span className="text-[#989898] dark:text-gray-400 text-[14px]"    >
                                     {resource.size}
                                 </span>
                             </div>

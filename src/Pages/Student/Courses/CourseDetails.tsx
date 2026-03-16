@@ -38,17 +38,17 @@ const CourseDetails = () => {
                     <div className="mb-8">
                         <div className="flex  items-center gap-2 mb-2 ">
 
-                            <div className='hover:bg-gray-100 p-2 rounded-full cursor-pointer'>
-                                <ArrowLeft color='#333' onClick={() => navigate(-1)} />
+                            <div className='hover:bg-gray-100 dark:hover:bg-[#2d2d2d] p-2 rounded-full cursor-pointer'>
+                                <ArrowLeft color='currentColor' onClick={() => navigate(-1)} />
                             </div>
 
                             <div>
-                                <h1 className="lg:text-2xl md:text-xl text-lg font-medium text-[#333] ">{course.title}</h1>
+                                <h1 className="lg:text-2xl md:text-xl text-lg font-medium text-[#333] dark:text-white ">{course.title}</h1>
 
                             </div>
 
                         </div>
-                        <p className="text-[#4d4d4d] font-medium leading-relaxed mb-6">
+                        <p className="text-[#4d4d4d] dark:text-gray-300 font-medium leading-relaxed mb-6">
                             {course.description}
                         </p>
 
@@ -62,20 +62,20 @@ const CourseDetails = () => {
                                 {course.instructor.name.charAt(0).toUpperCase()}
                             </div>
                             <div>
-                                <h3 className="font-semibold text-[#333333]">{course.instructor.name}</h3>
-                                <p className="md:text-sm text-xs  text-[#626262]">{course.instructor.role}</p>
+                                <h3 className="font-semibold text-[#333333] dark:text-white">{course.instructor.name}</h3>
+                                <p className="md:text-sm text-xs  text-[#626262] dark:text-gray-400">{course.instructor.role}</p>
                             </div>
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex gap-10 border-b border-[#F2EEF4] mb-6">
+                        <div className="flex gap-10 border-b border-[#F2EEF4] dark:border-[#363636] mb-6">
                             {['Curriculum', 'Resources', 'FAQs'].map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
                                     className={`pb-3 text-sm font-medium transition-colors relative cursor-pointer ${activeTab === tab
                                         ? 'text-[#F67300]'
-                                        : 'text-[#727272] hover:text-[#626262]'
+                                        : 'text-[#727272] dark:text-gray-400 hover:text-[#626262] dark:hover:text-gray-300'
                                         }`}
                                 >
                                     {tab}

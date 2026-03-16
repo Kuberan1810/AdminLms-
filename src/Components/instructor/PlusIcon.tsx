@@ -12,7 +12,7 @@ const PlusIcon: React.FC<PlusIconProps> = ({ onClick, className }) => {
       onClick={onClick}
       className={`flex items-center justify-center p-2 sm:p-2.5 rounded-[12px] bg-white border border-[#F2EEF4] cursor-pointer  ${className}`}
     >
-      <AddCircle size={24} color="#F67300" variant="Bulk" />
+      <AddCircle size={24} variant="Bulk"  color="#F67300" />
     </button>
   );
 };

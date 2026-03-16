@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import { UploadCloud, Trash2, FileText, Pencil } from "lucide-react";
-import { ArrowLeft2 } from "iconsax-react";
+import { UploadCloud, Trash2, FileText, Pencil, ArrowLeft } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { addResource, updateChapter, removeResource } from "../../../../store/slices/ResourcesSlice";
 import { useParams } from "react-router-dom";
@@ -106,15 +105,15 @@ const ClassResources: React.FC = () => {
   /* ---------------- UI ---------------- */
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 bg-gray-50">
-      <div className="mx-auto bg-white rounded-2xl pt-3 sm:p-8 space-y-8">
+    <div className="min-h-screen p-4 sm:p-8 bg-gray-50 dark:bg-[#1E1E1E] transition-colors">
+      <div className="mx-auto bg-white dark:bg-[#2A2A2A] rounded-2xl pt-3 sm:p-8 space-y-8 transition-colors border border-transparent dark:border-[#363636]">
         {/* Header */}
         <div className="flex items-center gap-3">
           <div
-            className="flex items-center cursor-pointer hover:bg-gray-100 p-1 rounded-full transition-colors"
+            className="flex items-center justify-center cursor-pointer bg-white dark:bg-[#1E1E1E] border border-[#F2EEF4] dark:border-[#363636] hover:bg-gray-50 dark:hover:bg-[#252525] p-2 rounded-xl transition-all shadow-sm"
             onClick={() => window.history.back()}
           >
-            <ArrowLeft2 size={24} color="#000" />
+            <ArrowLeft size={20} className="text-[#333333] dark:text-white" />
           </div>
           <div className="flex items-center gap-2 flex-1">
             <textarea
@@ -133,59 +132,59 @@ const ClassResources: React.FC = () => {
                   ref.style.height = ref.scrollHeight + 'px';
                 }
               }}
-              className="text-xl font-semibold bg-transparent border-none focus:outline-none focus:ring-0 p-0 m-0 w-full resize-none overflow-hidden"
+              className="text-xl font-semibold bg-transparent border-none focus:outline-none focus:ring-0 p-0 m-0 w-full resize-none overflow-hidden dark:text-white"
               placeholder="Chapter Title"
               rows={1}
             />
-            <Pencil size={18} className="text-gray-400 cursor-pointer flex-shrink-0" />
+            <Pencil size={18} className="text-gray-400 dark:text-gray-500 cursor-pointer shrink-0" />
           </div>
         </div>
 
         {/* Class Content */}
         <div className="rounded-xl ">
-          <h2 className="font-semibold mb-3">Class Content:</h2>
+          <h2 className="font-semibold mb-3 dark:text-white">Class Content:</h2>
 
           <textarea
             value={classContent}
             onChange={(e) => setClassContent(e.target.value)}
-            className="w-full bg-white rounded-lg p-4 text-sm text-gray-700 border border-[#DEDEDE] min-h-[100px] focus:outline-none focus:border-orange-500 placeholder-gray-400 resize-none"
+            className="w-full bg-white dark:bg-[#1E1E1E] rounded-lg p-4 text-sm text-gray-700 dark:text-gray-200 border border-[#DEDEDE] dark:border-[#363636] min-h-[100px] focus:outline-none focus:border-orange-500 placeholder-gray-400 dark:placeholder-gray-600 resize-none transition-colors"
             placeholder="Enter class content description..."
           />
         </div>
 
         {/* Key Topics */}
         <div className="rounded-xl ">
-          <h2 className="font-semibold mb-3">Key Topics:</h2>
+          <h2 className="font-semibold mb-3 dark:text-white">Key Topics:</h2>
 
           <textarea
             value={keyTopics}
             onChange={(e) => setKeyTopics(e.target.value)}
-            className="w-full bg-white rounded-lg p-4 text-sm text-gray-700 border border-[#DEDEDE] min-h-[100px] focus:outline-none focus:border-orange-500 placeholder-gray-400 resize-none"
+            className="w-full bg-white dark:bg-[#1E1E1E] rounded-lg p-4 text-sm text-gray-700 dark:text-gray-200 border border-[#DEDEDE] dark:border-[#363636] min-h-[100px] focus:outline-none focus:border-orange-500 placeholder-gray-400 dark:placeholder-gray-600 resize-none transition-colors"
           />
         </div>
 
         {/* Resources */}
         <div className="rounded-xl ">
-          <h2 className="font-semibold mb-5">Resources</h2>
+          <h2 className="font-semibold mb-5 dark:text-white">Resources</h2>
 
           {/* Upload Box */}
           <div
             onDrop={onDrop}
             onDragOver={(e) => e.preventDefault()}
             onClick={() => inputRef.current?.click()}
-            className="border-2 border-dashed border-[#000000] rounded-xl py-10 sm:py-14 px-4 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition"
+            className="border-2 border-dashed border-[#000000] dark:border-[#4B4B4B] rounded-xl py-10 sm:py-14 px-4 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-[#1E1E1E] transition"
           >
             <div className="w-14 h-14 bg-[#F67300] rounded-full flex items-center justify-center mb-4 shadow-sm">
               <UploadCloud size={28} className="text-white" />
             </div>
 
-            <p className="font-medium text-lg">Upload Material</p>
+            <p className="font-medium text-lg dark:text-white">Upload Material</p>
 
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               Drag and drop files here or click to select files
             </p>
 
-            <p className="text-xs text-gray-400 mt-2">
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
               Supported formats: pdf, doc, docx, txt • Maximum size 10MB
             </p>
 
@@ -205,19 +204,19 @@ const ClassResources: React.FC = () => {
             {existingResources.map((res) => (
               <div
                 key={res.id}
-                className="bg-gray-50 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3"
+                className="bg-gray-50 dark:bg-[#1E1E1E] rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-colors"
               >
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <FileText className="text-red-500" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{res.name}</p>
-                  <p className="text-xs text-gray-500">{res.size}</p>
+                  <p className="text-sm font-medium truncate dark:text-white">{res.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{res.size}</p>
                   <p className="text-xs text-green-600 mt-1">Uploaded</p>
                 </div>
 
-                <div className="flex-shrink-0 self-start sm:self-auto">
+                <div className="shrink-0 self-start sm:self-auto">
                   <Trash2
                     size={18}
                     onClick={() => handleDeleteExisting(res.id)}
@@ -231,15 +230,15 @@ const ClassResources: React.FC = () => {
             {files.map((f) => (
               <div
                 key={f.id}
-                className="bg-gray-50 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3"
+                className="bg-gray-50 dark:bg-[#1E1E1E] rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-colors"
               >
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <FileText className="text-red-500" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{f.file.name}</p>
-                  <p className="text-xs text-gray-500">{formatSize(f.file.size)}</p>
+                  <p className="text-sm font-medium truncate dark:text-white">{f.file.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{formatSize(f.file.size)}</p>
 
                   {f.status === "uploading" && (
                     <div className="h-2 bg-gray-200 rounded mt-2 overflow-hidden">
@@ -255,7 +254,7 @@ const ClassResources: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex-shrink-0 self-start sm:self-auto">
+                <div className="shrink-0 self-start sm:self-auto">
                   <Trash2
                     size={18}
                     onClick={() => handleDelete(f.id)}
@@ -307,13 +306,13 @@ const ClassResources: React.FC = () => {
         {/* Success Modal */}
         {showSuccessModal && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl p-6 w-[320px] shadow-xl">
-              <h3 className="text-lg font-semibold mb-4">Success</h3>
-              <p className="text-sm text-gray-500 mb-6">Contents are uploaded successfully</p>
+            <div className="bg-white dark:bg-[#1E1E1E] rounded-2xl p-6 w-[320px] shadow-xl border border-transparent dark:border-[#363636]">
+              <h3 className="text-lg font-semibold mb-4 dark:text-white">Success</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Contents are uploaded successfully</p>
               <div className="flex justify-end">
                 <button
                   onClick={() => setShowSuccessModal(false)}
-                  className="px-4 py-2 bg-[#F67300] text-white rounded-lg cursor-pointer"
+                  className="px-4 py-2 bg-[#F67300] text-white rounded-lg cursor-pointer hover:bg-orange-600"
                 >
                   OK
                 </button>

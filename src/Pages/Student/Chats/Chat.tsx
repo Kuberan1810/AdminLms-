@@ -1,5 +1,5 @@
 
-import { Search, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import CourseQACard from './components/CourseQACard';
 import AskQuestionModal from './components/AskQuestionModal';
 import { useState } from 'react';
@@ -180,7 +180,7 @@ const Chats = () => {
           className={`pb-3 text-lg font-medium cursor-pointer  ${
               activeTab === 'all'
                 ? 'text-orange-600 border-b-2 border-orange-600'
-                : 'text-gray-700'
+                : 'text-gray-700 dark:text-gray-300'
             }`}
           >
             All Post
@@ -191,7 +191,7 @@ const Chats = () => {
             className={`pb-3 text-lg font-medium cursor-pointer ${
               activeTab === 'my'
                 ? 'text-orange-600 border-b-2 border-orange-600'
-                : 'text-gray-700'
+                : 'text-gray-700 dark:text-gray-300'
             }`}
           >
             My Post
@@ -205,7 +205,7 @@ const Chats = () => {
           ))}
 
           {activeTab === 'my' && myQuestions.length === 0 && (
-            <div className="text-center py-20 text-gray-400 italic">
+            <div className="text-center py-20 text-gray-400 dark:text-gray-500 italic">
               You haven't posted any questions yet.
             </div>
           )}
@@ -214,7 +214,7 @@ const Chats = () => {
         {/* Floating Button */}
         <button
           onClick={() => setIsModalOpen(true)}
-        className="cursor-pointer fixed md:bottom-8  bottom-20 right-8 hover:bg-orange-200 bg-orange-100 text-[#F67300] px-6 py-3 rounded-full flex items-center gap-2 shadow-lg hover:shadow-xl"
+        className="cursor-pointer fixed md:bottom-8  bottom-20 right-8 hover:bg-orange-200 dark:hover:bg-[#4D3B30] bg-orange-100 dark:bg-[#3D2B20] text-[#F67300] dark:text-orange-400 px-6 py-3 rounded-full flex items-center gap-2 shadow-lg hover:shadow-xl"
         >
           <MessageCircle className="w-5 h-5" />
           Chat

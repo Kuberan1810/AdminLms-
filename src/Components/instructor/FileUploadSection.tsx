@@ -96,7 +96,7 @@ const FileUploadSection = ({ files, setFiles }: FileUploadSectionProps) => {
                         onChange={handleFileChange}
                     />
                     <div className="w-14 h-14 bg-[#F67300] rounded-full flex items-center justify-center mb-4">
-                        <CloudPlus size={30} color="white" variant="Bold" />
+                        <CloudPlus size={30} variant="Bold"  color="white" />
                     </div>
                     <h4 className="text-[20px] font-semibold text-[#333333] mb-1">Upload your files</h4>
                     <p className="text-[14px] text-[#626262] mb-1">Drag and drop files here or click to select files</p>

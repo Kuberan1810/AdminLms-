@@ -185,16 +185,14 @@ const Chat = () => {
  
       <div className=" py-1 w-full">
 
-     
-
         {/* TABS */}
         <div className="flex gap-8 mb-4">
           <button
             onClick={() => setActiveTab('all')}
-            className={`pb-2 text-sm md:text-base font-medium ${
+            className={`pb-2 text-sm md:text-base font-medium transition ${
               activeTab === 'all'
                 ? 'text-orange-600 border-b-2 border-orange-600'
-                : 'text-gray-700'
+                : 'text-gray-600 dark:text-[#989898]'
             }`}
           >
             All Post
@@ -202,10 +200,10 @@ const Chat = () => {
 
           <button
             onClick={() => setActiveTab('my')}
-            className={`pb-2 text-sm md:text-base font-medium ${
+            className={`pb-2 text-sm md:text-base font-medium transition ${
               activeTab === 'my'
                 ? 'text-orange-600 border-b-2 border-orange-600'
-                : 'text-gray-700'
+                : 'text-gray-700 dark:text-white'
             }`}
           >
             My Post

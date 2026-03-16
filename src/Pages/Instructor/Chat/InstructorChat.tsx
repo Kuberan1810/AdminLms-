@@ -1,8 +1,10 @@
 import { useState } from "react";
-import InstructorHeader from "../../../Components/instructor/InstructorHeader";
+import InstructorDashboardLayout from "../../../Components/instructor/InstructorDashboardLayout";
+
 import ChatList from "./chatList";
 import ChatWindow from "./Chats";
 import GroupMembers from "./GroupMembers";
+
 import { chats } from "./data/chatData";
 import type { Chat } from "./data/chat.types";
 
@@ -28,17 +30,14 @@ const InstructorChat = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col">
-      {/* TOP HEADER */}
-      <InstructorHeader />
-
-      {/* CHAT BODY */}
-      <div className="flex flex-1 bg-white rounded-md mx-3 overflow-hidden">
+    <InstructorDashboardLayout>
+      <div className="flex flex-1 bg-white dark:bg-[#1E1E1E] rounded-md mx-3 overflow-hidden">
+      <div className="flex w-full h-[calc(100vh-135px)] overflow-hidden">
         
         {/* CHAT LIST */}
         <div
-          className={`w-full md:w-[320px] border-r border-gray-200
-            ${isMobileChatOpen ? "hidden md:block" : "block"}
+          className={`w-full md:w-[320px] border-r border-gray-200 dark:border-gray-700
+          ${isMobileChatOpen ? "hidden md:block" : "block"}
           `}
         >
           <ChatList
@@ -46,7 +45,7 @@ const InstructorChat = () => {
             activeId={selectedChat.id}
             onSelect={(chat) => {
               setSelectedChat(chat);
-              setIsMobileChatOpen(true); 
+              setIsMobileChatOpen(true);
               setShowMembers(false);
             }}
           />
@@ -54,9 +53,7 @@ const InstructorChat = () => {
 
         {/* CHAT WINDOW */}
         <div
-          className={`flex-1
-            ${isMobileChatOpen ? "block" : "hidden md:block"}
-          `}
+          className={`flex-1 h-full ${isMobileChatOpen ? "block" : "hidden md:block"}`}
         >
           <ChatWindow
             chat={selectedChat}
@@ -64,7 +61,7 @@ const InstructorChat = () => {
             onBack={() => setIsMobileChatOpen(false)}
           />
         </div>
-
+      </div>
         {/* GROUP MEMBERS */}
         {selectedChat.type === "group" && showMembers && (
           <GroupMembers
@@ -73,7 +70,7 @@ const InstructorChat = () => {
           />
         )}
       </div>
-    </div>
+    </InstructorDashboardLayout>
   );
 };
 

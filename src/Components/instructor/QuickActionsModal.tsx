@@ -19,12 +19,12 @@ const QuickActionsModal = ({ onClose, onAction }: QuickActionsModalProps) => {
     const navigate = useNavigate();
 
     const actions = [
-        { title: "New class", icon: <People size={16} color="#F67300" variant="Outline" /> },
-        { title: "New Courses", icon: <DocumentText size={16} color="#F67300" variant="Outline" /> },
-        { title: "New Student", icon: <UserAdd size={16} color="#F67300" variant="Outline" /> },
-        { title: "Announcement", icon: <NotificationBing size={20} color="#F67300" variant="Outline" /> },
-        { title: "Assignment", icon: <ClipboardText size={20} color="#F67300" variant="Outline" /> },
-        { title: "Test", icon: <Teacher size={20} color="#F67300" variant="Outline" /> },
+        { title: "New class", icon: <People size={16} variant="Outline"  color="#F67300" /> },
+        { title: "New Courses", icon: <DocumentText size={16} variant="Outline"  color="#F67300" /> },
+        { title: "New Student", icon: <UserAdd size={16} variant="Outline"  color="#F67300" /> },
+        { title: "Announcement", icon: <NotificationBing size={20} variant="Outline"  color="#F67300" /> },
+        { title: "Assignment", icon: <ClipboardText size={20} variant="Outline"  color="#F67300" /> },
+        { title: "Test", icon: <Teacher size={20} variant="Outline"  color="#F67300" /> },
     ];
 
     const handleAction = (title: string) => {

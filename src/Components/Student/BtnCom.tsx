@@ -16,7 +16,7 @@ const BtnCom: React.FC<BtnComProps> = ({
     return (
         <button
             onClick={onClick}
-            className="flex items-center gap-2 px-3 py-1.5 border w-fit h-fit border-[#F2EEF4] rounded-[10px] bg-white hover:bg-[#fafafa] text-[14px] font-medium text-[#808080] cursor-pointer"
+            className="flex items-center gap-2 px-3 py-1.5 border w-fit h-fit border-[#F2EEF4] dark:border-[#363636] rounded-[10px] bg-white dark:bg-[#2A2A2A] hover:bg-[#fafafa] dark:hover:bg-[#363636] text-[14px] font-medium text-[#808080] dark:text-gray-300 cursor-pointer transition-colors"
         >
             {icon && iconPosition === "left" && icon}
             {label}

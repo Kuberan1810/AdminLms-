@@ -20,7 +20,7 @@ const AssignmentResources: React.FC<AssignmentResourcesProps> = ({ resources }) 
   return (
     <div className="w-full ">
       <div className="boxStyle">
-        <h2 className="md:text-2xl text-xl  font-medium text-[#333333] mb-5">
+        <h2 className="md:text-2xl text-xl  font-medium text-[#333333] dark:text-white md:mb-5 mb-2">
           Assignment Resources
         </h2>
 
@@ -32,7 +32,7 @@ const AssignmentResources: React.FC<AssignmentResourcesProps> = ({ resources }) 
                 <ResourceCard key={resource.id} resource={resource} />
               ))
             ) : (
-              <p className="text-[#626262] text-sm">No resources available for this assignment.</p>
+              <p className="text-[#626262] dark:text-gray-300 text-sm">No resources available for this assignment.</p>
             )}
           </div>
 

@@ -24,19 +24,19 @@ const CurriculumSection: React.FC<CurriculumSectionProps> = ({ modules, expanded
             {modules.map((module) => (
                 <div
                     key={module.id}
-                    className="border border-[#F2EEF4] rounded-xl  bg-white hover:border-gray-300 transition-colors"
+                    className="border border-[#F2EEF4] dark:border-[#363636] rounded-xl bg-white dark:bg-[#2A2A2A] hover:border-gray-300 dark:hover:border-gray-500 transition-colors"
                 >
                     <button
                         onClick={() => toggleModule(module.id)}
                         className="w-full flex items-center justify-between p-5 text-left cursor-pointer"
                     >
-                        <span className="font-medium text-[#333333] text-base capitalize">
-                            Module : {module.id} <span className="ml-2 text-[#333333] font-medium">{module.title}</span>
+                        <span className="font-medium text-[#333333] dark:text-white text-base capitalize">
+                            Module : {module.id} <span className="ml-2 text-[#333333] dark:text-white font-medium">{module.title}</span>
                         </span>
                         {expandedModules.includes(module.id) ? (
-                            <ChevronUp className="w-5 h-5 text-[#626262]" />
+                            <ChevronUp className="w-5 h-5 text-[#626262] dark:text-gray-400" />
                         ) : (
-                            <ChevronDown className="w-5 h-5 text-[#626262]" />
+                            <ChevronDown className="w-5 h-5 text-[#626262] dark:text-gray-400" />
                         )}
                     </button>
 
@@ -46,15 +46,15 @@ const CurriculumSection: React.FC<CurriculumSectionProps> = ({ modules, expanded
                                 <div
                                     key={lesson.id}
                                     onClick={() => handleLessonClick(lesson.id)}
-                                    className="flex items-center gap-4 p-4 border border-[#F2EEF4] rounded-xl hover:border-gray-300 transition-colors bg-white cursor-pointer"
+                                    className="flex items-center gap-4 p-4 border border-[#F2EEF4] dark:border-[#363636] rounded-xl hover:border-gray-300 dark:hover:border-gray-500 transition-colors bg-white dark:bg-[#2A2A2A] cursor-pointer"
                                 >
                                     <div className={`w-6 h-6 rounded-full flex items-center justify-center  ${lesson.isCompleted
                                         ? 'bg-orange-500 text-white'
-                                        : 'bg-orange-100 text-orange-300'
+                                        : 'bg-orange-100 dark:bg-[#F6730030] text-orange-300 dark:text-orange-400'
                                         }`}>
                                         <Check className="w-3.5 h-3.5" />
                                     </div>
-                                    <span className="text-[#4d4d4d] font-medium text-sm capitalize">{lesson.id} {lesson.title}</span>
+                                    <span className="text-[#4d4d4d] dark:text-gray-300 font-medium text-sm capitalize">{lesson.id} {lesson.title}</span>
                                 </div>
                             ))}
                         </div>

@@ -79,11 +79,11 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-3">
-      <div className="bg-white w-full max-w-105 rounded-2xl p-4 sm:p-6 relative max-h-[95vh] overflow-y-auto">
+      <div className="bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-gray-100 w-full max-w-105 rounded-2xl p-4 sm:p-6 relative max-h-[95vh] overflow-y-auto transition-colors">
 
         {/* MOBILE HEADER */}
         <div className="flex sm:hidden items-center justify-between mb-4">
-          <button onClick={onClose} className="text-gray-600 font-medium">
+          <button onClick={onClose} className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
             Cancel
           </button>
 
@@ -118,7 +118,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter Post Title"
-            className="w-full mt-1 bg-gray-100 rounded-md px-3 py-2 text-sm outline-none"
+            className="w-full mt-1 bg-gray-100 dark:bg-[#2A2A2A] text-gray-900 dark:text-gray-100 rounded-md px-3 py-2 text-sm outline-none"
           />
         </div>
 
@@ -131,7 +131,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
             placeholder="Write your Post here..."
             rows={4}
             maxLength={10000}
-            className="w-full mt-1 bg-gray-100 rounded-md px-3 py-2 text-sm outline-none resize-none"
+            className="w-full mt-1 bg-gray-100 dark:bg-[#2A2A2A] text-gray-900 dark:text-gray-100 rounded-md px-3 py-2 text-sm outline-none resize-none"
           />
         </div>
 
@@ -183,7 +183,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center justify-between h-[36px] px-4 gap-2 
-                         border border-gray-200 rounded-xl 
+                         border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#2A2A2A] rounded-xl 
                          text-sm text-orange-500 font-medium bg-white"
             >
               <div className="flex items-center gap-2">
@@ -200,7 +200,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute mt-2 w-[183px] bg-white rounded-xl border border-gray-300 z-50">
+              <div className="absolute mt-2 w-[183px] bg-white dark:bg-[#2A2A2A] rounded-xl border border-gray-300 dark:border-gray-700 z-50">
                 {categories.map((cat) => (
                   <div
                     key={cat}
@@ -208,8 +208,8 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
                       setCategory(cat);
                       setIsDropdownOpen(false);
                     }}
-                    className={`px-4 py-3 text-sm cursor-pointer hover:bg-gray-100 ${
-                      category === cat ? "bg-gray-100 font-medium" : ""
+                    className={`px-4 py-3 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-[#3A3A3A] ${
+                      category === cat ? "bg-gray-100 dark:bg-[#3A3A3A] font-medium " : ""
                     }`}
                   >
                     {cat}
@@ -239,7 +239,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
               className={`px-3 py-1 rounded-full text-sm border ${
                 category === cat
                   ? "bg-orange-500 text-white border-orange-500"
-                  : "text-gray-700 hover:border-orange-400"
+                  : "text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-orange-400"
               }`}
             >
               {cat}
@@ -250,7 +250,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
         <div className="hidden sm:flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
-            className="px-6 py-2 border rounded-md text-sm"
+            className="px-6 py-2 border border-gray-300 dark:border-gray-700 rounded-md text-sm"
           >
             Discard
           </button>

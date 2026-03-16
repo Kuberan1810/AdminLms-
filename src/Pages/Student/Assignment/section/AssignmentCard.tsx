@@ -22,7 +22,7 @@ const AssignmentCard: React.FC<Props> = ({ item, getStatusStyles }) => {
                 {/* LEFT CONTENT */}
                 <div className="flex-1">
                     <div className="flex flex-wrap sm:items-center sm:flex-row gap-2.5 sm:gap-7.5 mb-1.5">
-                        <h3 className="text-[18px] sm:text-[20px] font-semibold text-[#333333]">
+                        <h3 className="text-[18px] sm:text-[20px] font-semibold text-[#333333] dark:text-gray-300">
                             {item.title}
                         </h3>
 
@@ -35,11 +35,11 @@ const AssignmentCard: React.FC<Props> = ({ item, getStatusStyles }) => {
                         </span>
                     </div>
 
-                    <p className="text-[14px] sm:text-[16px] font-medium text-[#626262] mb-4">
+                    <p className="text-[14px] sm:text-[16px] font-medium text-[#626262] mb-4 dark:text-gray-300">
                         {item.course}
                     </p>
 
-                    <p className="text-[14px] text-[#626262] leading-relaxed md:line-clamp-1 line-clamp-2 ">
+                    <p className="text-[14px] text-[#626262] leading-relaxed md:line-clamp-1 line-clamp-2 dark:text-gray-300">
                         {item.description}
                     </p>
                 </div>
@@ -48,9 +48,9 @@ const AssignmentCard: React.FC<Props> = ({ item, getStatusStyles }) => {
 
                     <div className="flex items-center gap-2 text-[#626262]">
                         <div className="iconStyle">
-                            <CalendarTick size="16" color="#626262" />
+                            <CalendarTick size="16" color="currentColor" />
                         </div>
-                        <span className="text-[12px] md:text-base font-medium">
+                        <span className="text-[12px] md:text-base font-medium dark:text-gray-200">
                             {item.deadline}
                         </span>
                     </div>

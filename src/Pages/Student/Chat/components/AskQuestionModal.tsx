@@ -32,7 +32,6 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
   };
 
   const handleSubmit = (privacy: "private" | "public") => {
-
     onSubmit?.({
       title: title,
       question: description,
@@ -54,15 +53,16 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`relative transition-all duration-300 ${step === "details"
-            ? "w-[800px] rounded-[20px] p-7 bg-[#FFFBFB]"
-            : "w-[420px] rounded-[20px] p-4 bg-white"
-          }`}
+        className={`relative transition-all duration-300 ${
+          step === "details"
+            ? "w-[800px] rounded-[20px] p-7 bg-[#FFFBFB] dark:bg-[#020817] text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-[#334155]"
+            : "w-[420px] rounded-[20px] p-4 bg-white dark:bg-[#020817] text-gray-800"
+        }`}
       >
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer"
         >
           <X />
         </button>
@@ -79,19 +79,19 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
               placeholder="What is orchestration"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full h-[50px] bg-gray-100 rounded-2xl border border-gray-200 px-4 mb-5 focus:outline-none focus:ring-1 focus:ring-orange-500"
+              className="w-full h-[50px] bg-gray-100 dark:bg-[#1E293B] border border-gray-200 dark:border-[#334155] rounded-2xl px-4 mb-5 focus:outline-none focus:ring-1 focus:ring-orange-500"
             />
 
             <h3 className="text-md mb-2">
               Detail about the question
             </h3>
 
-            <div className="border border-gray-200 rounded-2xl bg-gray-100 p-4 mb-6">
+            <div className="border border-gray-200 dark:border-[#334155] rounded-2xl bg-gray-100 dark:bg-[#1E293B] p-4 mb-6">
 
               {/* File Upload */}
               <div className="flex items-center gap-3 mb-3">
                 <label className="cursor-pointer">
-                  <Paperclip className="w-5 h-5 text-gray-600 hover:text-orange-500" />
+                  <Paperclip className="w-5 h-5 text-gray-600 dark:text-gray-300 hover:text-orange-500"/>
                   <input
                     type="file"
                     className="hidden"
@@ -100,12 +100,14 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
                 </label>
 
                 {selectedFile && (
-                  <span className="text-sm text-gray-700 truncate">
+                  <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
                     {selectedFile.name}
                   </span>
                 )}
               </div>
-              <hr className="border-b border-gray-200" />
+
+              <hr className="border-b border-gray-200 dark:border-[#334155]" />
+
               <textarea
                 placeholder="Description about the question..."
                 value={description}
@@ -117,7 +119,7 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
             <button
               disabled={!title || !description}
               onClick={() => setStep("privacy")}
-              className="w-full h-[50px] bg-[#F67300] text-white rounded-lg font-medium  cursor-pointer"
+              className="w-full h-[50px] bg-[#F67300] text-white rounded-lg font-medium cursor-pointer"
             >
               Publish
             </button>
@@ -130,19 +132,20 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
             </h2>
 
             <div className="flex flex-col gap-4">
+
               {/* Private */}
               <div
                 onClick={() => handleSubmit("private")}
-                className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
+                className="flex items-center gap-4 p-4 border border-gray-200 dark:border-[#334155] rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-[#1E293B]"
               >
-                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                  <Lock className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                  <Lock className="w-5 h-5 text-blue-600 dark:text-blue-300" />
                 </div>
                 <div>
                   <h3 className="font-medium">
                     Send as private question
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Only instructor can see this
                   </p>
                 </div>
@@ -151,20 +154,21 @@ const AskQuestionModal: React.FC<AskQuestionModalProps> = ({
               {/* Public */}
               <div
                 onClick={() => handleSubmit("public")}
-                className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
+                className="flex items-center gap-4 p-4 border border-gray-200 dark:border-[#334155] rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-[#1E293B]"
               >
-                <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
-                  <Globe className="w-5 h-5 text-orange-600" />
+                <div className="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900 flex items-center justify-center">
+                  <Globe className="w-5 h-5 text-orange-600 dark:text-orange-300" />
                 </div>
                 <div>
                   <h3 className="font-medium">
                     Send as public question
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     All students can see this
                   </p>
                 </div>
               </div>
+
             </div>
           </>
         )}

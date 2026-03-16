@@ -84,8 +84,7 @@ const filteredPosts = posts.filter((post) => {
     };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
-
+    <div className="h-screen flex flex-col  dark:bg-[#1E1E1E] transition-colors ">
       {/* ================= TABS ================= */}
       <CommunityTabs
         activeTab={activeTab}

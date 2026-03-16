@@ -30,10 +30,10 @@ export default function StudentLayout() {
      
      
 
-                <div className="flex h-screen overflow-hidden bg-[#FAFAFA]">
+                <div className="flex h-screen overflow-hidden bg-[#FAFAFA] dark:bg-[#1E1E1E] transition-colors duration-300">
                     <div className="h-screen shrink-0">
                         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-                    </div>
+                    </div>  
                     <div className="flex flex-col flex-1 min-w-0">
                         <div className="shrink-0">
                             <Header />

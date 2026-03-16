@@ -1,131 +1,198 @@
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../../../store/hooks";
-import { resetTest } from "../../../../../store/slices/TestPageSlice";
-
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { resetTest, fullResetTest, tickTimer } from "../../../../../store/slices/TestPageSlice";
+import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
+import { Clock } from "lucide-react";
 
 const TestSummaryModal = () => {
-  const total = 20;
-  const attempted = 18;
-  const marked = 1;
-  const unattempted = 1;
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const attemptedDeg = (attempted / total) * 360;
-  const markedDeg = (marked / total) * 360;
+  // Dynamically pull stats from Redux store
+  const stats = useAppSelector((state) => state.counter.stats);
+  const timer = useAppSelector((state) => state.counter.timer);
 
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  // Ref for timer auto-submit to prevent closure staleness
+  const timerRef = useRef(timer);
+  useEffect(() => {
+    timerRef.current = timer;
+  }, [timer]);
+
+  // Tick timer even while summary modal is open
+  useEffect(() => {
+    // Only run this if we are still somewhat active (though technically testFinished is true while in this modal)
+    // We just want visual consistency if they hit "cancel".
+    const interval = setInterval(() => {
+      if (timerRef.current <= 1) {
+        clearInterval(interval);
+        // Auto submit the test permanently when time is up in the summary screen too
+        toast.success("Time's up! Your test has been automatically submitted.");
+        dispatch(fullResetTest());
+        navigate("student/dashboard");
+      } else {
+        dispatch(tickTimer());
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [dispatch, navigate]);
+
+  const total = stats?.total || 20;
+  const attempted = stats?.attempted || 0;
+  const marked = stats?.marked || 0;
+  const unattempted = stats?.unattempted || total;
+
+  // Calculate degrees for pie chart segments
+  const attemptedDeg = total > 0 ? (attempted / total) * 360 : 0;
+  const markedDeg = total > 0 ? (marked / total) * 360 : 0;
+
   const finishtest = () => {
-    navigate("/dashboard");
+    toast.success("Test Submitted Successfully!");
+    dispatch(fullResetTest());
+    navigate("/student/dashboard");
   }
 
   const handleGoBack = () => {
     dispatch(resetTest())
   }
 
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  };
+
   return (
-    <div className="fixed inset-0 bg-white/95 flex items-center justify-center p-2 md:p-4">
-      <div className="bg-white w-full max-w-7xl rounded-lg max-h-screen overflow-y-auto">
+    <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white w-full max-w-4xl rounded-xl shadow-xl max-h-[90vh] flex flex-col overflow-hidden">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center px-3 md:px-4 py-2 gap-2">
-          <h2 className="font-semibold text-base md:text-lg">Finish Test</h2>
-          <span className="text-xs md:text-sm text-gray-500">
-            ⏱ Remaining time 00:00:10
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+          <h2 className="font-bold text-xl text-gray-800">Finish Test</h2>
+          <span className="text-sm font-medium text-gray-500 flex gap-2.5 items-center">
+            <Clock className="w-5 h-5" /> Remaining time {formatTime(timer)}
           </span>
         </div>
 
-        {/* Summary */}
-        <div className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-8 p-3 md:p-6">
+        {/* Content Area with custom scrollbar */}
+        <div className="overflow-y-auto flex-1 p-6">
+          {/* Summary Cards */}
+          <div className="grid md:grid-cols-2 gap-8 items-center bg-gray-50/50 rounded-xl p-8 border border-gray-100">
 
-          {/* Pie Chart */}
-          <div className="relative w-32 h-32 md:w-44 md:h-44 mx-auto md:mx-0">
-            <div
-              className="w-full h-full rounded-full"
-              style={{
-                background: `conic-gradient(
-                  #2f9e44 0deg ${attemptedDeg}deg,
-                  #f59f00 ${attemptedDeg}deg ${attemptedDeg + markedDeg}deg,
-                  #e03131 ${attemptedDeg + markedDeg}deg 360deg
-                )`,
-              }}
-            />
+            {/* Pie Chart Section */}
+            <div className="flex justify-center">
+              <div className="relative w-48 h-48 drop-shadow-sm">
+                <div
+                  className="w-full h-full rounded-full border-4 border-white shadow-inner"
+                  style={{
+                    background: `conic-gradient(
+                      #22c55e 0deg ${attemptedDeg}deg,
+                      #facc15 ${attemptedDeg}deg ${attemptedDeg + markedDeg}deg,
+                      #f87171 ${attemptedDeg + markedDeg}deg 360deg
+                    )`,
+                  }}
+                />
+                {/* Inner circle for donut chart effect */}
+                <div className="absolute inset-0 m-auto w-32 h-32 bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
+                  <span className="text-3xl font-bold text-gray-800">{total}</span>
+                  <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Total</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Key Stats Section */}
+            <div className="flex flex-col space-y-6">
+              <div>
+                <h3 className="text-lg font-bold text-gray-800 mb-1">Your Test Summary</h3>
+                <p className="text-sm text-gray-500">Breakdown of your responses in Full Stack test</p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="w-3 h-3 bg-green-500 rounded-full shadow-sm" />
+                    <span className="text-sm font-medium text-gray-700">Answered</span>
+                  </div>
+                  <span className="font-bold text-gray-800 bg-green-50 px-2 py-0.5 rounded text-sm">{attempted}</span>
+                </div>
+
+                <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="w-3 h-3 bg-yellow-400 rounded-full shadow-sm" />
+                    <span className="text-sm font-medium text-gray-700">Marked for Revisit</span>
+                  </div>
+                  <span className="font-bold text-gray-800 bg-yellow-50 px-2 py-0.5 rounded text-sm">{marked}</span>
+                </div>
+
+                <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="w-3 h-3 bg-red-400 rounded-full shadow-sm" />
+                    <span className="text-sm font-medium text-gray-700">Not Answered</span>
+                  </div>
+                  <span className="font-bold text-gray-800 bg-red-50 px-2 py-0.5 rounded text-sm">{unattempted}</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Test Summary */}
-          <div className="flex flex-col justify-center w-auto">
-            <h3 className="font-semibold mb-1 text-sm md:text-base">Your Test Summary</h3>
-            <p className="text-lg md:text-2xl font-bold mb-4">
-              {total} <span className="text-xs md:text-sm font-normal">Total Question</span>
-            </p>
-
-            <div className="space-y-1 md:space-y-2 text-xs md:text-sm">
-              <div className="flex items-center gap-2">
-                <span className="w-2 md:w-3 h-2 md:h-3 bg-green-600 rounded-full" />
-                Attempted : {attempted}/{total}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 md:w-3 h-2 md:h-3 bg-orange-500 rounded-full" />
-                Marked for Revisit : {marked}/{total}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 md:w-3 h-2 md:h-3 bg-red-600 rounded-full" />
-                Unattempted : {unattempted}/{total}
-              </div>
+          {/* Detailed Section Summary */}
+          <div className="mt-8">
+            <h4 className="font-bold text-gray-800 mb-4 px-1">Section Details</h4>
+            <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-gray-600 uppercase bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="px-6 py-4 font-semibold">Section Name</th>
+                    <th className="px-6 py-4 font-semibold text-center">Answered</th>
+                    <th className="px-6 py-4 font-semibold text-center">Marked</th>
+                    <th className="px-6 py-4 font-semibold text-center">Not Answered</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr className="bg-white hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 font-medium text-gray-900">
+                      Full Stack test
+                      <div className="text-xs text-gray-500 mt-1 font-normal">Core Module</div>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="inline-flex items-center justify-center bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                        {attempted}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="inline-flex items-center justify-center bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                        {marked}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="inline-flex items-center justify-center bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                        {unattempted}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
-        {/* Section Summary */}
-        <div className="px-3 md:px-6 py-3 md:py-4">
-          <h4 className="font-semibold mb-3 text-sm md:text-base">Section Summary</h4>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs md:text-sm">
-              <thead className="bg-orange-50">
-                <tr>
-                  <th className="px-1 md:px-2 py-1 md:py-2">#</th>
-                  <th className="px-1 md:px-2 py-1 md:py-2 text-left">Test name</th>
-                  <th className="px-1 md:px-2 py-1 md:py-2">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="px-1 md:px-2 py-1 md:py-2 text-center">1</td>
-                  <td className="px-1 md:px-2 py-1 md:py-2">
-                    Test name <br />
-                    <span className="text-xs text-gray-500">
-                      Remaining time: 00:00:00
-                    </span>
-                  </td>
-                  <td className="px-1 md:px-2 py-1 md:py-2 space-y-1">
-                    <div className="flex justify-center items-center gap-2 text-xs md:text-sm">
-                      <span className="w-2 h-2 bg-green-600 rounded-full" />
-                      Attempted: 18
-                    </div>
-                    <div className="flex justify-center items-center gap-2 text-xs md:text-sm">
-                      <span className="w-2 h-2 bg-orange-500 rounded-full" />
-                      Marked: 1
-                    </div>
-                    <div className="flex justify-center items-center gap-2 text-xs md:text-sm">
-                      <span className="w-2 h-2 bg-red-600 rounded-full" />
-                      Unattempted: 1
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Footer Buttons */}
-        <div className="flex flex-col sm:flex-row justify-between gap-3 md:gap-4 px-3 md:px-6 py-3 md:py-4">
-          <button className="bg-orange-500 text-white px-4 md:px-6 py-2 rounded-md font-semibold text-sm md:text-base" onClick={finishtest}>
-            Yes, End Test!
+        {/* Footer Actions */}
+        <div className="flex flex-col sm:flex-row justify-end items-center gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+          <button
+            className="w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 transition-colors cursor-pointer"
+            onClick={handleGoBack}
+          >
+            Cancel, return to test
           </button>
-          <button className="border border-gray-400 px-4 md:px-6 py-2 rounded-md text-sm md:text-base" onClick={handleGoBack}>
-            No, Back to test
+          <button
+            className="w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:ring-orange-300 transition-colors cursor-pointer"
+            onClick={finishtest}
+          >
+            Submit Test
           </button>
         </div>
+
       </div>
     </div>
   );

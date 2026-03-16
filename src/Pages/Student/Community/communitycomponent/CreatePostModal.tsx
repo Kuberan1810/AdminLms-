@@ -82,11 +82,10 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
 
   return createPortal(
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] px-3">
-      <div className="bg-white w-full max-w-[420px] rounded-2xl p-4 sm:p-6 relative max-h-[95vh] overflow-y-auto">
-
+      <div className="bg-white dark:bg-black text-[#333] dark:text-white w-full max-w-[420px] rounded-2xl p-4 sm:p-6 relative max-h-[95vh] overflow-y-auto">
         {/* MOBILE HEADER */}
         <div className="flex sm:hidden items-center justify-between mb-4">
-          <button onClick={onClose} className="text-gray-600 font-medium">
+          <button onClick={onClose} className="text-gray-600 font-medium dark:text-gray-400">
             Cancel
           </button>
 
@@ -121,7 +120,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter Post Title"
-            className="w-full mt-1 bg-gray-100 rounded-md px-3 py-2 text-sm outline-none"
+            className="w-full mt-1 bg-gray-100 dark:bg-[#1E293B] rounded-md px-3 py-2 text-sm outline-none"
           />
         </div>
 
@@ -134,10 +133,9 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
             placeholder="Write your Post here..."
             rows={4}
             maxLength={10000}
-            className="w-full mt-1 bg-gray-100 rounded-md px-3 py-2 text-sm outline-none resize-none"
+            className="w-full mt-1 bg-gray-100 dark:bg-[#1E293B] rounded-md px-3 py-2 text-sm outline-none resize-none"
           />
         </div>
-
 
         <div className="sm:hidden text-right text-xs text-gray-400 mb-4">
           {content.length}/10000
@@ -183,7 +181,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
         <div className="mb-6 sm:hidden flex gap-3">
 
           {/* PIN OPTION */}
-          <div className="mb-4 flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg">
+          <div className="mb-4 flex items-center justify-between bg-gray-50 dark:bg-[#1E293B] px-4 py-3 rounded-lg">
             <div className="text-sm font-medium">Pin this post</div>
 
             <button
@@ -201,14 +199,13 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
             </button>
           </div>
 
-
           {/* CATEGORY */}
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center justify-between h-[36px] px-4 gap-2 
-                         border border-gray-200 rounded-xl 
-                         text-sm text-orange-500 font-medium bg-white"
+                         border border-gray-200 rounded-xl dark:border-[#1E293B]
+                         text-sm text-orange-500 font-medium bg-white dark:bg-[#1E293B] dark:text-orange-500"
             >
               <div className="flex items-center gap-2">
                 <Tag size={16} className="fill-orange-500" />
@@ -223,7 +220,7 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute mt-2 w-[183px] bg-white rounded-xl border border-gray-300 z-50">
+              <div className="absolute mt-2 w-[183px] bg-white rounded-xl border border-gray-300 dark:border-[#1E293B] dark:bg-[#1E293B] z-50">
                 {categories.map((cat) => (
                   <div
                     key={cat}
@@ -244,8 +241,8 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
           {/* TOPIC */}
           <button
             className="flex items-center gap-2 h-[36px] px-4
-                       border border-gray-200 rounded-[200px]
-                       text-sm text-orange-500 font-medium bg-white"
+                       border border-gray-200 rounded-[200px] dark:border-[#1E293B]
+                       text-sm text-orange-500 font-medium bg-white dark:bg-[#1E293B] dark:text-orange-500"
           >
             <Hash size={16} />
             Topic

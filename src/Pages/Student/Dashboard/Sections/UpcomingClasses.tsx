@@ -17,10 +17,10 @@ const UpcomingClasses = () => {
             {/* ================= Header ================= */}
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h3 className="text-xl lg:text-2xl font-semibold text-primary">
+                    <h3 className="text-xl lg:text-2xl font-semibold text-primary dark:text-white">
                         Upcoming Schedule
                     </h3>
-                    <p className="text-[#626262] md:text-xl text-base">
+                    <p className="text-[#626262] dark:text-[#A3A3A3] md:text-xl text-base">
                         {getTodayDate()}
                     </p>
                 </div>

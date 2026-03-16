@@ -32,14 +32,14 @@ const StudentProfilePage = () => {
 
   return (
     <InstructorDashboardLayout>
-      <div className="flex flex-col h-full bg-[#FAFAFA] px-4 sm:px-6 py-6 overflow-y-auto custom-scrollbar space-y-5 ">
+      <div className="flex flex-col h-full bg-[#FAFAFA] dark:bg-[#1E1E1E] px-4 sm:px-6 py-6 overflow-y-auto custom-scrollbar space-y-5 transition-colors">
         {/* Back Button */}
         {/* <div className="flex gap-2 items-center">
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer "
           >
-            <ArrowLeft size={22} color="#333" />
+            <ArrowLeft size={22}  color="#333" />
           </button>
           <p className="lg:text-lg text-base font-semibold text-[#333] ">Go Back</p>
         </div> */}
@@ -62,7 +62,7 @@ const StudentProfilePage = () => {
             <div className="flex flex-col sm:flex-row sm:items-center   md:gap-50 gap-5 w-full ">
               <div className="flex gap-5 items-center justify-center ">
                 {/* Avatar */}
-                <div className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] bg-[#D9D9D9] rounded-full flex-shrink-0 ">
+                <div className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] bg-[#D9D9D9] rounded-full shrink-0 ">
 
                   {student.image && (
                     <img
@@ -161,10 +161,10 @@ const StudentProfilePage = () => {
             <div className="overflow-x-auto">
 
               {/* Table Wrapper */}
-              <div className="border border-[#E5E7EB] rounded-[12px] overflow-hidden min-w-[600px]">
+              <div className="border border-[#E5E7EB] dark:border-[#3B3B3B] rounded-[12px] overflow-hidden min-w-[600px]">
 
                 {/* Table Header */}
-                <div className="bg-[#FFF5ED] grid grid-cols-[120px_1fr_180px_80px] items-center px-5 py-3 text-xs lg:text-sm font-bold text-[#F67300]">
+                <div className="bg-[#FFF5ED] dark:bg-[#333333] grid grid-cols-[120px_1fr_180px_80px] items-center px-5 py-3 text-xs lg:text-sm font-bold text-[#F67300] transition-colors">
                   <span>S.no</span>
                   <span>Assignment Name</span>
                   <span className="text-center">Submission</span>
@@ -176,7 +176,7 @@ const StudentProfilePage = () => {
                   {assignmentData.map((item, index) => (
                     <div
                       key={item.id}
-                      className="grid grid-cols-[120px_1fr_180px_80px] items-center px-5 py-3 text-xs lg:text-sm text-[#333333] hover:bg-gray-50 transition"
+                      className="grid grid-cols-[120px_1fr_180px_80px] items-center px-5 py-3 text-xs lg:text-sm text-[#333333] dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-[#363636] transition-colors"
                     >
                       <span className="text-[#626262]">
                         {index + 1}
@@ -228,10 +228,10 @@ const StudentProfilePage = () => {
             <div className="overflow-x-auto">
 
               {/* Table Wrapper */}
-              <div className="border border-[#E5E7EB] rounded-[12px] overflow-hidden min-w-[700px] lg:min-w-0">
+              <div className="border border-[#E5E7EB] dark:border-[#3B3B3B] rounded-[12px] overflow-hidden min-w-[700px] lg:min-w-0">
 
                 {/* Header */}
-                <div className="bg-[#FFF5ED]  grid grid-cols-[70px_130px_1fr_130px_50px]  items-center px-5 py-3  text-xs lg:text-sm font-bold text-[#F67300]">
+                <div className="bg-[#FFF5ED] dark:bg-[#333333] grid grid-cols-[70px_130px_1fr_130px_50px] items-center px-5 py-3 text-xs lg:text-sm font-bold text-[#F67300] transition-colors">
 
                   <span>S.no</span>
                   <span>Date</span>
@@ -247,7 +247,7 @@ const StudentProfilePage = () => {
                   {testData.map((item, index) => (
                     <div
                       key={item.id}
-                      className="grid grid-cols-[70px_130px_1fr_130px_50px]  items-center px-5 py-3  text-xs lg:text-sm text-[#333333]  hover:bg-gray-50 transition"
+                      className="grid grid-cols-[70px_130px_1fr_130px_50px] items-center px-5 py-3 text-xs lg:text-sm text-[#333333] dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-[#363636] transition-colors"
                     >
                       {/* S.no */}
                       <span className="text-[#626262]">
@@ -306,14 +306,14 @@ const StudentProfilePage = () => {
             {/* Scroll Wrapper */}
             <div className="overflow-x-auto">
 
-              <div className="border border-[#E5E7EB] rounded-[12px] 
+              <div className="border border-[#E5E7EB] dark:border-[#3B3B3B] rounded-[12px] 
     overflow-hidden min-w-[600px] lg:min-w-0">
 
                 {/* Header */}
-                <div className="bg-[#FFF5ED] 
+                <div className="bg-[#FFF5ED] dark:bg-[#333333]
       grid grid-cols-[120px_150px_1fr_120px] 
       items-center px-5 py-3 
-      text-xs lg:text-sm font-bold text-[#F67300]">
+      text-xs lg:text-sm font-bold text-[#F67300] transition-colors">
 
                   <span>S.no</span>
                   <span>Date</span>
@@ -330,8 +330,8 @@ const StudentProfilePage = () => {
                       key={item.id}
                       className="grid grid-cols-[120px_150px_1fr_120px] 
             items-center px-5 py-3 
-            text-xs lg:text-sm text-[#333333] 
-            hover:bg-gray-50 transition"
+            text-xs lg:text-sm text-[#333333] dark:text-gray-200
+            hover:bg-gray-50 dark:hover:bg-[#363636] transition-colors"
                     >
                       {/* S.no */}
                       <span className="text-[#626262]">
@@ -386,7 +386,7 @@ const StudentProfilePage = () => {
               {recentActivityData.map((item) => (
                 <div
                   key={item.id}
-                  className="boxStyle hover:bg-[#fafafa]!   transition cursor-pointer"
+                  className="boxStyle hover:bg-[#fafafa]! dark:hover:bg-[#363636]! transition-colors cursor-pointer"
                 >
                   <p className="text-sm lg:text-base   text-[#333] font-medium mb-1 truncate">
                     {item.title}

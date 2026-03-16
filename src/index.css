@@ -1,12 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=TikTok+Sans:opsz,wght@12..36,300..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
-
-
 @import "tailwindcss";
-
+@variant dark (&:is(.dark *));
 
 body {
   font-family: "Urbanist", sans-serif;
   background-color: #FAFAFA;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/*darkmodeoveride*/
+body.dark,
+.dark {
+  background-color: #1E1E1E !important;
+  color: #FFFFFF
+}
+
+.dark .bg-white,
+.dark .boxStyle,
+.dark .iconStyle {
+  background-color: #2D2D2D !important;
+  border-color: #3B3B3B !important;
+}
+
+.dark .iconStyle svg {
+  color: #FFFFFF !important;
+}
+
+.dark .iconStyle * {
+  stroke: #FFFFFF !important;
+}
+
+.dark .bg-\[\#FAFAFA\] {
+  background-color: #1E1E1E !important;
+}
+
+.dark .text-\[\#333333\],
+.dark .text-primary,
+.dark h1,
+.dark h2,
+.dark h3 {
+  color: #FFFFFF !important;
+}
+
+.dark .text-\[\#626262\],
+.dark .text-secondary,
+.dark p,
+.dark span {
+  color: #E0E0E0 !important;
+}
+
+.dark .border-\[\#F2EEF4\] {
+  border-color: #3B3B3B !important;
+}
+
+.dark input {
+  color: #FFFFFF !important;
+}
+
+.dark input::placeholder {
+  color: #A0A0A0 !important;
 }
 
 .iconStyle {
@@ -82,4 +134,28 @@ input[type="time"]::-webkit-inner-spin-button {
 
 .scrollbar-hide {
   -webkit-overflow-scrolling: touch;
+}
+
+/* --- Dark Mode Scrollbars --- */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1E1E1E;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3B3B3B;
+  border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #4B4B4B;
+}
+
+.dark {
+  scrollbar-color: #3B3B3B #1E1E1E;
+  scrollbar-width: thin;
 }

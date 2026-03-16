@@ -36,11 +36,11 @@ const FAQsTabSection: React.FC = () => {
     if (faqs.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-10 w-full text-center">
-                <div className="w-[64px] h-[64px] bg-[#FFF0EF] rounded-full flex items-center justify-center mb-6">
+                <div className="w-[64px] h-[64px] bg-[#FFF0EF] dark:bg-[#3D2B20] rounded-full flex items-center justify-center mb-6">
                     <DocumentText size={32} color="#EF7A02" />
                 </div>
-                <h3 className="text-[#626262] text-base font-medium mb-2">No FAQs Found</h3>
-                <p className="text-[#989898] text-sm ">There are no frequently asked questions available for this class.</p>
+                <h3 className="text-[#626262] dark:text-[#E0E0E0] text-base font-medium mb-2">No FAQs Found</h3>
+                <p className="text-[#989898] dark:text-[#A3A3A3] text-sm ">There are no frequently asked questions available for this class.</p>
             </div>
         );
     }
@@ -50,7 +50,7 @@ const FAQsTabSection: React.FC = () => {
             {faqs.map((faq) => (
                 <div
                     key={faq.id}
-                    className="bg-white border border-gray-100 rounded-[10px] overflow-hidden transition-all "
+                    className="bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-[#363636] rounded-[10px] overflow-hidden transition-all "
                 >
                     <div className="p-[20px] flex flex-col ">
                         <button
@@ -58,7 +58,7 @@ const FAQsTabSection: React.FC = () => {
                             className="w-full flex items-start justify-between text-left hover:text-orange-500 transition-colors cursor-pointer"
                         >
                             <span
-                                className="text-[#333333] text-base font-medium"
+                                className="text-[#333333] dark:text-white text-base font-medium"
                             >
                                 {faq.question}
                             </span>
@@ -73,7 +73,7 @@ const FAQsTabSection: React.FC = () => {
 
                         {openId === faq.id && (
                             <div
-                                className="mt-[15px] text-[#4d4d4d] animate-in fade-in slide-in-from-top-1 duration-300 max-w-fit text-sm"
+                                className="mt-[15px] text-[#4d4d4d] dark:text-gray-300 animate-in fade-in slide-in-from-top-1 duration-300 max-w-fit text-sm"
                             >
                                 {faq.answer}
                             </div>

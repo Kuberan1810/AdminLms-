@@ -48,43 +48,43 @@ const JoinClassModal: React.FC<JoinClassModalProps> = ({
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-[500px] rounded-[20px] p-7 bg-[#FFFBFB] shadow-lg transition-all"
+                className="relative w-[500px] rounded-[20px] p-7 bg-[#FFFBFB] dark:bg-[#1E1E1E] shadow-lg transition-all dark:border dark:border-[#363636]"
             >
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-5 right-5 text-[#626262] hover:text-gray-700 cursor-pointer"
+                    className="absolute top-5 right-5 text-[#626262] hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 cursor-pointer"
                 >
                     <X className="w-5 h-5" />
                 </button>
 
                 {/* Modal Header */}
-                <h2 className="text-xl font-semibold text-[#333] mb-2">
+                <h2 className="text-xl font-semibold text-[#333] dark:text-white mb-2">
                     {isInstructor ? "Start Class" : "Join Class"}
                 </h2>
 
-                <p className="text-[#333] mb-4 whitespace-pre-line text-[15px] leading-relaxed">
+                <p className="text-[#333] dark:text-gray-300 mb-4 whitespace-pre-line text-[15px] leading-relaxed">
                     You are about to {isInstructor ? "start" : "join"} the session.{"\n"}
                     Would you like to <strong>join the class instantly</strong>, or{" "}
                     <strong>copy the meeting link and join later</strong>?
                 </p>
 
-                <p className="text-[#333] mb-4 text-[15px]">Choose an option below:</p>
+                <p className="text-[#333] dark:text-gray-300 mb-4 text-[15px]">Choose an option below:</p>
 
                 <div className="flex flex-col gap-3 mb-6">
                     {/* Join Now Option */}
                     <div
                         onClick={handleJoinNow}
-                        className="flex items-start gap-4 p-4 border border-gray-200 bg-white rounded-xl cursor-pointer hover:border-orange-400 hover:bg-orange-50/30 transition-colors group"
+                        className="flex items-start gap-4 p-4 border border-gray-200 dark:border-[#363636] bg-white dark:bg-[#2A2A2A] rounded-xl cursor-pointer hover:border-orange-400 dark:hover:border-orange-500 hover:bg-orange-50/30 dark:hover:bg-[#F6730015] transition-colors group"
                     >
-                        <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center shrink-0 group-hover:bg-orange-200 transition-colors">
-                            <ExportSquare color="#fe3500" className="w-5 h-" />
+                        <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-[#F6730030] flex items-center justify-center shrink-0 group-hover:bg-orange-200 dark:group-hover:bg-[#F6730040] transition-colors">
+                            <ExportSquare className="w-5 h-"  color="#fe3500" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-[#333] items-center flex gap-2">
+                            <h3 className="font-semibold text-[#333] dark:text-white items-center flex gap-2">
                                 Join Now
                             </h3>
-                            <p className="text-sm text-gray-500 mt-0.5">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                                 Enter the class immediately.
                             </p>
                         </div>
@@ -93,20 +93,20 @@ const JoinClassModal: React.FC<JoinClassModalProps> = ({
                     {/* Copy Link Option */}
                     <div
                         onClick={handleCopyLink}
-                        className="flex items-start gap-4 p-4 border border-gray-200 bg-white rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-colors group relative"
+                        className="flex items-start gap-4 p-4 border border-gray-200 dark:border-[#363636] bg-white dark:bg-[#2A2A2A] rounded-xl cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/30 dark:hover:bg-[#3B82F615] transition-colors group relative"
                     >
-                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0 group-hover:bg-blue-200 transition-colors">
+                        <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-[#3B82F630] flex items-center justify-center shrink-0 group-hover:bg-blue-200 dark:group-hover:bg-[#3B82F640] transition-colors">
                             {copied ? (
-                                <CheckCircle2 className="w-5 h-5 text-green-600" />
+                                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-500" />
                             ) : (
-                                    <Copy color="#3B82F6" className="w-5 h-5 text-blue-400" />
+                                    <Copy className="w-5 h-5 text-blue-400 dark:text-blue-500"  color="#3B82F6" />
                             )}
                         </div>
                         <div>
-                            <h3 className="font-semibold text-[#333]">
+                            <h3 className="font-semibold text-[#333] dark:text-white">
                                 {copied ? "Copied!" : "Copy Link"}
                             </h3>
-                            <p className="text-sm text-gray-500 mt-0.5">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                                 Copy the meeting link and join using the link.
                             </p>
                         </div>

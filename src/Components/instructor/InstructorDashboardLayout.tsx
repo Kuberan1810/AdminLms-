@@ -1,4 +1,3 @@
-import { InstructorNotificationProvider } from "../../context/InstructorNotification/InstructorNotificationContext";
 import InstructorHeader from "./InstructorHeader";
 
 interface Props {
@@ -11,7 +10,7 @@ const InstructorDashboardLayout = ({ children }: Props) => {
 
 
 
-        <div className="h-screen flex flex-col overflow-hidden bg-[#FAFAFA]">
+        <div className="h-screen flex flex-col overflow-hidden bg-[#FAFAFA] dark:bg-[#1E1E1E] transition-colors">
 
             <div className="shrink-0">
                 <InstructorHeader />

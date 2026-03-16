@@ -30,10 +30,10 @@ const ProfileInfo = ({ image, role, onClick }: ProfileInfoProps) => {
 
             {/* Name + Role (hide on mobile) */}
             <div className="hidden sm:block">
-                <p className="text-sm font-medium text-[#333333] leading-tight">
+                <p className="text-sm font-medium text-[#333333] dark:text-white leading-tight">
                     {user?.name}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-[#A3A3A3]">
                     {role}
                 </p>
             </div>

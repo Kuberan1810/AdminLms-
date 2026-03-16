@@ -104,10 +104,10 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
     };
 
     return (
-        <div className="bg-white border border-[#E2E8ED] rounded-[10px] p-[10px] relative w-full flex flex-col gap-[10px]" style={{ fontFamily: 'Urbanist, sans-serif' }}>
+        <div className="bg-white dark:bg-[#1E1E1E] border border-[#F2EEF4] dark:border-[#2C2C2C] rounded-[10px] p-3 relative w-full flex flex-col gap-1">
 
             {isPinned && (
-                <div className="absolute top-[10px] right-[10px] flex items-center gap-1 text-[#626262] text-[12px]">
+                <div className="absolute top-[10px] right-[10px] flex items-center gap-1 text-[#626262] dark:text-[#A0A0A0] text-[12px]">
                     <Pin className="w-3 h-3" />
                     <span>Pinned by Instructor</span>
                 </div>
@@ -119,19 +119,19 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
                     {getInitials(studentName)}
                 </div>
                 <div>
-                    <h3 className="text-[16px] font-semibold text-[#333333]">{studentName}</h3>
+                    <h3 className="text-[16px] font-semibold text-[#333333] dark:text-white">{studentName}</h3>
                     <div className="flex items-center gap-2">
                         <span className="text-[12px] text-[#EF7A02] font-medium">{role}</span>
-                        <span className="text-[12px] text-[#989898]">{timeAgo}</span>
+                        <span className="text-[12px] text-[#989898] dark:text-[#A0A0A0]">{timeAgo}</span>
                     </div>
                 </div>
             </div>
 
-            <h3 className="text-[17px] text-[#333333] font-bold">
+            <h3 className="text-[17px] text-[#333333] dark:text-white font-bold">
                 {title}
             </h3>
 
-            <p className="text-[13px] md:text-[14px] font-medium text-[#626262] leading-tight">
+            <p className="text-[13px] md:text-[14px] font-medium text-[#626262] dark:text-[#CCCCCC] leading-tight">
                 {description}
             </p>
 
@@ -166,20 +166,20 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
                             {getInitials(reply?.instructorName || '')}
                         </div>
                         <div className="flex flex-col">
-                            <h4 className="text-[16px] font-semibold text-[#333333] leading-tight">
+                            <h4 className="text-[16px] font-semibold text-[#333333] dark:text-white leading-tight">
                                 {reply?.instructorName}
                             </h4>
                             <div className="flex items-center gap-2">
                                 <span className="text-[10px] px-2 py-0.5 bg-[#E0FDFE] text-[#00A3FF] rounded-[4px] font-medium">
                                     {reply?.role}
                                 </span>
-                                <span className="text-[10px] text-[#989898]">
+                                <span className="text-[10px] text-[#989898] dark:text-[#A0A0A0]">
                                     {reply?.timeAgo}
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <p className="text-[14px] text-[#626262] font-medium leading-relaxed">
+                    <p className="text-[14px] text-[#626262] dark:text-[#CCCCCC] font-medium leading-relaxed">
                         {reply?.content}
                     </p>
                 </div>
@@ -187,14 +187,14 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
 
             {/* Privacy */}
             <div>
-                <div className="inline-flex items-center px-3 py-1 border border-[#333333] rounded-full">
-                    <span className="text-[12px] font-medium capitalize">
+                <div className="inline-flex items-center px-3 py-1 border border-[#333333] dark:border-gray-500 rounded-full">
+                    <span className="text-[12px] font-medium capitalize dark:text-gray-300">
                         {privacy}
                     </span>
                 </div>
             </div>
 
-            <div className="h-[1px] bg-[#E2E8ED] -mx-[10px]" />
+            <div className="h-[1px] bg-[#E2E8ED] dark:bg-[#2C2C2C] -mx-[10px]" />
 
             {previewOpen && file && (
                 <div
@@ -209,11 +209,11 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
                 </div>
             )}
             {/* Footer */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-2">
                 <div className="flex items-center gap-6">
                     <button
                         onClick={handleLike}
-                        className={`flex items-center gap-2 ${isLiked ? 'text-orange-500' : 'text-[#626262]'}`}
+                        className={`flex items-center gap-2 ${isLiked ? 'text-orange-500' : 'text-[#626262] dark:text-[#A0A0A0]'}`}
                     >
                         <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
                         <span className="text-[14px] font-semibold">{localLikes}</span>
@@ -221,7 +221,7 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
 
                     <button
                         onClick={handleComment}
-                        className="flex items-center gap-2 text-[#626262]"
+                        className="flex items-center gap-2 text-[#626262] dark:text-[#A0A0A0]"
                     >
                         <MessageCircle className="w-4 h-4" />
                         <span className="text-[14px] font-semibold">{localCommentCount}</span>
@@ -238,8 +238,8 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
 
             {/* Comments */}
             {showComments && (
-                <div className="flex flex-col gap-4 mt-4">
-                    <div className="h-[1px] bg-[#E2E8ED] -mx-[10px]" />
+                <div className="flex flex-col gap-4 mt-4 text-[#333333] dark:text-white">
+                    <div className="h-[1px] bg-[#E2E8ED] dark:bg-[#2C2C2C] -mx-[10px]" />
                     <h5 className="text-[16px] font-semibold">Comments</h5>
 
                     <form onSubmit={handleAddComment} className="flex gap-3 items-center">
@@ -253,13 +253,13 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
                                 placeholder="Write a comment..."
                                 value={newComment}
                                 onChange={(e) => setNewComment(e.target.value)}
-                                className="w-full bg-[#F5F5F5] border border-[#D2D2D2] rounded-full py-2 px-4 text-[14px] focus:outline-none focus:border-[#EF7A02] pr-10"
+                                className="w-full bg-[#F5F5F5] dark:bg-[#2C2C2C] border border-[#D2D2D2] dark:border-[#3C3C3C] rounded-full py-2 px-4 text-[14px] dark:text-white focus:outline-none focus:border-[#EF7A02] pr-10"
                             />
                             <button
                                 type="submit"
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#EF7A02]"
                             >
-                                <DirectSend size="20" variant="Bold" />
+                                <DirectSend size="20" variant="Bold"  color="currentColor" />
                             </button>
                         </div>
                     </form>
@@ -271,13 +271,13 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
                                     {getInitials(comment.userName)}
                                 </div>
                                 <div>
-                                    <h4 className="font-bold">{comment.userName}</h4>
-                                    <p className="text-[14px] text-[#626262]">{comment.content}</p>
+                                    <h4 className="font-bold dark:text-white">{comment.userName}</h4>
+                                    <p className="text-[14px] text-[#626262] dark:text-[#CCCCCC]">{comment.content}</p>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p className="text-[14px] text-[#989898] italic">No comments yet.</p>
+                        <p className="text-[14px] text-[#989898] dark:text-[#A0A0A0] italic">No comments yet.</p>
                     )}
                     
                 </div>

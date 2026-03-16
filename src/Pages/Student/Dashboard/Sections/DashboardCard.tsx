@@ -7,7 +7,7 @@ import UpcomingClasses from "./UpcomingClasses";
 
 const DashboardCard = () => {
     return (
-        <div className="bg-[#F9FAFB] min-h-screen  ">
+        <div className="bg-[#F9FAFB] dark:bg-[#1E1E1E] transition-colors duration-300 min-h-screen  ">
 
             {/* Top cards */}
             <DashboardData />

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FilterSearch, CalendarTick } from 'iconsax-react';
-import { CalendarCheck, CalendarClock, ChevronDown, ClipboardList } from "lucide-react";
+import { ChevronDown, ClipboardList } from "lucide-react";
 
 const Badge = ({
   children,
@@ -10,10 +10,10 @@ const Badge = ({
   color?: "green" | "red" | "orange" | "gray";
 }) => {
   const map = {
-    green: "bg-green-100 text-green-600",
-    red: "bg-red-100 text-red-600",
-    orange: "bg-orange-100 text-orange-600",
-    gray: "bg-gray-100 text-gray-600",
+    green: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
+    red: "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400",
+    orange: "bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400",
+    gray: "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400",
   };
 
   return (
@@ -60,18 +60,18 @@ const SectionCard = ({
 
   return (
     <div className="boxStyle mb-5">
-      <div className="flex items-center justify-between mb-4 bg-[#FFF5EB] p-4 rounded-xl shadow-sm border border-orange-100">
+      <div className="flex items-center justify-between mb-4 bg-[#FFF5EB] dark:bg-[#F6730010] p-4 rounded-xl shadow-sm border border-orange-100 dark:border-[#3B3B3B]">
         <h2 className="text-[#F67300] font-semibold text-lg  w-full">{title}</h2>
 
         {hasFilter && onFilterChange && filterValue && (
           <div ref={dropdownRef} className="relative z-10 w-full md:w-auto">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center justify-between gap-2 border border-[#F2EEF4] rounded-xl px-4 py-2 bg-white hover:bg-gray-50 transition-all cursor-pointer w-full md:w-auto min-w-[140px]"
+              className="flex items-center justify-between gap-2 border border-[#F2EEF4] dark:border-[#4B4B4B] rounded-xl px-4 py-2 bg-white dark:bg-[#2A2A2A] hover:bg-gray-50 dark:hover:bg-[#3B3B3B] transition-all cursor-pointer w-full md:w-auto min-w-[140px]"
             >
               <div className="flex items-center gap-2">
-                <FilterSearch size="16" color="#626262" />
-                <span className="text-[13px] font-medium text-gray-600">
+                <FilterSearch size="16" className="text-[#626262] dark:text-white"  color="#626262" />
+                <span className="text-[13px] font-medium text-gray-600 dark:text-[#A3A3A3]">
                   {filterValue}
                 </span>
               </div>
@@ -82,7 +82,7 @@ const SectionCard = ({
             </button>
 
             {isOpen && (
-              <div className="absolute top-full mt-2 right-0 w-full min-w-[140px] bg-white border border-[#F2EEF4] rounded-xl shadow-md overflow-hidden">
+              <div className="absolute top-full mt-2 right-0 w-full min-w-[140px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#4B4B4B] rounded-xl shadow-md overflow-hidden">
                 {filterOptions.map((option) => (
                   <button
                     key={option}
@@ -91,8 +91,8 @@ const SectionCard = ({
                       setIsOpen(false);
                     }}
                     className={`w-full text-left px-4 py-2 text-[13px] transition-colors cursor-pointer ${filterValue === option
-                      ? "bg-[#FFF7ED] text-[#F97316] font-medium"
-                      : "hover:bg-gray-50 text-gray-600"
+                      ? "bg-[#FFF7ED] dark:bg-[#3D2B20] text-[#F97316] font-medium"
+                      : "hover:bg-gray-50 dark:hover:bg-[#3B3B3B] text-gray-600 dark:text-[#A3A3A3]"
                       }`}
                   >
                     {option}
@@ -114,7 +114,7 @@ const AcademicInfo = () => {
   const [attendanceFilter, setAttendanceFilter] = useState('All status');
   const attendanceOptions = ['All status', 'Present', 'Absent', 'Holiday'];
 
-  const attendanceData = [
+  const attendanceData: any[] = [
     // { sno: 1, date: "12/01/2026", class: "AI Agent", status: "Present" },
     // { sno: 2, date: "13/01/2026", class: "Web Development", status: "Present" },
     // { sno: 3, date: "14/01/2026", class: "Machine Learning", status: "Absent" },
@@ -128,7 +128,7 @@ const AcademicInfo = () => {
   const [assignmentFilter, setAssignmentFilter] = useState('All status');
   const assignmentOptions = ['All status', 'In Progress', 'Submitted'];
 
-  const assignmentData = [
+  const assignmentData: any[] = [
     // {
     //   title: "Build Q&A system using RAG",
     //   course: "AM101 - AI / ML Frontier AI Engineer",
@@ -166,7 +166,7 @@ const AcademicInfo = () => {
   const [testFilter, setTestFilter] = useState('All status');
   const testOptions = ['All status', 'Pass', 'Fail'];
 
-  const testData = [
+  const testData: any[] = [
     // { sno: 1, date: "23 Jan 2026", name: "Test name", mark: 35, result: "Fail" },
     // { sno: 2, date: "23 Jan 2026", name: "Test name", mark: 35, result: "Pass" },
     // { sno: 3, date: "23 Jan 2026", name: "Test name", mark: 35, result: "Pass" },
@@ -191,14 +191,14 @@ const AcademicInfo = () => {
             ].map((course, i) => (
               <div
                 key={i}
-                className="boxStyle px-6 md:px-8 flex flex-row justify-between md:items-center gap-4 transition-all "
+                className="boxStyle px-6 md:px-8 flex flex-row justify-between md:items-center gap-4 transition-all border dark:border-[#3B3B3B]"
               >
-                <div className="text-md font-medium text-primary">Course ID
-                  <p className="text-sm font-medium text-[#626262] ">{course.code}</p></div>
-                <div className="text-md font-medium text-primary">Start Date
-                  <p className="text-sm font-medium text-[#626262]">{course.date}</p></div>
-                <div className="text-md font-medium text-primary">Duration
-                  <p className="text-sm font-medium text-[#626262] ">{course.duration}</p></div>
+                <div className="text-md font-medium text-primary dark:text-white">Course ID
+                  <p className="text-sm font-medium text-[#626262] dark:text-[#A3A3A3]">{course.code}</p></div>
+                <div className="text-md font-medium text-primary dark:text-white">Start Date
+                  <p className="text-sm font-medium text-[#626262] dark:text-[#A3A3A3]">{course.date}</p></div>
+                <div className="text-md font-medium text-primary dark:text-white">Duration
+                  <p className="text-sm font-medium text-[#626262] dark:text-[#A3A3A3]">{course.duration}</p></div>
               </div>
             ))}
           </div>
@@ -212,9 +212,9 @@ const AcademicInfo = () => {
           filterOptions={attendanceOptions}
         >
           {filteredAttendance.length > 0 ? (
-            <div className="boxStyle overflow-hidden overflow-x-auto p-0">
+            <div className="boxStyle overflow-hidden overflow-x-auto p-0 border dark:border-[#3B3B3B]">
               <table className="w-full text-sm min-w-[500px]">
-                <thead className="bg-[#F6730010] text-[#F67300] border-b border-[#F6730020]">
+                <thead className="bg-[#F6730010] dark:bg-[#F6730020] text-[#F67300] border-b border-[#F6730020] dark:border-[#3B3B3B]">
                   <tr>
                     <th className="px-6 py-4 text-left font-semibold">S.no</th>
                     <th className="px-6 py-4 text-left font-semibold">Date</th>
@@ -225,10 +225,10 @@ const AcademicInfo = () => {
 
                 <tbody>
                   {filteredAttendance.map((row, i) => (
-                    <tr key={i} className="border-b border-[#F2EEF4] last:border-0 hover:bg-orange-50/30 transition-colors">
-                      <td className="px-6 py-4 align-middle text-[#333333] font-medium">{row.sno}</td>
-                      <td className="px-6 py-4 align-middle text-[#626262]">{row.date}</td>
-                      <td className="px-6 py-4 align-middle text-[#333333]">{row.class}</td>
+                    <tr key={i} className="border-b border-[#F2EEF4] dark:border-[#3B3B3B] last:border-0 hover:bg-orange-50/30 dark:hover:bg-[#3D2B20]/30 transition-colors">
+                      <td className="px-6 py-4 align-middle text-[#333333] dark:text-white font-medium">{row.sno}</td>
+                      <td className="px-6 py-4 align-middle text-[#626262] dark:text-[#A3A3A3]">{row.date}</td>
+                      <td className="px-6 py-4 align-middle text-[#333333] dark:text-white">{row.class}</td>
                       <td className="px-6 py-4 align-middle">
                         <Badge color={row.status === "Present" ? "green" : "red"}>
                           {row.status}
@@ -241,13 +241,13 @@ const AcademicInfo = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-16 h-16 bg-[#FFF5EB] rounded-full flex items-center justify-center mb-4">
+              <div className="w-16 h-16 bg-[#FFF5EB] dark:bg-[#F6730010] rounded-full flex items-center justify-center mb-4">
                 <ClipboardList size={28} className="text-[#F67300]" />
               </div>
-              <h3 className="text-lg font-normal text-[#333333] mb-2">
+              <h3 className="text-lg font-normal text-[#333333] dark:text-white mb-2">
                 No Attendance Records Found
               </h3>
-              <p className="text-sm text-[#808080] mb-0 text-center max-w-sm font-light">
+              <p className="text-sm text-[#808080] dark:text-[#A3A3A3] mb-0 text-center max-w-sm font-light">
                 There are no attendance records for this date.
               </p>
             </div>
@@ -282,7 +282,7 @@ const AcademicInfo = () => {
                       {/* LEFT CONTENT */}
                       <div className="flex-1">
                         <div className="flex flex-wrap sm:items-center sm:flex-row gap-2.5 sm:gap-7.5 mb-1.5">
-                          <h3 className="text-[18px] sm:text-[20px] font-semibold text-[#333333]">
+                          <h3 className="text-[18px] sm:text-[20px] font-semibold text-[#333333] dark:text-white">
                             {item.title}
                           </h3>
 
@@ -295,20 +295,20 @@ const AcademicInfo = () => {
                           </span>
                         </div>
 
-                        <p className="text-[14px] sm:text-[16px] font-medium text-[#626262] mb-4">
+                        <p className="text-[14px] sm:text-[16px] font-medium text-[#626262] dark:text-[#E0E0E0] mb-4">
                           {item.course}
                         </p>
 
-                        <p className="text-[14px] text-[#626262] leading-relaxed md:line-clamp-1 line-clamp-2 ">
+                        <p className="text-[14px] text-[#626262] dark:text-[#A3A3A3] leading-relaxed md:line-clamp-1 line-clamp-2 ">
                           {item.desc}
                         </p>
                       </div>
 
                       {/* RIGHT CONTENT */}
                       <div className="flex flex-col items-start sm:items-end gap-3 w-full lg:w-auto min-w-50">
-                        <div className="flex items-center gap-2 text-[#626262]">
-                          <div className="iconStyle">
-                            <CalendarTick size="16" color="#626262" />
+                        <div className="flex items-center gap-2 text-[#626262] dark:text-[#A3A3A3]">
+                          <div className="iconStyle dark:bg-[#3B3B3B] dark:border-[#4B4B4B]">
+                            <CalendarTick size="16" className="text-[#626262] dark:text-white"  color="currentColor" />
                           </div>
                           <span className="text-[12px] md:text-base font-medium">
                             {item.dueDate}
@@ -327,7 +327,7 @@ const AcademicInfo = () => {
 
                         {item.mark && (
                           <div className="w-full text-center sm:text-right mt-1">
-                            <span className="bg-[#FFF5EB] text-[#F67300] text-sm font-semibold px-4 py-1.5 rounded-lg border border-[#F6730030]">
+                            <span className="bg-[#FFF5EB] dark:bg-[#3D2B20] text-[#F67300] dark:text-orange-400 text-sm font-semibold px-4 py-1.5 rounded-lg border border-[#F6730030] dark:border-[#F6730050]">
                               Score: {item.mark}
                             </span>
                           </div>
@@ -340,13 +340,13 @@ const AcademicInfo = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-16 h-16 bg-[#FFF5EB] rounded-full flex items-center justify-center mb-4">
+              <div className="w-16 h-16 bg-[#FFF5EB] dark:bg-[#F6730010] rounded-full flex items-center justify-center mb-4">
                 <ClipboardList size={28} className="text-[#F67300]" />
               </div>
-              <h3 className="text-lg font-normal text-[#333333] mb-2">
+              <h3 className="text-lg font-normal text-[#333333] dark:text-white mb-2">
                 No Assignments Found
               </h3>
-              <p className="text-sm text-[#808080] mb-0 text-center max-w-sm font-light">
+              <p className="text-sm text-[#808080] dark:text-[#A3A3A3] mb-0 text-center max-w-sm font-light">
                 There are no assignments scheduled for this date.
               </p>
             </div>
@@ -361,9 +361,9 @@ const AcademicInfo = () => {
           filterOptions={testOptions}
         >
           {filteredTests.length > 0 ? (
-            <div className="boxStyle overflow-hidden overflow-x-auto p-0">
+            <div className="boxStyle overflow-hidden overflow-x-auto p-0 border dark:border-[#3B3B3B]">
               <table className="w-full text-sm min-w-[600px]">
-                <thead className="bg-[#F6730010] text-[#F67300] border-b border-[#F6730020]">
+                <thead className="bg-[#F6730010] dark:bg-[#F6730020] text-[#F67300] border-b border-[#F6730020] dark:border-[#3B3B3B]">
                   <tr>
                     <th className="px-6 py-4 text-left font-semibold">S.no</th>
                     <th className="px-6 py-4 text-left font-semibold">Date</th>
@@ -375,13 +375,13 @@ const AcademicInfo = () => {
 
                 <tbody>
                   {filteredTests.map((t, i) => (
-                    <tr key={i} className="border-b border-[#F2EEF4] last:border-0 hover:bg-orange-50/30 transition-colors">
-                      <td className="px-6 py-4 align-middle text-[#333333] font-medium">{t.sno}</td>
-                      <td className="px-6 py-4 align-middle text-[#626262]">{t.date}</td>
-                      <td className="px-6 py-4 align-middle text-[#333333]">
+                    <tr key={i} className="border-b border-[#F2EEF4] dark:border-[#3B3B3B] last:border-0 hover:bg-orange-50/30 dark:hover:bg-[#3D2B20]/30 transition-colors">
+                      <td className="px-6 py-4 align-middle text-[#333333] dark:text-white font-medium">{t.sno}</td>
+                      <td className="px-6 py-4 align-middle text-[#626262] dark:text-[#A3A3A3]">{t.date}</td>
+                      <td className="px-6 py-4 align-middle text-[#333333] dark:text-white">
                         {t.name}
                       </td>
-                      <td className="px-6 py-4 align-middle text-[#333333]">{t.mark}</td>
+                      <td className="px-6 py-4 align-middle text-[#333333] dark:text-white">{t.mark}</td>
                       <td className="px-6 py-4 align-middle">
                         <Badge color={t.result === "Pass" ? "green" : "red"}>
                           {t.result}
@@ -394,13 +394,13 @@ const AcademicInfo = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-16 h-16 bg-[#FFF5EB] rounded-full flex items-center justify-center mb-4">
+              <div className="w-16 h-16 bg-[#FFF5EB] dark:bg-[#F6730010] rounded-full flex items-center justify-center mb-4">
                 <ClipboardList size={28} className="text-[#F67300]" />
               </div>
-              <h3 className="text-lg font-normal text-[#333333] mb-2">
+              <h3 className="text-lg font-normal text-[#333333] dark:text-white mb-2">
                 No Test Records Found
               </h3>
-              <p className="text-sm text-[#808080] mb-0 text-center max-w-sm font-light">
+              <p className="text-sm text-[#808080] dark:text-[#A3A3A3] mb-0 text-center max-w-sm font-light">
                 There are no test records for this date.
               </p>
             </div>

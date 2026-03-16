@@ -48,12 +48,12 @@ const Profile_Info = () => {
         <div>
             <div className="rounded-lg mb-6">
 
-                <div className="flex items-center justify-between mb-6 bg-[#FFF5EB] p-3 rounded-lg">
+                <div className="flex items-center justify-between mb-6 bg-[#FFF5EB] dark:bg-[#3d271d] p-3 rounded-lg border border-transparent dark:border-[#4d3125]">
                     <div className="flex items-center gap-2 text-[#F67300] font-medium">
                         <User size={20} className="md:w-5 md:h-5" />
                         <span className="text-base">Personal Details</span>
                     </div>
-
+{/* 
                     {!editMode ? (
                         <button
                             onClick={handleEdit}
@@ -68,7 +68,7 @@ const Profile_Info = () => {
                         >
                             Save
                         </button>
-                    )}
+                    )} */}
                 </div>
 
                 <div className="space-y-6 pl-2">
@@ -84,10 +84,10 @@ const Profile_Info = () => {
                                     type="email"
                                     value={tempInfo.email}
                                     onChange={(e) => handleChange('email', e.target.value)}
-                                    className="border border-[#d3d3d3] rounded-lg px-4 py-2 w-full max-w-md outline-none focus:border-[#F67300] text-[#333333]"
+                                    className="border border-[#d3d3d3] dark:border-[#363636] rounded-lg px-4 py-2 w-full max-w-md outline-none focus:border-[#F67300] text-[#333333] dark:text-white dark:bg-[#1E1E1E]"
                                 />
                             ) : (
-                                <span className="text-[#333333] font-medium">{profile.email || "indhu@gmail.com"}</span>
+                                <span className="text-[#333333] dark:text-gray-200 font-medium">{profile.email || "indhu@gmail.com"}</span>
                             )}
                         </div>
                     </div>
@@ -105,7 +105,7 @@ const Profile_Info = () => {
                                         <select
                                             value={code}
                                             onChange={(e) => setCode(e.target.value)}
-                                            className="border border-[#d3d3d3] rounded-lg px-3 py-2 outline-none focus:border-[#F67300] bg-white text-[#333333] appearance-none pr-8 cursor-pointer h-full"
+                                            className="border border-[#d3d3d3] dark:border-[#363636] rounded-lg px-3 py-2 outline-none focus:border-[#F67300] bg-white dark:bg-[#1E1E1E] text-[#333333] dark:text-white appearance-none pr-8 cursor-pointer h-full"
                                         >
                                             {countryCodes.map((c, i) => (
                                                 <option key={i} value={c.code}>
@@ -113,7 +113,7 @@ const Profile_Info = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-400">
                                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
                                         </div>
                                     </div>
@@ -122,12 +122,12 @@ const Profile_Info = () => {
                                         type="tel"
                                         value={tempInfo.phone}
                                         onChange={(e) => handleChange('phone', e.target.value)}
-                                        className="border border-[#d3d3d3] rounded-lg px-4 py-2 w-full outline-none focus:border-[#F67300] text-[#333333]"
+                                        className="border border-[#d3d3d3] dark:border-[#363636] rounded-lg px-4 py-2 w-full outline-none focus:border-[#F67300] text-[#333333] dark:text-white dark:bg-[#1E1E1E]"
                                     />
                                 </div>
 
                             ) : (
-                                <span className="text-[#333333] font-medium">{profile.phone || "+91 9876543210"}</span>
+                                <span className="text-[#333333] dark:text-gray-200 font-medium">{profile.phone || "+91 9876543210"}</span>
                             )}
                         </div>
                     </div>
@@ -141,8 +141,8 @@ const Profile_Info = () => {
                                     <span className="text-[#F67300] text-sm font-medium">Password:</span>
                                 </div>
                                 <div className="pl-6">
-                                    <div className="flex items-center justify-between border border-[#d3d3d3] rounded-lg px-4 py-1 w-full max-w-md bg-white">
-                                        <span className="text-[#333333] font-medium tracking-widest mt-1">*********</span>
+                                    <div className="flex items-center justify-between border border-[#d3d3d3] dark:border-[#363636] rounded-lg px-4 py-1 w-full max-w-md bg-white dark:bg-[#1E1E1E]">
+                                        <span className="text-[#333333] dark:text-white font-medium tracking-widest mt-1">*********</span>
                                         <button
                                             onClick={() => setChangingPassword(true)}
                                             className="bg-[#F67300] text-white text-xs px-3 py-1 rounded-md hover:bg-orange-600"
@@ -166,13 +166,13 @@ const Profile_Info = () => {
                                                 type={showNewPassword ? "text" : "password"}
                                                 value={newPassword}
                                                 onChange={(e) => setNewPassword(e.target.value)}
-                                                className="border border-[#d3d3d3] rounded-lg px-4 py-2 w-full outline-none focus:border-[#F67300] text-[#333333] pr-10"
+                                                className="border border-[#d3d3d3] dark:border-[#363636] rounded-lg px-4 py-2 w-full outline-none focus:border-[#F67300] text-[#333333] dark:text-white dark:bg-[#1E1E1E] pr-10"
 
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowNewPassword(!showNewPassword)}
-                                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                                             >
                                                 {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                             </button>
@@ -180,17 +180,17 @@ const Profile_Info = () => {
 
                                         {/* Checklist */}
                                         <div className="mt-3">
-                                            <p className="text-sm text-[#333333] mb-2">Password must contain:</p>
+                                            <p className="text-sm text-[#333333] dark:text-gray-300 mb-2">Password must contain:</p>
                                             <ul className="space-y-1">
-                                                <li className="flex items-center gap-2 text-xs text-[#333333]">
+                                                <li className="flex items-center gap-2 text-xs text-[#333333] dark:text-gray-400">
                                                     <span className="w-2 h-2 rounded-full bg-[#F67300]"></span>
                                                     At least 1 Upper case letter
                                                 </li>
-                                                <li className="flex items-center gap-2 text-xs text-[#333333]">
+                                                <li className="flex items-center gap-2 text-xs text-[#333333] dark:text-gray-400">
                                                     <span className="w-2 h-2 rounded-full bg-[#F67300]"></span>
                                                     At least 1 Number
                                                 </li>
-                                                <li className="flex items-center gap-2 text-xs text-[#333333]">
+                                                <li className="flex items-center gap-2 text-xs text-[#333333] dark:text-gray-400">
                                                     <span className="w-2 h-2 rounded-full bg-[#F67300]"></span>
                                                     At least 1 Characters
                                                 </li>
@@ -211,13 +211,13 @@ const Profile_Info = () => {
                                                 type={showConfirmPassword ? "text" : "password"}
                                                 value={confirmPassword}
                                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                                className="border border-[#d3d3d3] rounded-lg px-4 py-2 w-full outline-none focus:border-[#F67300] text-[#333333] pr-10"
+                                                className="border border-[#d3d3d3] dark:border-[#363636] rounded-lg px-4 py-2 w-full outline-none focus:border-[#F67300] text-[#333333] dark:text-white dark:bg-[#1E1E1E] pr-10"
 
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                                             >
                                                 {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                             </button>

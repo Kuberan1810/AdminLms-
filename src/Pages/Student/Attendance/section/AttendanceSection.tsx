@@ -222,7 +222,7 @@ export default function AttendanceSection() {
       <div className="px-3 py-3 sm:px-4 sm:py-4 md:px-5 md:py-5 lg:px-6 lg:py-6 space-y-3 sm:space-y-4 boxStyle mb-4 sm:mb-5">
         <h2 className="text-base sm:text-lg md:text-xl font-semibold">Courses</h2>
 
-        <div className="grid gap-5 xl:grid-cols-3 md:grid-cols-2 max-md:grid-flow-col max-md:auto-cols-[80vw] max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory scrollbar-hide p-2">
+        <div className="grid gap-5 xl:grid-cols-3 md:grid-cols-2 max-md:grid-flow-col max-md:auto-cols-[80vw] max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory scrollbar-hide p-2 ">
           {courses.map((course, i) => {
             const stats = getAttendanceStats(course);
             return (
@@ -230,13 +230,13 @@ export default function AttendanceSection() {
                 key={i}
                 className="boxStyle"
               >
-                <div className="flex justify-between text-xs sm:text-sm md:text-base mb-2">
-                  <span className="pr-2 text-primary">{course}</span>
+                <div className="flex justify-between text-xs sm:text-sm md:text-base mb-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-base sm:text-lg font-semibold text-[#333] dark:text-gray-300">{course}</span>
                 </div>
                 {/* ===== Progress ===== */}
                 <div>
                   <div className="flex justify-end mb-2.5">
-                    <p className="text-xs border border-[#F2EEF4] rounded-full w-fit text-[#626262] px-3 py-1">
+                    <p className="text-xs border border-[#F2EEF4] rounded-full w-fit text-[#626262] px-3 py-1 dark:text-gray-300">
                       {stats.percentage}%
                     </p>
                   </div>
@@ -249,7 +249,7 @@ export default function AttendanceSection() {
                   </div>
                 </div>
 
-                <div className=" text-[#626262] ">
+                <div className=" text-[#626262] dark:text-gray-300">
                   {stats.attendedClasses} of {stats.totalClasses} classes attended
                 </div>
               </div>
@@ -265,12 +265,12 @@ export default function AttendanceSection() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => changeMonth("prev")}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-[#FFF7F0] hover:bg-[#FFEBD7] transition-colors cursor-pointer"
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-[#FFF7F0] dark:border-gray-600 dark:hover:bg-[#FFEBD7] transition-colors cursor-pointer"
             >
-              <ArrowLeft2 size="18" color="#F67300" variant="Bold" />
+              <ArrowLeft2 size="18" variant="Bold"  color="#F67300" />
             </button>
 
-            <span className="text-base sm:text-lg font-semibold text-[#333] min-w-[160px] text-center">
+            <span className="text-base sm:text-lg font-semibold text-[#333] dark:text-gray-300 min-w-[160px] text-center">
               {formatMonthYear(currentDate)}
             </span>
 
@@ -278,7 +278,7 @@ export default function AttendanceSection() {
               onClick={() => changeMonth("next")}
               className="w-9 h-9 flex items-center justify-center rounded-xl bg-[#FFF7F0] hover:bg-[#FFEBD7] transition-colors cursor-pointer"
             >
-              <ArrowRight2 size="18" color="#F67300" variant="Bold" />
+              <ArrowRight2 size="18" variant="Bold"  color="#F67300" />
             </button>
           </div>
 
@@ -306,21 +306,20 @@ export default function AttendanceSection() {
                     : "bg-[#FFF7F0] text-[#F67300] border border-[#F6730030] hover:border-[#F67300]"
                   }`}
               >
-                <Filter size="18" color={open ? "#fff" : "#F67300"} variant={open ? "Bold" : "Linear"} />
+                <Filter size="18" variant={open ? "Bold" : "Linear"}  color={open ? "#fff" : "#F67300"} />
                 <span>Filter Courses</span>
                 <ArrowRight2
                   size="14"
-                  className={`transition-transform duration-200 ${open ? "rotate-90" : ""}`}
-                />
+                  className={`transition-transform duration-200 ${open ? "rotate-90" : ""}`} />
               </button>
 
               {open && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-                  <div className="absolute mt-3 w-[320px] sm:w-[340px] bg-white border border-[#E5E7EB] shadow-xl z-20 rounded-2xl overflow-hidden">
-                    <div className="px-4 py-3 bg-[#FAFAFA] border-b border-[#F0F0F0]">
+                  <div className="absolute mt-3 w-[320px] sm:w-[340px] bg-white dark:bg-[#1E293B] border border-[#E5E7EB] dark:border-gray-700 shadow-xl">
+                    <div className="px-4 py-3 bg-[#FAFAFA] border-b border-[#F0F0F0] dark:bg-[#1E293B] dark:border-gray-600">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-[#333]">Select Courses</span>
+                        <span className="text-sm font-semibold text-[#333] dark:text-gray-300">Select Courses</span>
                         <button
                           onClick={() => {
                             if (selectedCourses.length === courses.length) {
@@ -371,16 +370,16 @@ export default function AttendanceSection() {
         </div>
 
         {/* Day Names Header */}
-        <div className="grid grid-cols-7 bg-[#FAFAFA]">
+        <div className="grid grid-cols-7 bg-[#FAFAFA] dark:bg-[#1E293B] ">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d, i) => (
-            <div key={d} className={`text-center py-2.5 sm:py-3 text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide uppercase ${i === 0 ? "text-[#EF4444]" : "text-[#888]"}`}>
+            <div key={d} className={`text-center py-2.5 sm:py-3 text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide uppercase ${i === 0 ? "text-[#EF4444]" : "text-[#888] dark:text-gray-400"}`}>
               {d}
             </div>
           ))}
         </div>
 
         {/* Calendar Grid */}
-        <div className="grid grid-cols-7 border-t border-[#E5E7EB]">
+        <div className="grid grid-cols-7 border-t border-[#E5E7EB] dark:border-gray-600">
           {calendarData.map((cell, idx) => {
             const filteredClasses = cell.classes.filter(c => selectedCourses.includes(c.course));
             const hasPresent = filteredClasses.some(c => c.status === "Present");
@@ -394,8 +393,8 @@ export default function AttendanceSection() {
                   p-1.5 sm:p-2 md:p-2.5 lg:p-3
                   border-r border-b border-[#F0F0F0]
                   transition-all duration-150
-                  ${!cell.isCurrentMonth ? "bg-[#FAFAFA]" : "bg-white hover:bg-[#FEFEFE]"}
-                  ${cell.isToday ? "bg-[#FFF8F2]" : ""}
+                  ${!cell.isCurrentMonth ? "bg-[#FAFAFA] dark:bg-[#1E293B]" : "bg-white dark:bg-[#2D3748]"}
+                  ${cell.isToday ? "bg-[#FFF8F2] " : ""}
                 `}
               >
                 {/* Date + Status Dots */}
@@ -404,10 +403,10 @@ export default function AttendanceSection() {
                     <span className={`
                       text-xs sm:text-sm font-semibold leading-none
                       ${!cell.isCurrentMonth
-                        ? "text-[#D1D5DB]"
+                        ? "text-[#D1D5DB] "
                         : cell.isToday
                           ? "text-white bg-[#F67300] w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[10px] sm:text-xs shadow-sm"
-                          : "text-[#333]"
+                          : "text-[#333] dark:text-gray-300"
                       }
                     `}>
                       {cell.date}

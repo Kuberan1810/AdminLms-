@@ -26,16 +26,16 @@ const SubmitModal: React.FC<SubmitModalProps> = ({ isOpen, onClose }) => {
       />
 
       {/* Modal Container */}
-      <div className="relative bg-white rounded-[40px] p-10 w-full max-w-md shadow-2xl flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+      <div className="relative bg-white dark:bg-[#3a3a3a] rounded-[40px] p-10 w-full max-w-md shadow-2xl flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
         
         {/* Success Icon */}
         <div className=" rounded-full flex items-center justify-center mb-6 ">
-          <TickCircle size="64" variant="Bold"  color='green'/>
+          <TickCircle size="64" variant="Bold" color='green' />
         </div>
 
         {/* Text Content */}
-        <h2 className="md:text-2xl text-lg  font-medium text-[#333] mb-2">Assignment Submitted!</h2>
-        <p className="text-[#808080] text-sm md:text-lg mb-5">
+        <h2 className="md:text-2xl text-lg  font-medium text-[#333] dark:text-white mb-2">Assignment Submitted!</h2>
+        <p className="text-[#808080] dark:text-gray-400 text-sm md:text-lg mb-5">
           Your files have been successfully uploaded and sent to the instructor for evaluation.
         </p>
 
@@ -46,7 +46,7 @@ const SubmitModal: React.FC<SubmitModalProps> = ({ isOpen, onClose }) => {
             onClick={() => console.log("Viewing Submission...")}
             className=" flex items-center justify-center gap-3 py-3 orange text-white font-bold rounded-2xl cursor-pointer hover:opacity-90 transition-all active:scale-95"
           >
-            <Eye size="25" variant="Bold" color='white'/>
+            <Eye size="25" variant="Bold" color='white' />
             <span className="md:text-lg  text-base font-semibold tracking-wider">View My Submission</span>
           </button>
 

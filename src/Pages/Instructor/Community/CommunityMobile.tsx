@@ -84,7 +84,7 @@ export default function CommunityContent() {
 
 
     return (
-        <div className="h-screen flex flex-col bg-gray-50">
+        <div className="h-screen flex flex-col ">
 
             {/* ================= TABS ================= */}
             <CommunityTabs

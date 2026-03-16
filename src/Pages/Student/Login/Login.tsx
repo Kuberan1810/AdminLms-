@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
@@ -6,14 +6,8 @@ import api from "../../../config/axios";
 import CoireiLogo from "../../../assets/Images/home/coirei-logo-orange.png"
 // import skillpointLogo from "../../../assets/Images/home/skillpointLogo.svg"
 // import ColabLogo from "../../../assets/Images/home/ColabLogo.svg"
-import ColabrationLogo from "../../../assets/Images/home/ColabrationLogo.svg"
+// import ColabrationLogo from "../../../assets/Images/home/ColabrationLogo.svg"
 import LoginBanner from "../../../assets/Images/login/loginBanner.png"
-
-
-
-
-
-
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,6 +18,19 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    // 🔥 Disable dark mode on login page
+    const html = document.documentElement;
+    html.classList.remove("dark");
+
+    return () => {
+      // 🔄 Restore dark mode if it is active in preferences
+      if (localStorage.theme === "dark") {
+        html.classList.add("dark");
+      }
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

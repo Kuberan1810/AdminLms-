@@ -67,7 +67,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ selectedCourse }) => {
 
       {/* HEADER */}
       <div className="flex flex-row justify-between items-center mb-8 gap-4">
-        <h2 className="text-lg sm:text-2xl font-semibold text-[#333] sm:w-fit w-35">
+        <h2 className="text-lg sm:text-2xl font-semibold text-[#333] sm:w-fit w-35 dark:text-gray-300">
           {selectedCourse
             ? `Assignments for ${selectedCourse}`
             : 'All Assignments'}
@@ -79,7 +79,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ selectedCourse }) => {
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center justify-between gap-2 border border-[#F2EEF4] rounded-xl px-4 py-2 bg-white hover:bg-gray-50 transition-all cursor-pointer w-full"
           >
-            <FilterSearch size="16" color="#626262" />
+            <FilterSearch size="16"  color="#626262" />
             <span className="text-[13px] font-medium text-gray-600">
               {statusFilter}
             </span>

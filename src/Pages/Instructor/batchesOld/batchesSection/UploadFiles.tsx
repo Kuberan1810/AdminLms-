@@ -84,7 +84,7 @@ const ClassResources: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 cursor-pointer" onClick={() => window.history.back()}>
           <div className="flex items-center">
-            <ArrowLeft2 size={20} color="#000"/>
+            <ArrowLeft2 size={20} color="#000" />
           </div>
           <h1 className="text-xl font-semibold">
             {chapterId ? chapters.byId[chapterId]?.title : "Upload Resources"}

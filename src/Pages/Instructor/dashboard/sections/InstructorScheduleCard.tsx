@@ -153,7 +153,7 @@ const InstructorScheduleCard = ({
     /* ================= UI ================= */
 
     return (
-        <div className="boxStyle bg-[#FAFAFA]! flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="boxStyle bg-[#FAFAFA]! dark:bg-[#1E1E1E]! flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
             {/* LEFT SIDE */}
             <div className="flex-1">
@@ -168,14 +168,14 @@ const InstructorScheduleCard = ({
                 <div className="flex flex-wrap gap-4 text-sm text-[#626262]">
                     <div className="flex items-center gap-2">
                         <span className="iconStyle">
-                            <Clock size="16" color="#626262" />
+                            <Clock size="16" color="currentColor" />
                         </span>
                         <span>{time}</span>
                     </div>
 
                     <div className="flex items-center gap-2">
                         <span className="iconStyle">
-                            <Calendar size="16" color="#626262" />
+                            <Calendar size="16" color="currentColor" />
                         </span>
                         <span>{displayDate}</span>
                     </div>

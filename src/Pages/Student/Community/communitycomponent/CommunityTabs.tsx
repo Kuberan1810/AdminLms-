@@ -22,7 +22,7 @@ export default function CommunityTabs({
   onCreate,
 }: Props) {
   return (
-    <div className="w-ful pb-5 sticky top-0 z-40 bg-[#fafafa] ">
+    <div className="w-ful pb-5 sticky top-0 z-40 bg-[#fafafa] dark:bg-[#1E1E1E] transition-colors duration-300">
 
       {/* MAIN CONTAINER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 md:gap-15    ">
@@ -37,7 +37,7 @@ export default function CommunityTabs({
                 className={`whitespace-nowrap pb-2 text-sm md:text-base  border-b-2 transition cursor-pointer
                   ${activeTab === tab
                     ? "border-orange-500 text-orange-500 font-medium"
-                    : "border-transparent text-gray-700 hover:text-black"
+                    : "border-transparent text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white"
                   }
                 `}
               >

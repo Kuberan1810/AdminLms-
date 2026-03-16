@@ -26,12 +26,12 @@ const AddStudentModal = ({ onClose, onBack }: AddStudentModalProps) => {
             onClick={onBack}
             className="flex items-center gap-2 text-sm font-medium hover:opacity-80"
           >
-            <ArrowLeft size={20} color="white" />
+            <ArrowLeft size={20}  color="white" />
             Back
           </button>
 
           <div className="w-[84px] h-[84px] bg-white/20 rounded-[30px] flex items-center justify-center">
-            <Notification size={42} color="white" />
+            <Notification size={42}  color="white" />
           </div>
 
           <div>

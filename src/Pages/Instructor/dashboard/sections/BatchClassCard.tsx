@@ -19,7 +19,7 @@ const BatchClassCard = ({ data, onClick }: Props) => {
     return (
         <div
             onClick={onClick}
-            className="boxStyle cursor-pointer  hover:bg-[#fafafa]! hover:shadow-xs "
+            className="boxStyle cursor-pointer hover:bg-[#fafafa]! dark:hover:bg-[#1E1E1E]! hover:shadow-xs "
         >
             {/* ===== Title ===== */}
             <h4 className="text-base md:text-lg font-semibold text-primary mb-2">
@@ -37,7 +37,7 @@ const BatchClassCard = ({ data, onClick }: Props) => {
 
                 <div className="flex gap-1.5 justify-between items-center">
                     <div className="iconStyle">
-                        <Profile2User size="16" color="#626262" />
+                        <Profile2User size="16" color="currentColor" />
                     </div>
                     <span className="text-[12px]">
                         {data.students} Students
@@ -45,7 +45,7 @@ const BatchClassCard = ({ data, onClick }: Props) => {
                 </div>
                 <div className="flex gap-1.5 justify-between items-center">
                     <div className="iconStyle">
-                        <DocumentText1 size="16" color="#626262" />
+                        <DocumentText1 size="16" color="currentColor" />
                     </div>
                     <span className="text-[12px]">
                         {data.modulesCompleted} Modules Completed

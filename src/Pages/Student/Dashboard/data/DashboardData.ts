@@ -1,7 +1,7 @@
 export const attendanceData = {
     attended: 0,
     absent: 0,
-    upcoming: 40          ,
+    upcoming: 40,
 };
 
 export const recordingcard = {

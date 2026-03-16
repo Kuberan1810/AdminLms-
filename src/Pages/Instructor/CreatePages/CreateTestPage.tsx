@@ -141,7 +141,7 @@ const CreateTestPage = () => {
                         </button>
 
                         <div className="flex w-[84px] h-[84px] bg-white/20 rounded-[30px] items-center justify-center mb-2 md:mb-0">
-                            <Teacher size={42} color="white" variant="Bold" />
+                            <Teacher size={42} variant="Bold"  color="white" />
                         </div>
 
                         <div className="z-10 flex flex-col items-center md:items-start text-center md:text-left">
@@ -339,7 +339,7 @@ const CreateTestPage = () => {
                                             className="w-[120px] h-[35px] pl-[10px] pr-[35px] rounded-[8px] border border-[#D3D3D3] outline-none focus:border-[#F67300] text-sm text-[#333333] transition-colors relative z-10 bg-transparent"
                                         />
                                         <div className="absolute right-[8px] top-1/2 -translate-y-1/2 pointer-events-none z-0">
-                                            <Clock size={16} color="#333333" />
+                                            <Clock size={16}  color="#333333" />
                                         </div>
                                     </div>
 
@@ -351,7 +351,7 @@ const CreateTestPage = () => {
                                             className="w-[120px] h-[35px] pl-[10px] pr-[35px] rounded-[8px] border border-[#D3D3D3] outline-none focus:border-[#F67300] text-sm text-[#333333] transition-colors relative z-10 bg-transparent"
                                         />
                                         <div className="absolute right-[8px] top-1/2 -translate-y-1/2 pointer-events-none z-0">
-                                            <Clock size={16} color="#333333" />
+                                            <Clock size={16}  color="#333333" />
                                         </div>
                                     </div>
                                 </div>

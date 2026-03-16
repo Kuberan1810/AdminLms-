@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { startTest } from "../../../../store/slices/TestPageSlice";
 import CountdownTimer from "./CardInfo";
 import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
 
 
 export default function TestSectionNew() {
@@ -12,6 +13,7 @@ export default function TestSectionNew() {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [testReady, setTestReady] = useState(false);
 
   const changeStatus = () => {
     dispatch(startTest());
@@ -63,19 +65,15 @@ export default function TestSectionNew() {
         {/* MOBILE CARD - Shows on mobile only */}
         <div className="mobile-card md:hidden">
           <div className="info-card">
-            <CountdownTimer />
+            <CountdownTimer onExpire={() => setTestReady(true)} />
           </div>
         </div>
 
         <button
-          className="start-btn 
-             bg-orange-500 text-white px-4 py-2 rounded 
-             hover:bg-orange-600 
-             disabled:opacity-50 
-             disabled:cursor-not-allowed 
-             disabled:hover:bg-orange-500"
+          className={`start-btn text-white px-4 py-2 rounded transition-colors
+             ${(testReady && !finishStatus) ? 'bg-orange-500 hover:bg-orange-600 cursor-pointer' : 'bg-gray-400 opacity-50 cursor-not-allowed'}`}
           onClick={changeStatus}
-          disabled={finishStatus}
+          disabled={!testReady || finishStatus}
         >
           Start Test
         </button>
@@ -86,7 +84,7 @@ export default function TestSectionNew() {
         {/* TABLET CARD - Shows on tablet/medium screens */}
         {/* <div className="tablet-card block md:hidden  mt-8">
           <div className="info-card">
-            <CountdownTimer />
+            <CountdownTimer onExpire={() => setTestReady(true)} />
           </div>
         </div> */}
       </div>
@@ -97,7 +95,7 @@ export default function TestSectionNew() {
         <div className="orange-blob bottom"></div>
 
         <div className="info-card ">
-          <CountdownTimer />
+          <CountdownTimer onExpire={() => setTestReady(true)} />
         </div>
       </div>
     </div>

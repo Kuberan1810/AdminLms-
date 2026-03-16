@@ -34,11 +34,9 @@
             
 //             {/* Attachment Icons */}
 //             <div className="flex items-center gap-4 text-gray-400">
-//               <button className="hover:text-[#C23DBE] transition-colors cursor-pointer" title="Attach Image">
-//                 <Gallery size="22" variant="Outline" />
+//               <button className="hover:text-[#C23DBE] transition-colors cursor-pointer" title="Attach Image"<Gallery size="22" variant="Outline" />
 //               </button>
-//               <button className="hover:text-[#C23DBE] transition-colors cursor-pointer" title="Attach Document">
-//                 <DocumentText size="22" variant="Outline" />
+//               <button className="hover:text-[#C23DBE] transition-colors cursor-pointer" title="Attach Document"<DocumentText size="22" variant="Outline" />
 //               </button>
 //               <button className="hover:text-[#C23DBE] transition-colors cursor-pointer" title="Add Link">
 //                 <Paperclip size="20" />
@@ -103,13 +101,13 @@ const AssignmentComment: React.FC = () => {
               {/* Attachment Icons Group */}
               <div className="flex items-center gap-3 pl-2">
                 <button className="text-gray-400 hover:text-[#C23DBE] transition-colors cursor-pointer p-1">
-                  <Gallery size="20" variant="Outline" color='#626262' />
+              <Gallery size="20" variant="Outline"  color='#626262' />
                 </button>
                 <button className="text-gray-400 hover:text-[#C23DBE] transition-colors cursor-pointer p-1">
-                  <DocumentText size="20" variant="Outline" color='#626262' />
+              <DocumentText size="20" variant="Outline"  color='#626262' />
                 </button>
                 <button className="text-gray-400 hover:text-[#C23DBE] transition-colors cursor-pointer p-1">
-                  <Link1 size="20" variant="Outline"color='#626262'  />
+                  <Link1 size="20" variant="Outline"   color='#626262' />
                 </button>
               </div>
 
@@ -126,8 +124,8 @@ const AssignmentComment: React.FC = () => {
         </div>
 
         {/* Visibility Note */}
-        <p className="mt-4 px-4 text-[11px] text-gray-400 font-medium flex items-center gap-2">
-          <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+        <p className="mt-4 px-4 text-[11px] text-gray-400 dark:text-gray-500 font-medium flex items-center gap-2">
+          <span className="w-1 h-1 bg-gray-300  dark:bg-gray-500 rounded-full"></span>
           Comments are private between you and the instructor
         </p>
       </div>

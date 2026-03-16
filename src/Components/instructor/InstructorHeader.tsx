@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { SearchNormal1, NotificationBing, Setting } from "iconsax-react";
+import { Sun, Moon } from "lucide-react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useMatch } from "react-router-dom";
@@ -27,6 +28,9 @@ const InstructorHeader = () => {
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [showSearchPopup, setShowSearchPopup] = useState(false);
   const { unreadCount } = useInstructorNotifications();
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.theme === "dark" || document.documentElement.classList.contains("dark");
+  });
   /* ================= HOOKS ================= */
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,7 +64,7 @@ const InstructorHeader = () => {
       subtitle: "Manage and monitor student performance.",
     };
   }
-  // ✅ Chat Section
+  // Chat Section
   if (location.pathname.startsWith("/instructor/chat")) {
     header = {
       title: "Chat",
@@ -68,21 +72,21 @@ const InstructorHeader = () => {
     };
   }
 
-  // ✅ Community Section
+  // Community Section
   if (location.pathname.startsWith("/instructor/community")) {
     header = {
       title: "Community",
       subtitle: "Engage and interact with your learning network.",
     };
   }
-  // ✅ Create Assignment Section
+  // Create Assignment Section
   if (location.pathname.startsWith("/instructor/create-assignment")) {
     header = {
       title: "Create Assignment",
       subtitle: "Design and manage assignment details efficiently.",
     };
   }
-  // ✅ Create Test Section
+  // Create Test Section
   if (location.pathname.startsWith("/instructor/create-test")) {
     header = {
       title: "Create Test",
@@ -95,7 +99,7 @@ const InstructorHeader = () => {
       subtitle: "Review and analyze test performance.",
     };
   }
-  // ✅ Test Results Section
+  //  Test Results Section
   if (location.pathname.startsWith("/instructor/tests/results")) {
     header = {
       title: "Test Results",
@@ -103,7 +107,7 @@ const InstructorHeader = () => {
     };
   }
 
-  // ✅ Test Results Section
+  // Test Results Section
   if (location.pathname.startsWith("/instructor/assignment/assignment-review")) {
     header = {
       title: "Assignment Results",
@@ -160,18 +164,18 @@ const InstructorHeader = () => {
           {!isDashboard && (
             <div
               onClick={() => navigate(-1)}
-              className="cursor-pointer hover:bg-gray-100 rounded-full p-2"
+              className="cursor-pointer hover:bg-gray-100 dark:hover:bg-[#2A2A2A] rounded-full p-2 transition-colors"
             >
-              <ArrowLeft strokeWidth={1.7} color="#333333" className="md:size-7.5 size-5" />
+              <ArrowLeft strokeWidth={1.7} className="md:size-7.5 size-5 text-[#333333] dark:text-white" />
             </div>
           )}
 
           <div className="self-start">
-            <h1 className="text-[20px] sm:text-[24px] lg:text-[28px] font-medium text-[#333333]">
+            <h1 className="text-[20px] sm:text-[24px] lg:text-[28px] font-medium text-[#333333] dark:text-white transition-colors">
               {header.title}
             </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl font-normal text-[#626262] whitespace-nowrap">
+            <p className="text-base sm:text-lg lg:text-xl font-normal text-[#626262] dark:text-[#A3A3A3] whitespace-nowrap transition-colors">
               {header.subtitle}
               {isDashboard && user?.name}
             </p>
@@ -192,12 +196,12 @@ const InstructorHeader = () => {
         <div className="flex gap-5 justify-between">
           {/* SEARCH */}
           <div className="relative" ref={searchRef}>
-            <div className="hidden md:flex items-center gap-2 px-3 py-2.5 lg:py-3 border border-[#F2EEF4] rounded-[15px] text-sm text-[#626262] bg-white">
-              <SearchNormal1 size={18} color="#626262" />
+            <div className="hidden md:flex items-center gap-2 px-3 py-2.5 lg:py-3 border border-[#F2EEF4] dark:border-[#363636] rounded-[15px] text-sm text-[#626262] dark:text-white bg-white dark:bg-[#2A2A2A] transition-colors duration-300">
+              <SearchNormal1 size={18} className="text-[#626262] dark:text-white"  color="currentColor" />
               <input
                 type="text"
                 placeholder="Search for classes, assignments"
-                className="outline-none w-40 md:w-52 lg:w-60 bg-transparent"
+                className="outline-none w-40 md:w-52 lg:w-60 bg-transparent text-[#333333] dark:text-white placeholder-[#626262] dark:placeholder-[#A3A3A3]"
                 value={searchParams.get("search") || ""}
                 onFocus={() => setShowSearchPopup(true)}
                 onChange={(e) => {
@@ -230,9 +234,9 @@ const InstructorHeader = () => {
           <div className="relative" ref={notificationRef}>
             <button
               onClick={() => setShowNotifications(true)}
-              className="relative p-2 sm:p-2.5 rounded-[10px] bg-white border border-[#F2EEF4] cursor-pointer"
+              className="relative p-2 sm:p-2.5 rounded-[10px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#363636] cursor-pointer transition-colors duration-300 text-[#626262] dark:text-white"
             >
-              <NotificationBing size={24} color="#626262" />
+              <NotificationBing size={24}  color="currentColor" />
 
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-semibold bg-[#F67300] text-white rounded-full">
@@ -250,6 +254,29 @@ const InstructorHeader = () => {
             </AnimatePresence>
           </div>
 
+          {/*toggles dark mode*/}
+          <button
+            onClick={() => {
+              const html = document.documentElement;
+              if (html.classList.contains("dark")) {
+                html.classList.remove("dark");
+                localStorage.theme = "light";
+                setIsDarkMode(false);
+              } else {
+                html.classList.add("dark");
+                localStorage.theme = "dark";
+                setIsDarkMode(true);
+              }
+            }}
+            className="p-2 sm:p-2.5 rounded-[10px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#363636] cursor-pointer flex items-center justify-center transition-colors text-[#626262] dark:text-white"
+          >
+            {isDarkMode ? (
+              <Sun size={24} strokeWidth={1.5} color="currentColor" />
+            ) : (
+              <Moon size={24} strokeWidth={1.5} color="currentColor" />
+            )}
+          </button>
+
           {/* ================= QUICK ACTION ================= */}
           <div className="scale-90 sm:scale-100">
             <PlusIcon onClick={() => setShowQuickActions(true)} />
@@ -258,9 +285,9 @@ const InstructorHeader = () => {
           {/* ================= SETTINGS ================= */}
           <button
             onClick={() => setShowSettings(true)}
-            className="p-2 sm:p-2.5 rounded-[10px] bg-white border border-[#F2EEF4] cursor-pointer"
+            className="p-2 sm:p-2.5 rounded-[10px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#363636] cursor-pointer transition-colors duration-300 text-[#626262] dark:text-white"
           >
-            <Setting size={24} color="#626262" />
+            <Setting size={24}  color="currentColor" />
           </button>
 
           <AnimatePresence>
@@ -311,7 +338,6 @@ const InstructorHeader = () => {
           onAction={() => { }}
         />
       )}
-
     </header>
   );
 };

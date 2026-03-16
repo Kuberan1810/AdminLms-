@@ -190,7 +190,7 @@ const CreateAssignmentPage = () => {
                             onClick={() => navigate(-1)}
                             className="mt-[34px] p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer group"
                         >
-                            <ArrowLeft size={36} color="#333333" variant="Outline" className="group-hover:text-[#F67300] transition-colors" />
+                            <ArrowLeft size={36} variant="Outline" className="group-hover:text-[#F67300] transition-colors"  color="#333333" />
                         </button>
 
                         <div className="flex flex-col gap-2">
@@ -217,7 +217,7 @@ const CreateAssignmentPage = () => {
                                     onClick={toggleEditName}
                                     className="p-1 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
                                 >
-                                    <Edit2 size={24} color="#626262" variant="Outline" />
+                                    <Edit2 size={24} variant="Outline"  color="#626262" />
                                 </button>
                             </div>
                         </div>
@@ -239,7 +239,7 @@ const CreateAssignmentPage = () => {
                                     className="text-sm text-[#626262] outline-none bg-transparent no-calendar-icon"
                                 />
                             </div>
-                            <Calendar size={20} color="#626262" variant="Outline" />
+                            <Calendar size={20} variant="Outline"  color="#626262" />
                         </div>
 
                         {/* Due Time */}
@@ -257,7 +257,7 @@ const CreateAssignmentPage = () => {
                                     className="text-sm text-[#626262] outline-none bg-transparent no-calendar-icon"
                                 />
                             </div>
-                            <Clock size={20} color="#626262" variant="Outline" />
+                            <Clock size={20} variant="Outline"  color="#626262" />
                         </div>
                     </div>
                 </div>

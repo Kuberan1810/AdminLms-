@@ -3,8 +3,6 @@ import {
     Bell,
     Mail,
     HelpCircle,
-    FileText,
-    Shield,
     ChevronRight,
     X,
     Headset
@@ -43,7 +41,7 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="fixed inset-0 bg-black/30 z-[1000]"
+                className="fixed inset-0 bg-black/30 z-1000"
                 onClick={onClose}
             />
 
@@ -53,13 +51,13 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "spring", stiffness: 220, damping: 28 }}
-                className="fixed top-0 right-0 h-full w-full md:w-[420px] bg-white z-[1001] shadow-[-4px_0_24px_rgba(0,0,0,0.1)] flex flex-col"
+                className="fixed top-0 right-0 h-full w-full md:w-[420px] bg-white dark:bg-[#1E1E1E] z-1001 shadow-[-4px_0_24px_rgba(0,0,0,0.1)] flex flex-col transition-colors"
             >
                 {/* ================= Header ================= */}
-                <div className="flex justify-between items-center px-6 py-5 border-b border-[#F2EEF4]">
-                    <h2 className="text-[20px] md:text-2xl font-semibold text-[#333]">Settings</h2>
-                    <button onClick={onClose} className="cursor-pointer">
-                        <X size={22} color="#333" />
+                <div className="flex justify-between items-center px-6 py-5 border-b border-[#F2EEF4] dark:border-[#363636]">
+                    <h2 className="text-[20px] md:text-2xl font-semibold text-[#333] dark:text-white">Settings</h2>
+                    <button onClick={onClose} className="cursor-pointer text-[#333] dark:text-gray-300">
+                        <X size={22} color="currentColor" />
                     </button>
                 </div>
 
@@ -67,7 +65,7 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                 <div className="flex-1 overflow-y-auto p-6 space-y-8">
 
                     {/* ================= Profile ================= */}
-                    <div className="bg-white rounded-xl p-5 flex items-center gap-4 border border-[#F2EEF4]">
+                    <div className="bg-white dark:bg-[#2A2A2A] rounded-xl p-5 flex items-center gap-4 border border-[#F2EEF4] dark:border-[#363636]">
                         <div className="relative">
                             <img
                                 src="https://randomuser.me/api/portraits/women/44.jpg"
@@ -77,8 +75,8 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                             <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
                         </div>
                         <div>
-                            <p className="font-medium">{user?.name}</p>
-                            <p className="text-sm text-[#64748B] capitalize">
+                            <p className="font-medium dark:text-white">{user?.name}</p>
+                            <p className="text-sm text-[#64748B] dark:text-[#A3A3A3] capitalize">
                                 {user?.role}
                             </p>
                         </div>
@@ -90,13 +88,13 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                             Notifications
                         </h3>
 
-                        <div className="bg-white rounded-xl divide-y divide-[#F2EEF4] border border-[#F2EEF4]">
+                        <div className="bg-white dark:bg-[#2A2A2A] rounded-xl divide-y divide-[#F2EEF4] dark:divide-[#363636] border border-[#F2EEF4] dark:border-[#363636]">
 
                             {/* Push */}
                             <div className="flex justify-between items-center px-6 py-4">
                                 <div className="flex items-center gap-4">
-                                    <Bell strokeWidth={1.5} size={20} color="#333" />
-                                    <span className="text-base lg:text-lg text-[#333333] font-medium">
+                                    <Bell strokeWidth={1.5} size={20} className="text-[#333] dark:text-white" />
+                                    <span className="text-base lg:text-lg text-[#333333] dark:text-white font-medium">
                                         Push Notification
                                     </span>
                                 </div>
@@ -116,8 +114,8 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                             {/* Email */}
                             <div className="flex justify-between items-center px-6 py-4">
                                 <div className="flex items-center gap-4">
-                                    <Mail strokeWidth={1.5} size={20} color="#333" />
-                                    <span className="text-base lg:text-lg text-[#333333] font-medium">
+                                    <Mail strokeWidth={1.5} size={20} className="text-[#333] dark:text-white" />
+                                    <span className="text-base lg:text-lg text-[#333333] dark:text-white font-medium">
                                         Email Notification
                                     </span>
                                 </div>
@@ -139,40 +137,40 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
 
                     {/* ================= Support & Legal ================= */}
                     <div>
-                        <h3 className="text-base md:text-lg lg:text-xl text-[#626262] mb-3 font-medium">
+                        <h3 className="text-base md:text-lg lg:text-xl text-[#626262] dark:text-[#A3A3A3] mb-3 font-medium">
                             Support & Legal
                         </h3>
 
-                        <div className="bg-white rounded-xl divide-y divide-[#F2EEF4] border border-[#F2EEF4]">
+                        <div className="bg-white dark:bg-[#2A2A2A] rounded-xl divide-y divide-[#F2EEF4] dark:divide-[#363636] border border-[#F2EEF4] dark:border-[#363636]">
 
-                            <div className="flex justify-between items-center px-6 py-4 hover:bg-gray-50 cursor-pointer">
+                            <div className="flex justify-between items-center px-6 py-4 hover:bg-gray-50 dark:hover:bg-[#333333] cursor-pointer">
                                 <div className="flex items-center gap-4">
-                                    <HelpCircle strokeWidth={1.5} size={20} color="#333" />
-                                    <span className="text-base lg:text-lg text-[#333333] font-medium">
+                                    <HelpCircle strokeWidth={1.5} size={20} className="text-[#333] dark:text-white" />
+                                    <span className="text-base lg:text-lg text-[#333333] dark:text-white font-medium">
                                         Help Center
                                     </span>
                                 </div>
-                                <ChevronRight strokeWidth={1.5} size={18} color="#333" />
+                                <ChevronRight strokeWidth={1.5} size={18} className="text-[#333] dark:text-white" />
                             </div>
 
-                            <div className="flex justify-between items-center px-6 py-4 hover:bg-gray-50 cursor-pointer">
+                            <div className="flex justify-between items-center px-6 py-4 hover:bg-gray-50 dark:hover:bg-[#333333] cursor-pointer">
                                 <div className="flex items-center gap-4">
-                                    <Headset size={20} strokeWidth={1.5} color="#333" />
-                                    <span className="text-base lg:text-lg text-[#333333] font-medium">
+                                    <Headset size={20} strokeWidth={1.5} className="text-[#333] dark:text-white" />
+                                    <span className="text-base lg:text-lg text-[#333333] dark:text-white font-medium">
                                         Terms of Service
                                     </span>
                                 </div>
-                                <ChevronRight strokeWidth={1.5} size={18} color="#333" />
+                                <ChevronRight strokeWidth={1.5} size={18} className="text-[#333] dark:text-white" />
                             </div>
 
-                            <div className="flex justify-between items-center px-6 py-4 hover:bg-gray-50 cursor-pointer">
+                            <div className="flex justify-between items-center px-6 py-4 hover:bg-gray-50 dark:hover:bg-[#333333] cursor-pointer">
                                 <div className="flex items-center gap-4">
-                                    <SecuritySafe size={20} color="#333" />
-                                    <span className="text-base lg:text-lg text-[#333333] font-medium">
+                                    <SecuritySafe size={20} className="text-[#333] dark:text-white"  color="currentColor" />
+                                    <span className="text-base lg:text-lg text-[#333333] dark:text-white font-medium">
                                         Privacy Policy
                                     </span>
                                 </div>
-                                <ChevronRight strokeWidth={1.5} size={18} color="#333" />
+                                <ChevronRight strokeWidth={1.5} size={18} className="text-[#333] dark:text-white" />
                             </div>
 
                         </div>
@@ -182,7 +180,7 @@ const SettingsSidebar = ({ onClose }: SettingsSidebarProps) => {
                     <div className="flex justify-center">
                         <button
                             onClick={() => setShowConfirmLogout(true)}
-                            className="w-full border border-red-600 text-red-600 py-3 rounded-lg hover:bg-red-50 transition font-medium cursor-pointer"
+                            className="w-full border border-red-600 text-red-600 dark:text-red-400 dark:border-red-400 py-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition font-medium cursor-pointer"
                         >
                             Log Out
                         </button>

@@ -1,3 +1,4 @@
+import { Note1 } from "iconsax-react";
 import BtnCom from "../../../../Components/Student/BtnCom";
 
 interface PendingReviewType {
@@ -9,20 +10,20 @@ interface PendingReviewType {
 }
 
 const pendingReviews: PendingReviewType[] = [
-    {
-        sno: 1,
-        studentId: "BT01",
-        name: "Aarav",
-        submittedOn: "22 Jan, 09:00 AM",
-        batch: "Batch-01",
-    },
-    {
-        sno: 2,
-        studentId: "BT02",
-        name: "Aarav",
-        submittedOn: "22 Jan, 09:00 AM",
-        batch: "Batch-01",
-    },
+    // {
+    //     sno: 1,
+    //     studentId: "BT01",
+    //     name: "Aarav",
+    //     submittedOn: "22 Jan, 09:00 AM",
+    //     batch: "Batch-01",
+    // },
+    // {
+    //     sno: 2,
+    //     studentId: "BT02",
+    //     name: "Aarav",
+    //     submittedOn: "22 Jan, 09:00 AM",
+    //     batch: "Batch-01",
+    // },
 ];
 
 const PendingReview = () => {
@@ -33,11 +34,21 @@ const PendingReview = () => {
                 <h3 className="text-xl lg:text-2xl font-semibold mb-5">Pending Review</h3>
                 <BtnCom label="View all" />
             </div>
-            
+
             {/* ================= DESKTOP TABLE ================= */}
+            {pendingReviews.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-10 text-center">
+                    <div className="p-4 bg-[#FFF0EF] dark:bg-[#3D2B2A] rounded-full mb-4">
+                        <Note1 size={32} color="#EF7A02" />
+                    </div>
+                    <p className="text-[#626262] dark:text-[#E0E0E0] text-base font-medium">No Pending Reviews Found</p>
+                    <p className="text-[#989898] dark:text-[#A3A3A3] text-sm mt-1">There are no assignments pending for review at this time.</p>
+                </div>
+            ) : (
+                <>
             <div className="hidden md:block overflow-x-auto rounded-xl">
                 <table className="min-w-full text-sm">
-                    <thead className="bg-[#FFF1E6] text-[#F67300] border border-gray-200">
+                    <thead className="bg-[#FFF1E6] dark:bg-[#3d271d] text-[#F67300] border border-gray-200 dark:border-[#363636]">
                         <tr className="text-center">
                             <th className="py-3">S.no</th>
                             <th>Student ID</th>
@@ -52,7 +63,7 @@ const PendingReview = () => {
                         {pendingReviews.map((r) => (
                             <tr
                                 key={r.sno}
-                                className="text-center border border-gray-200"
+                                className="text-center border border-gray-200 dark:border-[#363636]"
                             >
                                 <td className="py-3">{r.sno}</td>
                                 <td>{r.studentId}</td>
@@ -75,7 +86,7 @@ const PendingReview = () => {
                 {pendingReviews.map((r) => (
                     <div
                         key={r.sno}
-                        className="border border-gray-200 rounded-xl p-4 "
+                        className="border border-gray-200 dark:border-[#363636] rounded-xl p-4 "
                     >
                         <div className="flex justify-between mb-2">
                             <span className="text-xs text-gray-500">
@@ -101,6 +112,8 @@ const PendingReview = () => {
                     </div>
                 ))}
             </div>
+            </>
+            )}
         </div>
     );
 };

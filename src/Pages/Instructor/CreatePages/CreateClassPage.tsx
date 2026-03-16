@@ -53,7 +53,7 @@ const CreateClassPage = () => {
                 </button>
 
                 <div className="flex w-[84px] h-[84px] bg-white/20 rounded-[30px] items-center justify-center mb-2 md:mb-0">
-                    <DocumentText size={32} color="white" variant="Bold" />
+                    <DocumentText size={32} variant="Bold"  color="white" />
                 </div>
 
                 <div className="z-10 flex flex-col items-center md:items-start text-center md:text-left">
@@ -105,7 +105,7 @@ const CreateClassPage = () => {
                                     {selectedClass || "E.g Advanced AI"}
                                 </span>
 
-                                <ArrowDown2 size={14} color="#626262" />
+                                <ArrowDown2 size={14}  color="#626262" />
                             </div>
 
                             {classOpen && (
@@ -169,7 +169,7 @@ const CreateClassPage = () => {
                         text-[#333333] transition-colors relative z-10 bg-transparent"
                                 />
                                 <div className="absolute right-[12px] top-1/2 -translate-y-1/2 pointer-events-none z-0">
-                                    <Clock size={18} color="#333333" />
+                                    <Clock size={18}  color="#333333" />
                                 </div>
                             </div>
 
@@ -186,7 +186,7 @@ const CreateClassPage = () => {
                         text-[#333333] transition-colors relative z-10 bg-transparent"
                                 />
                                 <div className="absolute right-[12px] top-1/2 -translate-y-1/2 pointer-events-none z-0">
-                                    <Clock size={18} color="#333333" />
+                                    <Clock size={18}  color="#333333" />
                                 </div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@ const CreateClassPage = () => {
                         rounded-[8px] border border-[#E5E5E5]
                         flex items-center justify-center pointer-events-none z-0"
                             >
-                                <Calendar size={16} color="#333333" />
+                                <Calendar size={16}  color="#333333" />
                             </div>
                         </div>
                     </div>

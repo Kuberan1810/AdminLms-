@@ -25,22 +25,22 @@ const AssignmentDesc: React.FC<AssignmentDescProps> = ({ assignment }) => {
         {/* Content Sections */}
         <div className="space-y-10 ">
           <section>
-            <h2 className="md:text-2xl text-lg  font-medium text-[#333333] md:mb-5 mb-2">Description:</h2>
-            <p className="text-[#4D4D4D] md:text-[18px] text-[15px]  leading-[1.6] font-normal ">
+            <h2 className="md:text-2xl text-lg  font-medium text-[#333333] dark:text-gray-300 md:mb-5 mb-2">Description:</h2>
+            <p className="text-[#4D4D4D] md:text-[18px] text-[15px] dark:text-gray-200 leading-[1.6] font-normal ">
               {assignment.description}
             </p>
           </section>
 
           <section>
-            <h2 className="md:text-2xl text-lg  font-medium text-[#333333] md:mb-5 mb-2">Objective:</h2>
-            <p className="text-[#4D4D4D] md:text-[18px] text-[15px]  leading-[1.6] font-normal">
+            <h2 className="md:text-2xl text-lg  font-medium text-[#333333] dark:text-gray-300 md:mb-5 mb-2">Objective:</h2>
+            <p className="text-[#4D4D4D] md:text-[18px] text-[15px] dark:text-gray-200 leading-[1.6] font-normal">
               {assignment.objective}
             </p>
           </section>
 
           <section>
-            <h2 className="md:text-2xl text-lg font-medium text-[#333333] md:mb-5 mb-2">Expected Outcome:</h2>
-            <p className="text-[#4D4D4D] md:text-[18px] text-[15px]  leading-[1.6] font-normal">
+            <h2 className="md:text-2xl text-lg font-medium text-[#333333] dark:text-gray-300 md:mb-5 mb-2">Expected Outcome:</h2>
+            <p className="text-[#4D4D4D] md:text-[18px] text-[15px] dark:text-gray-200 leading-[1.6] font-normal">
               {assignment.expectedOutcome}
             </p>
           </section>

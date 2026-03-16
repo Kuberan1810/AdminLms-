@@ -32,7 +32,7 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
 
     <>
       {/* ================= MOBILE BOTTOM NAV ================= */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-[#F3F5F7] md:hidden flex justify-around py-4">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#2A2A2A] border-t-[#F3F5F7] dark:border-t-[#3B3B3B] md:hidden flex justify-around py-4">
         {PlatformList.map((item) => {
           const Icon = item.icon;
           return (
@@ -47,10 +47,11 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
                   <Icon
                     size={24}
                     variant={isActive && !item.comingSoon ? "Bold" : "Outline"}
-                    color={isActive && !item.comingSoon ? "#F67300" : "#626262"}
+                    className={isActive && !item.comingSoon ? "text-[#F67300]" : "text-[#626262] dark:text-[#A3A3A3]"}
+                    color="currentColor"
                   />
                   {item.comingSoon && (
-                    <span className="absolute -top-2.5 -right-3 text-[8px]  bg-[#F3F5F7] text-[#808080] px-1 rounded-full font-bold">
+                    <span className="absolute -top-2.5 -right-3 text-[8px] bg-[#F3F5F7] dark:bg-[#3B3B3B] text-[#808080] dark:text-[#CCCCCC] px-1 rounded-full font-bold">
                       Soon
                     </span>
                   )}
@@ -65,7 +66,7 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
       <aside
         className={`
           hidden md:block
-          h-screen bg-white border-r border-[#F3F5F7]
+          h-screen bg-white dark:bg-[#1E1E1E] border-r border-[#F3F5F7] dark:border-[#3B3B3B]
           transition-all duration-300
           ${collapsed ? "w-16" : "w-60"}
 
@@ -87,8 +88,8 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
             <img src={CoireiLogo} alt="CoireiLogo" className="w-25" />
           )}
 
-          <button onClick={() => setCollapsed(!collapsed)} className="px-4 py-2.5 hover:bg-[#fafafa] rounded-lg cursor-pointer">
-            <PanelRight size={22} color="#626262" />
+          <button onClick={() => setCollapsed(!collapsed)} className="px-4 py-2.5 hover:bg-[#fafafa] dark:hover:bg-[#2A2A2A] rounded-lg cursor-pointer">
+            <PanelRight size={22} className="text-[#626262] dark:text-white" />
           </button>
         </div>
 
@@ -110,10 +111,10 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
                     : "gap-3 px-4 py-2.5"
                   }
                   ${isActive && !item.comingSoon
-                    ? "bg-[#FAFAFA] text-[#F67300] font-semibold "
-                    : "text-[#626262]"
+                    ? "bg-[#FAFAFA] dark:bg-[#2A2A2A] text-[#F67300] font-semibold "
+                    : "text-[#626262] dark:text-[#A3A3A3]"
                   }
-                  ${!collapsed && !item.comingSoon && "hover:bg-[#FAFAFA]"}
+                  ${!collapsed && !item.comingSoon && "hover:bg-[#FAFAFA] dark:hover:bg-[#2A2A2A]"}
                   ${item.comingSoon ? "opacity-60 cursor-not-allowed" : ""}
                 `
                 }
@@ -132,15 +133,16 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
                     >
                       {item.label === "Courses" ? (
                         isActive && !item.comingSoon ? (
-                          <DocumentText size={24} variant="Bold" color="#F67300" />
+                          <DocumentText size={24} variant="Bold" className="text-[#F67300]" color="currentColor" />
                         ) : (
-                          <DocumentText1 size={24} color="#626262" />
+                          <DocumentText1 size={24} className="text-[#626262] dark:text-[#A3A3A3]" color="currentColor" />
                         )
                       ) : (
                         <Icon
                           size={24}
                           variant={isActive && !item.comingSoon ? "Bold" : "Outline"}
-                          color={isActive && !item.comingSoon ? "#F67300" : "#626262"}
+                          className={isActive && !item.comingSoon ? "text-[#F67300]" : "text-[#626262] dark:text-[#A3A3A3]"}
+                          color="currentColor"
                         />
                       )}
                     </div>
@@ -152,7 +154,7 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
                           {item.label}
                         </span>
                         {item.comingSoon && (
-                          <span className="text-[10px] bg-[#F3F5F7] text-[#808080] px-2 py-0.5 rounded-full font-medium ml-2">
+                          <span className="text-[10px] bg-[#F3F5F7] dark:bg-[#3B3B3B] text-[#808080] dark:text-[#CCCCCC] px-2 py-0.5 rounded-full font-medium ml-2">
                             Soon
                           </span>
                         )}

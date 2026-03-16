@@ -77,14 +77,14 @@ export default function GlobalSearchDropdown({ query, role, onClose }: GlobalSea
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="p-2 bg-[#F6730020] rounded-lg ">
-                                                        <DocumentText1 color="#F67300" size={18} />
+                                                        <DocumentText1 size={18}  color="#F67300" />
                                                     </div>
                                                     <div>
                                                         <p className="text-sm font-medium text-gray-800 line-clamp-1">{course.course.title}</p>
                                                         <p className="text-xs text-gray-500">{course.course.instructor.name}</p>
                                                     </div>
                                                 </div>
-                                                <ArrowRight2 size={16} color="#626262" className="text-[#626262] group-hover:text-orange-500" />
+                                                <ArrowRight2 size={16} className="text-[#626262] group-hover:text-orange-500"  color="#626262" />
                                             </button>
                                         ))}
                                     </div>
@@ -101,7 +101,7 @@ export default function GlobalSearchDropdown({ query, role, onClose }: GlobalSea
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="p-2 bg-[#0095FF20] rounded-lg ">
-                                                        <Video color="#0095FF" size={18} />
+                                                        <Video size={18}  color="#0095FF" />
                                                     </div>
                                                     <div>
                                                         <p className="text-sm font-medium text-gray-800 line-clamp-1">{cls.topic}</p>
@@ -130,7 +130,7 @@ export default function GlobalSearchDropdown({ query, role, onClose }: GlobalSea
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
-                                                        <MonitorRecorder color="purple" size={18} />
+                                                        <MonitorRecorder size={18}  color="purple" />
                                                     </div>
                                                     <div>
                                                         <p className="text-sm font-medium text-gray-800 line-clamp-1">{batch.batch}</p>

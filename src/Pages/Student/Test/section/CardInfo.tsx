@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 
-export default function CountdownTimer() {
-  // Target date
-  const targetDate = new Date("2026-01-30T19:00:00");
+interface CountdownTimerProps {
+  onExpire?: () => void;
+}
+
+export default function CountdownTimer({ onExpire }: CountdownTimerProps) {
+  // Target date - dynamically set to 10 seconds from now for testing purposes
+  // In production, this would use a real date from test data
+  const [targetDate] = useState(() => new Date(new Date().getTime() + 10000));
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -11,14 +16,22 @@ export default function CountdownTimer() {
     seconds: 0,
   });
 
+  const [expired, setExpired] = useState(false);
+
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = targetDate.getTime() - now;
 
-      if (distance < 0) {
+      if (distance <= 0) {
         clearInterval(interval);
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        if (!expired) {
+          setExpired(true);
+          if (onExpire) {
+            onExpire();
+          }
+        }
         return;
       }
 
@@ -33,7 +46,17 @@ export default function CountdownTimer() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [targetDate, expired, onExpire]);
+
+  // Format the target date for display
+  const formattedDate = targetDate.toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
 
   return (
     <div className="p-3 mx-auto rounded-md text-center w-full">
@@ -41,7 +64,7 @@ export default function CountdownTimer() {
         Your test is scheduled to begin at
       </p>
       <p className="md:text-[#333333] text-white text-lg font-semibold mt-2">
-        10:00 am, Jan 24. 2026
+        {formattedDate}
       </p>
 
       <div className="mt-6 flex flex-col items-center">
@@ -96,3 +119,4 @@ export default function CountdownTimer() {
     </div>
   );
 }
+

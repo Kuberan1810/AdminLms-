@@ -224,14 +224,14 @@ const AssignmentUpload: React.FC = () => {
   return (
     <div className="w-full ">
       <div className="">
-        <h3 className="md:text-2xl text-xl  font-medium text-[#333333] mb-5">Submit Assignment</h3>
+        <h3 className="md:text-2xl text-xl  font-medium text-[#333333] mb-5 dark:text-white">Submit Assignment</h3>
 
         {/* Drag & Drop Area */}
         <div
           onClick={() => openExplorer()}
           onDrop={(e) => { e.preventDefault(); processFiles(Array.from(e.dataTransfer.files)); }}
           onDragOver={(e) => e.preventDefault()}
-          className="border-2 border-dashed border-gray-300 hover:border-[#F67300] rounded-[30px] p-12 flex flex-col items-center justify-center bg-white hover:bg-[#fafafa]  cursor-pointer transition-all group"
+          className="border-2 border-dashed border-gray-300 hover:border-[#F67300] rounded-[30px] p-12 flex flex-col items-center justify-center bg-white hover:bg-[#fafafa] dark:bg-[#3a3a3a] dark:hover:bg-[#4a4a4a] cursor-pointer transition-all group"
         >
           <input
             type="file"
@@ -242,13 +242,13 @@ const AssignmentUpload: React.FC = () => {
           />
 
           <div className="w-16 h-16 orange opacity-90 rounded-full flex items-center justify-center mb-6.5   transition-transform">
-            <ImportSquare size="32" color='#fff' />
+            <ImportSquare size="32"  color='#fff' />
           </div>
 
-          <p className="text-base md:text-2xl font-medium text-[#333] mb-2">Upload your files</p>
-          <p className="text-sm md:text-lg  text-[#626262] mb-2 text-center">Drag and drop files here or click to select files</p>
-          <p className="text-sm md:text-base text-[#626262]">Supported fomats: pdf, doc, doccx, txt.</p>
-          <p className="text-sm md:text-base   text-[#626262]">Maximum file size: 10MB</p>
+          <p className="text-base md:text-2xl font-medium text-[#333] dark:text-white mb-2">Upload your files</p>
+          <p className="text-sm md:text-lg  text-[#626262] dark:text-gray-400 mb-2 text-center">Drag and drop files here or click to select files</p>
+          <p className="text-sm md:text-base text-[#626262] dark:text-gray-400">Supported fomats: pdf, doc, doccx, txt.</p>
+          <p className="text-sm md:text-base   text-[#626262] dark:text-gray-400">Maximum file size: 10MB</p>
 
         </div>
 
@@ -275,12 +275,12 @@ const AssignmentUpload: React.FC = () => {
                     </div>
 
                     <div className="max-w-md">
-                      <h4 className="text-sm md:text-lg text-[#4D4D4D] group-hover:text-[#333] transition-colors truncate max-w-45">
+                      <h4 className="text-sm md:text-lg text-[#4D4D4D] dark:text-gray-300 group-hover:text-[#333] transition-colors truncate max-w-45">
                         {fileObj.file.name}
                       </h4>
 
                       <div className="flex items-center gap-5">
-                        <p className="text-xs md:text-base text-[#808080] mt-1">
+                        <p className="text-xs md:text-base text-[#808080] dark:text-gray-400 mt-1">
                           {(fileObj.file.size / (1024 * 1024)).toFixed(1)} MB
                         </p>
 
@@ -297,7 +297,7 @@ const AssignmentUpload: React.FC = () => {
                         )}
 
                         {fileObj.status === 'Completed' && (
-                          <p className="text-xs md:text-base text-[#3EA465]">
+                          <p className="text-xs md:text-base text-[#3EA465] dark:text-[#3EA465]">
                             Ready to submit
                           </p>
                         )}

@@ -32,38 +32,38 @@ export const InstructorNotificationProvider = ({
     const [notifications, setNotifications] = useState<
         InstructorNotificationType[]
     >([
-        {
-            id: 1,
-            title: "15 Students submitted assignment -3",
-            subtitle: "Batch -02",
-            date: new Date(),
-            category: "assignment",
-            unread: true,
-        },
-        {
-            id: 2,
-            title: "Schedule Reminder",
-            subtitle: "Upcoming class : AI agent starts in 15 mins",
-            date: new Date(Date.now() - 15 * 60000),
-            category: "reminder",
-            unread: true,
-        },
-        {
-            id: 3,
-            title: "New student enrolled",
-            subtitle: "Indhu Joined AM101 Batch -02",
-            date: new Date(Date.now() - 24 * 60 * 60000),
-            category: "student",
-            unread: true,
-        },
-        {
-            id: 4,
-            title: "Assignment Update",
-            subtitle: "New Assignment posted in AI for Frontend engineer",
-            date: new Date(Date.now() - 26 * 60 * 60000),
-            category: "assignment",
-            unread: false
-        }
+        // {
+        //     id: 1,
+        //     title: "15 Students submitted assignment -3",
+        //     subtitle: "Batch -02",
+        //     date: new Date(),
+        //     category: "assignment",
+        //     unread: true,
+        // },
+        // {
+        //     id: 2,
+        //     title: "Schedule Reminder",
+        //     subtitle: "Upcoming class : AI agent starts in 15 mins",
+        //     date: new Date(Date.now() - 15 * 60000),
+        //     category: "reminder",
+        //     unread: true,
+        // },
+        // {
+        //     id: 3,
+        //     title: "New student enrolled",
+        //     subtitle: "Indhu Joined AM101 Batch -02",
+        //     date: new Date(Date.now() - 24 * 60 * 60000),
+        //     category: "student",
+        //     unread: true,
+        // },
+        // {
+        //     id: 4,
+        //     title: "Assignment Update",
+        //     subtitle: "New Assignment posted in AI for Frontend engineer",
+        //     date: new Date(Date.now() - 26 * 60 * 60000),
+        //     category: "assignment",
+        //     unread: false
+        // }
     ]);
 
     const unreadCount = notifications.filter(n => n.unread).length;

@@ -132,7 +132,7 @@ const SubmissionTable = ({ students, onReview, showFilters = true }: SubmissionT
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
                             className="cursor-pointer flex items-center gap-2 px-3 py-1.5 border border-[#E5E7EB] rounded-[4px] bg-white text-[#626262] text-xs font-medium hover:bg-gray-50 transition-colors"
                         >
-                            <Filter size={14} color="#626262" />
+                            <Filter size={14}  color="#626262" />
                             <span>Filter</span>
                         </button>
 
@@ -158,7 +158,7 @@ const SubmissionTable = ({ students, onReview, showFilters = true }: SubmissionT
                             onClick={() => setIsSortOpen(!isSortOpen)}
                             className="cursor-pointer flex items-center gap-2 px-3 py-1.5 border border-[#E5E7EB] rounded-[4px] bg-white text-[#626262] text-xs font-medium hover:bg-gray-50 transition-colors"
                         >
-                            <Sort size={14} color="#626262" />
+                            <Sort size={14}  color="#626262" />
                             <span>Sort</span>
                         </button>
 

@@ -57,9 +57,9 @@ const assignments: Assignment[] = [
 /* ===================== STATUS STYLE ===================== */
 
 const statusStyle: Record<Status, string> = {
-  "In progress": "bg-[#FFEDDE] text-[#F67300]",
-  Completed: "bg-[#E5F1E8] text-[#2A9A46]",
-  "Over due": "bg-[#FEE2E2] text-[#FF1313]",
+  "In progress": "bg-[#FFEDDE] dark:bg-[#3D2B20] text-[#F67300] dark:text-orange-400",
+  Completed: "bg-[#E5F1E8] dark:bg-[#1C2F23] text-[#2A9A46] dark:text-green-400",
+  "Over due": "bg-[#FEE2E2] dark:bg-[#3D1A1A] text-[#FF1313] dark:text-red-400",
 };
 
 /* ===================== COMPONENT ===================== */
@@ -108,17 +108,17 @@ function AssignmentsCard() {
         .toISOString()
         .split("T")[0]; // "YYYY-MM-DD" local format for lookup
 
-      let className = "bg-white border border-[#E5E7EB] text-gray-600";
+      let className = "bg-white dark:bg-[#1E1E1E] border border-[#E5E7EB] dark:border-[#3B3B3B] text-gray-600 dark:text-[#A3A3A3]";
       const dayIndex = d.getDay();
       const isToday = d.getTime() === today.getTime();
 
-      if (isToday) className = "text-[#F67300] bg-[#FFEAD8] border";
+      if (isToday) className = "text-[#F67300] bg-[#FFEAD8] dark:bg-[#3D2B20] border";
       else if (dayIndex === 0) className = "bg-[#FFFD3720] text-primary";
       else if (d < today) {
         if (attendanceMap[dKeyLocal] === "present") {
-          className = "text-[#3EA465] bg-[#3EA46510]";
+          className = "text-[#3EA465] bg-[#3EA46510] dark:bg-[#3EA46520]";
         } else if (attendanceMap[dKeyLocal] === "absent") {
-          className = "text-[#CE1919] bg-[#CE191910]";
+          className = "text-[#CE1919] bg-[#CE191910] dark:bg-[#CE191920]";
         }
       }
 
@@ -149,10 +149,10 @@ function AssignmentsCard() {
       {/* ================= Header ================= */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h3 className="text-xl lg:text-2xl font-semibold text-primary">
+          <h3 className="text-xl lg:text-2xl font-semibold text-primary dark:text-white">
             Assignments
           </h3>
-          <p className="text-[#626262] md:text-xl text-base">{headerDate}</p>
+          <p className="text-[#626262] dark:text-[#A3A3A3] md:text-xl text-base">{headerDate}</p>
         </div>
         <div className="md:flex hidden">
           {/* <BtnCom label="View all" onClick={() => navigate("/student/assignments")} /> */}
@@ -162,10 +162,10 @@ function AssignmentsCard() {
         {/* Mobile-only arrows in header */}
         <div className="flex md:hidden gap-2">
           <button onClick={() => changeWeek("prev")} className="iconStyle cursor-pointer">
-            <ArrowLeft2 size="16" color="#626262" />
+            <ArrowLeft2 size="16" color="currentColor" />
           </button>
           <button onClick={() => changeWeek("next")} className="iconStyle cursor-pointer">
-            <ArrowRight2 size="16" color="#626262" />
+            <ArrowRight2 size="16" color="currentColor" />
           </button>
         </div>
       </div>
@@ -173,7 +173,7 @@ function AssignmentsCard() {
       {/* ================= Desktop Dates (with arrows) ================= */}
       <div className="md:flex hidden items-center gap-3 mb-5">
         <button onClick={() => changeWeek("prev")} className="iconStyle cursor-pointer">
-          <ArrowLeft2 size="20" color="#626262" />
+          <ArrowLeft2 size="20" color="currentColor" />
         </button>
 
         <div className="flex gap-3 w-full justify-between overflow-x-auto scrollbar-hide">
@@ -190,7 +190,7 @@ function AssignmentsCard() {
         </div>
 
         <button onClick={() => changeWeek("next")} className="iconStyle cursor-pointer">
-          <ArrowRight2 size="20" color="#626262" />
+          <ArrowRight2 size="20" color="currentColor" />
         </button>
       </div>
 
@@ -219,7 +219,7 @@ function AssignmentsCard() {
             className={`px-3 md:px-5 py-2.5 rounded-[10px]   font-medium border border-[#F2EEF4] cursor-pointer text-[12px] md:text-sm
               ${filter === f
                 ? "bg-[#F67300] text-white border-[#F67300]"
-                : "text-[#808080]"
+                : "text-[#808080] dark:text-[#A3A3A3] dark:border-[#3B3B3B]"
               }`}
           >
             {f}
@@ -231,11 +231,11 @@ function AssignmentsCard() {
       <div className={`space-y-5 ${filteredAssignments.length > 0 ? "h-100 overflow-y-auto scrollbar-hide" : ""}`}>
         {filteredAssignments.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-10 text-center">
-            <div className="p-4 bg-[#FFF0EF] rounded-full mb-4">
-              <Note1 size={32} color="#EF7A02" />
+            <div className="p-4 bg-[#FFF0EF] dark:bg-[#3D2B2A] rounded-full mb-4">
+              <Note1 size={32}  color="#EF7A02" />
             </div>
-            <p className="text-[#626262] text-base font-medium">No Assignments Found</p>
-            <p className="text-[#989898] text-sm mt-1">There are no assignments scheduled for this date.</p>
+            <p className="text-[#626262] dark:text-[#E0E0E0] text-base font-medium">No Assignments Found</p>
+            <p className="text-[#989898] dark:text-[#A3A3A3] text-sm mt-1">There are no assignments scheduled for this date.</p>
           </div>
         ) : (
           filteredAssignments.map(item => (
@@ -243,23 +243,23 @@ function AssignmentsCard() {
             <div key={item.id} className="max-lg:block">
               <div
                 onClick={() => navigate(`/student/assignment/${assignmentId}`)}
-                className="boxStyle flex flex-col md:flex-row justify-between items-center bg-[#FAFAFA]! cursor-pointer"
+                className="boxStyle flex flex-col md:flex-row justify-between items-center bg-[#FAFAFA]! dark:bg-[#2A2A2A]! border dark:border-[#3B3B3B] cursor-pointer transition-colors duration-300"
               >
                 <div className="max-lg:w-full">
                   <h4 className="md:text-lg text-base   font-semibold text-primary mb-2.5">
                     {item.title}
                   </h4>
                   <div className="flex flex-col md:flex-row justify-center gap-5 ">
-                    <div className="flex items-center gap-2 text-[#626262] text-sm">
-                      <div className="iconStyle">
-                        <Calendar size="16" color="#626262" />
+                    <div className="flex items-center gap-2 text-[#626262] dark:text-[#A3A3A3] text-sm">
+                      <div className="iconStyle dark:bg-[#3B3B3B] dark:border-[#4B4B4B]">
+                        <Calendar size="16" className="text-[#626262] dark:text-white"  color="currentColor" />
                       </div>
                       <span>Due date: {item.dueDate}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[#626262] text-sm">
-                      <div className="iconStyle">
-                        <Clock size="16" color="#626262" />
+                    <div className="flex items-center gap-2 text-[#626262] dark:text-[#A3A3A3] text-sm">
+                      <div className="iconStyle dark:bg-[#3B3B3B] dark:border-[#4B4B4B]">
+                        <Clock size="16" className="text-[#626262] dark:text-white"  color="currentColor" />
                       </div>
                       <span>Due time: {item.dueTime}</span>
                     </div>

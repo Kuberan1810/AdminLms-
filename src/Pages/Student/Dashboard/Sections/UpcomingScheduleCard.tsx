@@ -33,8 +33,8 @@ const schedules: Schedule[] = [
     batch_name: "Batch-A",
     title: "AI / ML Frontier Engineer",
     time: "8:00 - 09:00 pm",
-    date: "March 09, 26",
-    class: "Conditional Statements",
+    date: "March 16, 26",
+    class: "OOPS (Object-Oriented Programming)",
     instructor: "Naveenkumar S",
   },
   {
@@ -43,20 +43,9 @@ const schedules: Schedule[] = [
     batch_name: "Batch-B",
     title: "AI / ML Frontier Engineer",
     time: "08:00 - 09:00 pm",
-    date: "March 10, 26",
-    class: "Functions",
+    date: "March 17, 26",
     instructor: "Naveenkumar S",
   },
-  // {
-  //   id: 3,
-  //   course_id: 1,
-  //   batch_name: "Batch-A",
-  //   title: "AI / ML Frontier Engineer",
-  //   time: "08:00 - 09:00 pm",
-  //   date: "March 12, 26",
-  //   class: "Functions",
-  //   instructor: "Naveenkumar S",
-  // }
 ];
 
 /* ===================== COMPONENT ===================== */
@@ -274,33 +263,33 @@ const UpcomingScheduleCard = () => {
         return (
           <div
             key={item.id}
-            className="boxStyle flex flex-col md:flex-row md:justify-between md:items-center bg-[#FAFAFA]! p-5 rounded-xl"
+            className="boxStyle flex flex-col md:flex-row md:justify-between md:items-center bg-[#FAFAFA]! dark:bg-[#1E1E1E]! p-5 rounded-xl border border-[#F2EEF4] dark:border-[#3B3B3B]"
           >
             {/* Schedule Info */}
             <div>
-              <h4 className="font-semibold text-primary mb-1">
+              <h4 className="font-semibold text-primary dark:text-white mb-1">
                 {item.title}
               </h4>
-              <p className=" text-sm text-[#4d4d4d] mb-2.5 md:mb-2 capitalize">
+              <p className=" text-sm text-[#4d4d4d] dark:text-[#E0E0E0] mb-2.5 md:mb-2 capitalize">
                 {item.class}
               </p>
-              <div className="flex gap-4 text-sm text-[#626262]">
+              <div className="flex gap-4 text-sm text-[#626262] dark:text-[#A3A3A3]">
                 <div className="flex items-center gap-1">
-                  <span className="iconStyle">
-                    <Clock size={16} color="#626262" />
+                  <span className="iconStyle dark:bg-[#3B3B3B] dark:border-[#4B4B4B]">
+                    <Clock size={16} className="text-[#626262] dark:text-white"  color="currentColor" />
                   </span>
                   {item.time}
                 </div>
 
                 <div className="flex items-center gap-1">
-                  <span className="iconStyle">
-                    <Calendar size={16} color="#626262" />
+                  <span className="iconStyle dark:bg-[#3B3B3B] dark:border-[#4B4B4B]">
+                    <Calendar size={16} className="text-[#626262] dark:text-white"  color="currentColor" />
                   </span>
                   {item.date}
                 </div>
               </div>
 
-              <div className="mt-2 text-sm text-gray-600 mb-2.5 md:mb-0">
+              <div className="mt-2 text-sm text-gray-600 dark:text-[#A3A3A3] mb-2.5 md:mb-0">
                 {item.instructor}
               </div>
             </div>
@@ -332,7 +321,7 @@ const UpcomingScheduleCard = () => {
                       e.stopPropagation();
                       setActiveTooltip(activeTooltip === item.id ? null : item.id);
                     }}
-                    className="px-7 py-2.5 rounded-xl bg-[#F3F4F6] text-[#9CA3AF] text-sm font-semibold cursor-not-allowed md:w-fit w-full pointer-events-auto"
+                    className="px-7 py-2.5 rounded-xl bg-[#F3F4F6] dark:bg-[#2d2d2d] text-[#9CA3AF] dark:text-[#797777] text-sm font-semibold cursor-not-allowed md:w-fit w-full pointer-events-auto"
                   >
                     Soon
                   </button>
@@ -345,11 +334,11 @@ const UpcomingScheduleCard = () => {
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9, y: 10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
-                      className="bg-[#808080] text-white text-xs py-1.5 px-3 rounded-lg whitespace-nowrap shadow-lg relative"
+                      className="bg-[#333333] dark:bg-[#3B3B3B] text-white text-xs py-1.5 px-3 rounded-lg whitespace-nowrap shadow-lg relative border dark:border-[#4B4B4B]"
                     >
                       Class has not started yet
                       {/* Arrow */}
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#808080]" />
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#333333] dark:border-t-[#3B3B3B]" />
                     </motion.div>
                   </div>
 

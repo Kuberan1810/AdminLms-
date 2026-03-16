@@ -17,10 +17,10 @@ type AttendanceStatus = "present" | "absent" | "holiday" | "none";
 /* ===================== STYLES ===================== */
 
 const STATUS_STYLES: Record<AttendanceStatus, string> = {
-  present: "bg-[#DCFCE7] text-[#3EA465]",
-  absent: "bg-red-100 text-red-600",
-  holiday: "bg-orange-100 text-orange-600",
-  none: "border border-[#E5E7EB] text-gray-500",
+  present: "bg-[#DCFCE7] dark:bg-[#F6730050] text-[#3EA465] dark:text-green-400",
+  absent: "bg-red-100 dark:bg-[#3D1A1A] text-red-600 dark:text-red-400",
+  holiday: "bg-orange-100 dark:bg-[#F6730050] text-orange-600 dark:text-orange-400",
+  none: "border border-[#E5E7EB] dark:border-[#3B3B3B] text-gray-500 dark:text-[#A3A3A3] ",
 };
 
 /* ===================== HELPERS ===================== */
@@ -77,19 +77,19 @@ const AttendanceCard = () => {
 
       {/* ================= Header ================= */}
       <header className="flex  sm:flex-row sm:items-center justify-between gap-4">
-        <h3 className="text-xl lg:text-2xl font-semibold text-primary">
+        <h3 className="text-xl lg:text-2xl font-semibold text-primary dark:text-white">
           Attendance
         </h3>
 
         <div className="flex items-center gap-4">
-          <span className="px-4 py-2 rounded-2xl bg-[#F6730010] text-[#F67300] font-semibold text-center leading-4">
+          <span className="px-4 py-2 rounded-2xl bg-[#F6730050] text-[#F67300] font-semibold text-center leading-4 border border-[#F67300]">
             {today.toLocaleDateString("en-US", { weekday: "short" })}
             <p className="text-sm">{today.getDate()}</p>
           </span>
 
-          <div className="text-sm text-[#808080]">
+          <div className="text-sm text-[#808080] dark:text-[#A3A3A3]">
             {today.toLocaleDateString("en-GB")}
-            <p className="text-primary font-semibold">
+            <p className="text-primary dark:text-white font-semibold">
               {today.toLocaleDateString("en-US", { weekday: "long" })}
             </p>
           </div>
@@ -100,12 +100,12 @@ const AttendanceCard = () => {
       <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4">
         <button
           onClick={goToPrevMonth}
-          className="p-1 bg-[#f6730010] rounded cursor-pointer"
+          className="p-1 bg-[#f6730010] dark:bg-[#f6730020] rounded cursor-pointer transition-colors"
         >
-          <ArrowLeft2 size="20" color="#f67300" variant="Bold" />
+          <ArrowLeft2 size="20" variant="Bold"  color="#f67300" />
         </button>
 
-        <p className="font-medium text-sm sm:text-base">
+        <p className="font-medium text-sm sm:text-base dark:text-white">
           {currentDate.toLocaleString("default", {
             month: "short",
             year: "numeric",
@@ -114,9 +114,9 @@ const AttendanceCard = () => {
 
         <button
           onClick={goToNextMonth}
-          className="p-1 bg-[#f6730010] rounded cursor-pointer"
+          className="p-1 bg-[#f6730010] dark:bg-[#f6730020] rounded cursor-pointer transition-colors"
         >
-          <ArrowRight2 size="20" color="#f67300" variant="Bold" />
+          <ArrowRight2 size="20" variant="Bold"  color="#f67300" />
         </button>
       </div>
 
@@ -138,7 +138,7 @@ const AttendanceCard = () => {
 
           const sundayStyle =
             isSunday && status === "none"
-              ? "bg-[#FDEFE3] text-gray-700 border-none"
+              ? "bg-[#FDEFE3] dark:bg-[#F6730030] text-gray-700 dark:text-[#E0E0E0] border-none"
               : "";
 
           return (
@@ -153,14 +153,14 @@ const AttendanceCard = () => {
                 transition
                 ${STATUS_STYLES[status]}
                 ${sundayStyle}
-                ${isToday && status === "none" ? "ring-1 ring-[#F67300] bg-[#FFEDDD] font-semibold" : ""}
+                ${isToday && status === "none" ? "ring-1 ring-[#F67300] bg-[#FFEDDD] dark:bg-[#3D2B20] font-semibold" : ""}
                 ${selectedDate === dateKey ? "scale-105" : ""}
               `}
             >
-              <span className={`text-xs sm:text-sm font-semibold ${status !== "none" ? "text-inherit" : "text-[#333333]"}`}>
+              <span className={`text-xs sm:text-sm font-semibold ${status !== "none" ? "text-inherit" : "text-[#333333] dark:text-white"}`}>
                 {getDayName(dateObj)}
               </span>
-              <span className={`text-xs font-medium ${status !== "none" ? "text-inherit opacity-90" : "text-[#626262]"}`}>
+              <span className={`text-xs font-medium ${status !== "none" ? "text-inherit opacity-90" : "text-[#626262] dark:text-[#A3A3A3]"}`}>
                 {day}
               </span>
             </button>
@@ -169,10 +169,10 @@ const AttendanceCard = () => {
       </div>
 
       {/* ================= Legend ================= */}
-      <footer className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-6 text-sm font-semibold text-[#626262]">
+      <footer className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-6 text-sm font-semibold text-[#626262] dark:text-[#A3A3A3]">
         <Legend color="bg-green-500" label="Present" />
         <Legend color="bg-red-500" label="Absent" />
-        <Legend color="bg-orange-100" label="Holiday" />
+        <Legend color="bg-orange-100 dark:bg-[#F6730030]" label="Holiday" />
       </footer>
     </div>
   );
