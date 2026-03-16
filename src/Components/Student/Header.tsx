@@ -89,7 +89,7 @@ const Header = () => {
 
   return (
 
-    <header className="w-full flex flex-col-reverse sm:flex-row items-center justify-between px-4 sm:px-5 py-4 sm:py-5 gap-4 lg:gap-0 md:bg-white dark:md:bg-[#1E1E1E]  transition-colors duration-300 sm:border-b sm:border-[#F2EEF4] dark:sm:border-[#3B3B3B] sm:mb-5">
+    <header className="w-full flex flex-col-reverse sm:flex-row items-center justify-between px-4 sm:px-5 py-4 sm:py-5 gap-4 lg:gap-0 md:bg-white dark:md:bg-[#2d2d2d]  transition-colors duration-300 sm:border-b sm:border-[#F2EEF4] dark:sm:border-[#3B3B3B] sm:mb-5">
 
       {/* ================= LEFT – TITLE ================= */}
       <div className="flex-1  self-start ">
