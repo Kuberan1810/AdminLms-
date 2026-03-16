@@ -367,10 +367,10 @@ const q1103Data: CourseData = {
         },
     ],
     assignments: [
-        { id: '1', title: 'Q1103 - Quantum Intelligence', dueDate: 'Jan 19, 26', dueTime: '10:00 - 11:00 am', status: 'Completed' },
-        { id: '2', title: 'Q1103 - Quantum Intelligence', dueDate: 'Jan 23, 26', dueTime: '11:00 - 12:00 pm', status: 'In Progress' },
-        { id: '3', title: 'Q1103 - Quantum Intelligence', dueDate: 'Jan 17, 26', dueTime: '9:00 - 10:00 am', status: 'Over Due' },
-        { id: '4', title: 'Q1103 - Quantum Intelligence', dueDate: 'Jan 26, 26', dueTime: '2:00 - 3:00 pm', status: 'Completed' },
+        // { id: '1', title: 'Q1103 - Quantum Intelligence', dueDate: 'Jan 19, 26', dueTime: '10:00 - 11:00 am', status: 'Completed' },
+        // { id: '2', title: 'Q1103 - Quantum Intelligence', dueDate: 'Jan 23, 26', dueTime: '11:00 - 12:00 pm', status: 'In Progress' },
+        // { id: '3', title: 'Q1103 - Quantum Intelligence', dueDate: 'Jan 17, 26', dueTime: '9:00 - 10:00 am', status: 'Over Due' },
+        // { id: '4', title: 'Q1103 - Quantum Intelligence', dueDate: 'Jan 26, 26', dueTime: '2:00 - 3:00 pm', status: 'Completed' },
     ]
 };
 
