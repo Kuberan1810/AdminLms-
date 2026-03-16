@@ -170,7 +170,7 @@ const am101Data: CourseData = {
                     ]
                 }, {
                     id: '1.6',
-                    title: 'OOPS',
+                    title: 'OOPS (Object-Oriented Programming)',
                     type: 'video',
                     isCompleted: false,
                     content: 'Learn the fundamentals of Object-Oriented Programming (OOP) and how it helps organize code using objects and classes. In this lesson, you will understand how to create classes, define objects, and use important OOP concepts like encapsulation, inheritance, polymorphism, and abstraction. These concepts make programs more reusable, scalable, and easier to maintain.',

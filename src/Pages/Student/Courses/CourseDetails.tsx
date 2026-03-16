@@ -30,7 +30,7 @@ const CourseDetails = () => {
     };
     return (
 
-        <div className=" " >
+        <div className="md:mb-0 mb-12" >
             <div className="flex flex-col  lg:flex-row gap-5">
                 {/* Main Content - Left Column */}
                 <div className="flex-1">

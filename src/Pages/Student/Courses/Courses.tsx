@@ -231,7 +231,7 @@ const Courses = () => {
   });
 
   return (
-    <div className="space-y-5 md:mb-0 mb-10">
+    <div className="space-y-5 md:mb-0 mb-12 ">
 
       {/*  SAME COMPONENT AS DASHBOARD (ONLY DIFFERENCE = onCardClick) */}
       <EnrolledClasses

@@ -74,33 +74,33 @@ const LessonDetails = () => {
 
     return (
 
-        <div className="w-full"     >
+        <div className="w-full md:mb-0 mb-12"     >
             <div className="bg-white dark:bg-[#1E1E1E] border border-[#F2EEF4] dark:border-[#363636] rounded-[10px] p-[20px]  overflow-hidden flex flex-col gap-[30px] ">
                 {/* Header Bar */}
-                <div className={`flex items-center ${!isCompleted ? 'justify-between' : 'gap-4'} bg-[#FFF3E9] dark:bg-[#3D2B20] px-[20px] h-[47px] border-b border-[#FFF3E9] dark:border-[#3D2B20] -mx-[20px] -mt-[20px]`}>
-                    <div className="flex items-center gap-4">
+                <div className={`flex flex-col md:flex-row items-start md:items-center ${!isCompleted ? 'justify-between' : 'gap-4'} bg-[#FFF3E9] dark:bg-[#3D2B20] px-4 md:px-[20px] py-3 md:h-[47px] border-b border-[#FFF3E9] dark:border-[#3D2B20] -mx-[20px] -mt-[20px] gap-3 md:gap-0`}>
+                    <div className="flex items-center gap-3 md:gap-4 overflow-hidden w-full md:w-auto">
                         <button
                             onClick={() => navigate(-1)}
-                            className="transition-colors flex items-center cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-[#2A2A2A] hover:text-white rounded-full"
+                            className="transition-colors flex items-center shrink-0 cursor-pointer p-1.5 md:p-2 hover:bg-gray-200 dark:hover:bg-[#2A2A2A] hover:text-white rounded-full bg-white/50 dark:bg-black/20"
                         >
-                            <ArrowLeft width="20" height="20" color="currentColor" />
+                            <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 text-[#333333] dark:text-white" />
                         </button>
-                        <div className={`rounded-full p-1 flex items-center justify-center w-[24px] h-[24px] ${isCompleted ? 'bg-[#EF7A02]' : 'bg-[#E0E0E0] dark:bg-[#4B4B4B]'}`}>
-                            <Check className="w-[14px] h-[14px] text-white" strokeWidth={3} />
+                        <div className={`rounded-full p-1 flex items-center justify-center w-5 h-5 md:w-6 md:h-6 shrink-0 ${isCompleted ? 'bg-[#EF7A02]' : 'bg-[#E0E0E0] dark:bg-[#4B4B4B]'}`}>
+                            <Check className="w-3 h-3 md:w-3.5 md:h-3.5 text-white" strokeWidth={3} />
                         </div>
-                        <h1 className="text-base  md:text-lg md:text-lgmd:text-lg font-semibold text-[#333333] dark:text-white capitalize"     >
+                        <h1 className="text-sm md:text-lg font-semibold text-[#333333] dark:text-white capitalize truncate" title={lessonData.title}>
                             {lessonData.title}
                         </h1>
                     </div>
                     {!isCompleted && (
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2     text-[#333333] dark:text-gray-300 text-[14px]">
-                                <Calendar size={16} color="currentColor" />
-                                <span >Today 08:00 PM - 09:00 PM</span>
+                        <div className="flex items-center justify-between md:justify-end gap-3 md:gap-4 w-full md:w-auto mt-1 md:mt-0">
+                            <div className="flex items-center gap-1.5 md:gap-2 text-[#333333] dark:text-gray-300 text-xs md:text-[14px] whitespace-nowrap">
+                                <Calendar size={16} className="text-[#EF7A02] dark:text-orange-400" />
+                                <span>Today 08:00 PM - 09:00 PM</span>
                             </div>
                             <button
                                 onClick={liveClassId ? joinClass : undefined}
-                                className={`${liveClassId ? 'bg-[#EF7A02] cursor-pointer hover:bg-orange-600' : 'bg-[#E0E0E0] cursor-not-allowed'} text-[#FFFFFF] px-4 py-1.5 rounded-md text-sm font-semibold transition-colors`}
+                                className={`${liveClassId ? 'bg-[#EF7A02] cursor-pointer hover:bg-orange-600' : 'bg-[#E0E0E0] dark:bg-[#4B4B4B] cursor-not-allowed'} text-white px-4 md:px-5 py-1.5 rounded-md text-xs md:text-sm font-semibold transition-colors shrink-0`}
                             >
                                 Join
                             </button>
