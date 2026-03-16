@@ -362,7 +362,7 @@ const q1103Data: CourseData = {
             lessons: [
                 { id: '1.3', title: 'Quantum circuits & gates (Hadamard, CNOT, Pauli)', type: 'video', isCompleted: true },
                 { id: '1.2', title: 'Qubits, superposition & measurement', type: 'video', isCompleted: true },
-                { id: '1.1', title: 'Introduction to quantum mechanics for CS', type: 'video', isCompleted: true },
+                { id: '1.1', title: 'Introduction to quantum mechanics for CS', type: 'video', isCompleted: false },
             ]
         },
     ],
