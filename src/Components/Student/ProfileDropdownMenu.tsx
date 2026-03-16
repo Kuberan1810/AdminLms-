@@ -1,13 +1,12 @@
+/* import { Settings, LogOut, User } from "lucide-react"; */
 interface ProfileDropdownMenuProps {
     onLogoutClick: () => void;
     onProfileClick: () => void;
-    onSettingsClick?: () => void;   // 👈 add this
 }
 
 const ProfileDropdownMenu = ({
     onLogoutClick,
     onProfileClick,
-    onSettingsClick,
 }: ProfileDropdownMenuProps) => {
     return (
         <div className="absolute right-0 mt-3 w-48 sm:w-56 rounded-2xl bg-white shadow-lg border border-[#F2EEF4] p-2 sm:p-3 z-50">

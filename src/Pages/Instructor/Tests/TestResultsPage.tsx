@@ -8,12 +8,14 @@ import FilterDropdown from "./component/FilterDropdown";
 import SortDropdown from "./component/SortDropdown";
 import CreateTestModal from "../CreateModal/CreateTestModal"; // ✅ IMPORT MODAL
 
-export const MOCK_DATA = [
+import type { StudentResult } from "../../../types/test";
+
+export const MOCK_DATA: StudentResult[] = [
   { id: "1", studentId: "BT01", name: "Aarav", status: "submitted", mark: 85, startTime: "10:00", endTime: "10:45" },
-  { id: "2", studentId: "BT02", name: "Neha", status: "not_attended" },
+  { id: "2", studentId: "BT02", name: "Neha", status: "not_attended" /* "missed" */ },
   { id: "3", studentId: "BT03", name: "John", status: "submitted", mark: 78, startTime: "10:01", endTime: "10:45" },
   { id: "4", studentId: "BT04", name: "Meera", status: "submitted", mark: 92, startTime: "10:00", endTime: "10:40" },
-  { id: "5", studentId: "BT05", name: "Rohan", status: "not_attended" },
+  { id: "5", studentId: "BT05", name: "Rohan", status: "not_attended" /* "pending" */ },
   { id: "6", studentId: "BT06", name: "Sneha", status: "submitted", mark: 66, startTime: "10:05", endTime: "10:45" },
   { id: "7", studentId: "BT07", name: "Arjun", status: "submitted", mark: 49, startTime: "10:02", endTime: "10:44" },
   { id: "8", studentId: "BT08", name: "Kavya", status: "not_attended" },
@@ -33,7 +35,7 @@ const TestResultsPage = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const [filter, setFilter] =
-    useState<"all" | "submitted" | "not attended">("all");
+    useState<"all" | "submitted" | "not_attended">("all");
   const [sort, setSort] = useState<"name" | "mark">("name");
 
   const filteredData = useMemo(() => {
@@ -127,7 +129,7 @@ const TestResultsPage = () => {
         <CreateTestModal
           onClose={() => setOpenEditModal(false)}
           onBack={() => setOpenEditModal(false)}
-          mode="edit"
+          // mode="edit"
         />
       )}
     </>

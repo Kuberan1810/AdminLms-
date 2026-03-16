@@ -3,7 +3,7 @@ import { Filter } from "lucide-react";
 import Dropdown from "../component/common/Dropdown";
 
 interface Props {
-  onChange: (value: "all" | "submitted" | "not attended") => void;
+   onChange: (value: "all" | "submitted" | "not_attended") => void;
 }
 
 const FilterDropdown = ({ onChange }: Props) => {
@@ -25,7 +25,7 @@ const FilterDropdown = ({ onChange }: Props) => {
         setSelected(val);
 
         if (val === "Submitted") onChange("submitted");
-        else if (val === "Not attended") onChange("not attended");
+        else if (val === "Not attended") onChange("not_attended");
         else onChange("all");
       }}
     />

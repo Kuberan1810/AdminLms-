@@ -1,5 +1,5 @@
 
-import { Search, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import CourseQACard from './components/CourseQACard';
 import AskQuestionModal from './components/AskQuestionModal';
 import { useState } from 'react';

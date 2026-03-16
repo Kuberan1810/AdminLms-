@@ -11,6 +11,12 @@ import { posts as initialPosts } from "./data/posts";
 import type { Post } from "./types/post";
 import type { CommunityTab } from "./types/tab";
 
+/*
+const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setSearchQuery(e.target.value);
+};
+*/
+
 
 export default function CommunityContent() {
     const [posts, setPosts] = useState<Post[]>(initialPosts);

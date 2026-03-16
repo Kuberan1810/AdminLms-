@@ -3,8 +3,6 @@ import {
     Bell,
     Mail,
     HelpCircle,
-    FileText,
-    Shield,
     ChevronRight,
     X,
     Headset

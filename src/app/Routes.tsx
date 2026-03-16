@@ -12,7 +12,6 @@ import Courses from "../Pages/Student/Courses/Courses";
 import CourseDetails from "../Pages/Student/Courses/CourseDetails";
 import LessonDetails from "../Pages/Student/Courses/LessonDetails";
 import Assignments from "../Pages/Student/Assignment/Assignment";
-import AssignmentDetails from "../Pages/Student/Assignment/AssignmentDetails/AssignmentDetails";
 import AssignmentList from "../Pages/Student/Assignment/AssignmentDetails/AssignmentList";
 import AssignSubmission from "../Pages/Student/Assignment/AssignSubmission/AssignSubmission";
 import Community from "../Pages/Student/Community/Community";

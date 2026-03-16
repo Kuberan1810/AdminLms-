@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Timer1, ArrowLeft, CalendarRemove } from 'iconsax-react';
+import { ArrowLeft, CalendarRemove } from 'iconsax-react';
 
 interface AssignmentHeaderProps {
   title: string;

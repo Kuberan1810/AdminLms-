@@ -4,7 +4,7 @@ import {
   ChevronUp,
   Plus,
   Trash2,
-  Download,
+  // Download,
   Search,
   ArrowLeft,
 } from "lucide-react";
@@ -15,10 +15,13 @@ import BtnCom from "../../../../Components/Student/BtnCom";
 
 /* ================= Types ================= */
 
+/*
 type Chapter = { id: string; name: string };
 type Assignment = { id: string; name: string; due: string };
 type Test = { id: string; name: string; date: string };
+*/
 
+/*
 type ModuleType = {
   id: string;
   title: string;
@@ -28,6 +31,9 @@ type ModuleType = {
   assignments: Assignment[];
   tests: Test[];
 };
+*/
+
+
 
 /* ================= Component ================= */
 
@@ -41,8 +47,9 @@ export default function ClassesContentSection() {
     (location.state as any)?.batchName || params.batchId || "Batch";
 
 
-  const batchName = useAppSelector((state) => state.batch.name);
+
   const dispatch = useAppDispatch();
+  // const batchName = useAppSelector((state) => state.batch.name);
 
   const { modules: modulesState, chapters, resources, assignments, tests } = useAppSelector((state) => state.resource);
 
@@ -75,10 +82,38 @@ export default function ClassesContentSection() {
 
       // Add mock test data for the first module
       const test1Id = crypto.randomUUID();
-      dispatch(addTest({ id: test1Id, name: "AI Fundamentals Quiz", date: "2024-01-15", moduleId }));
+      dispatch(addTest({
+        id: test1Id,
+        name: "AI Fundamentals Quiz",
+        date: "2024-01-15",
+        moduleId,
+        course: "Am101",
+        batch: "Batch-01",
+        category: "quiz",
+        description: "",
+        fromTime: "09:00",
+        toTime: "10:00",
+        questions: [],
+        totalMarks: 0,
+        createdAt: new Date().toISOString()
+      }));
 
       const test2Id = crypto.randomUUID();
-      dispatch(addTest({ id: test2Id, name: "Deployment Assessment", date: "2024-01-20", moduleId }));
+      dispatch(addTest({
+        id: test2Id,
+        name: "Deployment Assessment",
+        date: "2024-01-20",
+        moduleId,
+        course: "Am101",
+        batch: "Batch-01",
+        category: "quiz",
+        description: "",
+        fromTime: "09:00",
+        toTime: "10:00",
+        questions: [],
+        totalMarks: 0,
+        createdAt: new Date().toISOString()
+      }));
     }
   }, [dispatch, modulesState.allIds.length]);
 
@@ -172,7 +207,19 @@ export default function ClassesContentSection() {
     if (!assignmentName.trim() || !assignmentDue.trim() || !showAssignmentModal) return;
 
     const id = crypto.randomUUID();
-    dispatch(addAssignment({ id, name: assignmentName, due: assignmentDue, moduleId: showAssignmentModal }));
+    dispatch(addAssignment({
+      id,
+      title: assignmentName,
+      dueDate: assignmentDue,
+      dueTime: "23:59",
+      moduleId: showAssignmentModal,
+      description: "",
+      objective: "",
+      outcome: "",
+      resources: [],
+      batch: "Batch-01",
+      course: "Am101"
+    }));
 
     addActivity(`New assignment "${assignmentName}" added`);
     setAssignmentName("");
@@ -185,7 +232,21 @@ export default function ClassesContentSection() {
     if (!testName.trim() || !testDate.trim() || !showTestModal) return;
 
     const id = crypto.randomUUID();
-    dispatch(addTest({ id, name: testName, date: testDate, moduleId: showTestModal }));
+    dispatch(addTest({
+      id,
+      name: testName,
+      date: testDate,
+      moduleId: showTestModal,
+      course: "Am101",
+      batch: "Batch-01",
+      category: "quiz",
+      description: "",
+      fromTime: "09:00",
+      toTime: "10:00",
+      questions: [],
+      totalMarks: 0,
+      createdAt: new Date().toISOString()
+    }));
 
     addActivity(`New test "${testName}" added`);
     setTestName("");
@@ -464,8 +525,8 @@ export default function ClassesContentSection() {
                           return (
                             <div key={assignmentId} className="flex justify-between items-center text-xs text-gray-600 bg-gray-100 p-2 rounded">
                               <div>
-                                <span className="font-medium">{assignment.name}</span>
-                                <span className="text-gray-400 ml-2">Due: {assignment.due}</span>
+                                <span className="font-medium">{assignment.title}</span>
+                                <span className="text-gray-400 ml-2">Due: {assignment.dueDate}</span>
                               </div>
                               <button
                                 onClick={() => dispatch(removeAssignment({ assignmentId }))}

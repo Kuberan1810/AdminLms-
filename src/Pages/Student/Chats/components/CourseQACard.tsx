@@ -99,9 +99,13 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
             .toUpperCase();
     };
 
-    const isImageFile = (url: string) => {
-        return url.match(/\.(jpeg|jpg|png|gif|webp)$/i);
+    /*
+    const isImageFile = (filename: string) => {
+        return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(filename);
     };
+    */
+
+
 
     return (
         <div className="bg-white dark:bg-[#1E1E1E] border border-[#F2EEF4] dark:border-[#2C2C2C] rounded-[10px] p-3 relative w-full flex flex-col gap-1">

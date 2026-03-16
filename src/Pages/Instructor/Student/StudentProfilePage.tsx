@@ -1,5 +1,4 @@
-import { ArrowLeft } from "iconsax-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams /*, ArrowLeft*/ } from "react-router-dom";
 import InstructorDashboardLayout from "../../../Components/instructor/InstructorDashboardLayout";
 import { students } from "./studentsData";
 import BtnCom from "../../../Components/Student/BtnCom";

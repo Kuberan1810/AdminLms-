@@ -1,8 +1,7 @@
 
 import { coursesData } from './CourseDetailsData';
-import { CalendarRemove, FolderCross, Calendar, ImportCurve, Video, Clock, Note1 } from 'iconsax-react';
+import { CalendarRemove, FolderCross, Calendar, ImportCurve, Video, Note1 } from 'iconsax-react';
 import PdfIcon from '../../../assets/Images/icon/pdfIcon.svg';
-import clock_img from '../../../assets/Images/Enrolled_Courses/Clock.png';
 // import form_img from '../../assets/Images/Enrolled_Courses/Form.png';
 
 import { useNavigate, useParams } from 'react-router-dom';
@@ -47,16 +46,16 @@ const LessonDetails = () => {
     const lessonData = {
         title: currentLessonTitle || 'AI Agents (LangChain, CrewAI, AutoGen)',
         content: currentLesson?.content || 'AI Agents are systems that use LLMs to plan, act, and collaborate autonomously. LangChain builds tool-using agents for workflows and RAG. CrewAI enables role-based multi-agent teamwork. AutoGen focuses on conversation-driven agents that interact with each other and humans to solve complex tasks.',
-        keyTopics: currentLesson?.keyTopics || [
+        keyTopics: (currentLesson?.keyTopics || [
             'Introduction to AI Agents',
             'Agent Architecture & Planning',
             'Tools, Memory & RAG',
             'Multi-Agent Collaboration',
             'Frameworks Overview (LangChain, CrewAI, AutoGen)',
-        ],
-        resources: [],
-        recordedClasses: [],
-        assignments: [],
+        ]) as string[],
+        resources: [] as { id: string; name: string }[],
+        recordedClasses: [] as { id: string; title: string; instructor: string; date: string; duration: string }[],
+        assignments: [] as { id: string; title: string; dueDate: string; status: string }[],
     };
 
     const handleDownload = (resourceName: string) => {
@@ -122,7 +121,7 @@ const LessonDetails = () => {
                     <section>
                         <h2 className="text-[#333333] dark:text-white text-base  md:text-lg md:text-lgmd:t-lg font-semibold md:mb-3 mb-2" >Key Topic:</h2>
                         <ol className="list-decimal list-inside space-y-2 ml-2">
-                            {lessonData.keyTopics.map((topic, index) => (
+                            {lessonData.keyTopics.map((topic: string, index: number) => (
                                 <li key={index} className="text-[#626262] dark:text-gray-300 text-sm md:text-base font-medium" >
                                     {topic}
                                 </li>

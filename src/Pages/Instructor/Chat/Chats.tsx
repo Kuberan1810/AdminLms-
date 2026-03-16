@@ -22,9 +22,10 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
   const [activeReply, setActiveReply] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
 
   const currentUserRole: "Instructor" | "Student" = "Instructor";
 
@@ -61,6 +62,17 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
     setText("");
     setSelectedImage(null);
   };
+
+  /*
+  const handleImageSend = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setSelectedImage(e.target?.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+  */
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -137,25 +149,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
     );
   };
 
-  const handleImageSend = (file: File) => {
-    const reader = new FileReader();
 
-    reader.onload = () => {
-      const newMessage = {
-        id: Date.now().toString(),
-        sender: "me",
-        image: reader.result as string,
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      };
-
-      setMessages((prev: any) => [...prev, newMessage]);
-    };
-
-    reader.readAsDataURL(file);
-  };
 
   const handleReplySubmit = (id: string) => {
     if (!replyText.trim()) return;

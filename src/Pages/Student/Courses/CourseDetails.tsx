@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
 
-import { AlertCircle, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import CurriculumSection from './components/CurriculumSection';
 import ResourcesTabSection from './components/ResourcesTabSection';
 import FAQsTabSection from './components/FAQsTabSection';

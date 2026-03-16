@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { X, CheckCircle2 } from "lucide-react";
-import { Copy, Link, ExportSquare } from "iconsax-react"
+import { Copy, ExportSquare/*, Link*/ } from "iconsax-react"
 interface JoinClassModalProps {
     isOpen: boolean;
     onClose: () => void;
