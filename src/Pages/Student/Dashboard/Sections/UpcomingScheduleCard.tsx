@@ -33,7 +33,7 @@ const schedules: Schedule[] = [
     batch_name: "Batch-A",
     title: "AI / ML Frontier Engineer",
     time: "8:00 - 09:00 pm",
-    date: "March 16, 26",
+    date: "March 17, 26",
     class: "OOPS (Object-Oriented Programming)",
     instructor: "Naveenkumar S",
   },
@@ -43,7 +43,7 @@ const schedules: Schedule[] = [
     batch_name: "Batch-B",
     title: "AI / ML Frontier Engineer",
     time: "08:00 - 09:00 pm",
-    date: "March 17, 26",
+    date: "March 19, 26",
     instructor: "Naveenkumar S",
   },
 ];
