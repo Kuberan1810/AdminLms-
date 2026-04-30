@@ -1,0 +1,85 @@
+{
+  "id": {
+    "type": "integer",
+    "title": "Id"
+  },
+  "assignment_id": {
+    "type": "integer",
+    "title": "Assignment Id"
+  },
+  "student_user_id": {
+    "type": "integer",
+    "title": "Student User Id"
+  },
+  "submission_text": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "Submission Text"
+  },
+  "file_name": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "File Name"
+  },
+  "file_path": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "File Path"
+  },
+  "submitted_at": {
+    "anyOf": [
+      {
+        "type": "string",
+        "format": "date-time"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "Submitted At"
+  },
+  "status": {
+    "type": "string",
+    "title": "Status"
+  },
+  "grade": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "Grade"
+  },
+  "feedback": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "Feedback"
+  }
+}

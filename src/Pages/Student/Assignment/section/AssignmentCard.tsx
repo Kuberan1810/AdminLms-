@@ -2,6 +2,18 @@ import React from "react";
 import { CalendarTick } from "iconsax-react";
 import { useNavigate } from "react-router-dom";
 import type { Assignment } from "../data/AssignmentData";
+import { format } from "date-fns";
+import { useMySubmission } from "../../../../hooks/useAssignments";
+
+const slugify = (text: string) => {
+    return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')     // Replace spaces with -
+        .replace(/[^\w-]+/g, '')    // Remove all non-word chars
+        .replace(/--+/g, '-');      // Replace multiple - with single -
+};
 
 interface Props {
     item: Assignment;
@@ -11,11 +23,32 @@ interface Props {
 const AssignmentCard: React.FC<Props> = ({ item, getStatusStyles }) => {
     const navigate = useNavigate();
 
-    const isLocked =
-        item.status === "Submitted" || item.status === "Submitted Late";
+    const { data: mySubmission, isSuccess } = useMySubmission(item.id);
+
+    // Override status dynamically if mySubmission says we submitted!
+    const effectiveStatus = (isSuccess && mySubmission && mySubmission.submitted_at) 
+        ? (mySubmission.grade ? "Graded" : "Submitted") 
+        : item.status;
+    const isSubmitted = effectiveStatus === "Submitted" || effectiveStatus === "Submitted Late" || effectiveStatus === "Graded";
+
+    const effectiveDeadline = (isSubmitted && mySubmission?.submitted_at)
+        ? `Submitted on: ${format(new Date(mySubmission.submitted_at), "MMM dd, hh:mm a")}`
+        : item.deadline;
+
+    const handleClick = () => {
+        const slug = slugify(item.title || "assignment");
+        if (isSubmitted) {
+            navigate(`/student/assignment/${slug}/view-submission`, { state: { assignmentId: item.id } });
+        } else {
+            navigate(`/student/assignment/${slug}`, { state: { assignmentId: item.id } });
+        }
+    };
 
     return (
-        <div className="boxStyle">
+        <div 
+            onClick={handleClick}
+            className={`boxStyle transition-all duration-300 hover:shadow-md cursor-pointer border hover:border-orange-200`}
+        >
 
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
 
@@ -28,10 +61,10 @@ const AssignmentCard: React.FC<Props> = ({ item, getStatusStyles }) => {
 
                         <span
                             className={`text-[12px] px-2.5 py-1 rounded-full w-fit mb-2.5 font-medium ${getStatusStyles(
-                                item.status
+                                effectiveStatus
                             )}`}
                         >
-                            {item.status}
+                            {effectiveStatus}
                         </span>
                     </div>
 
@@ -51,23 +84,18 @@ const AssignmentCard: React.FC<Props> = ({ item, getStatusStyles }) => {
                             <CalendarTick size="16" color="currentColor" />
                         </div>
                         <span className="text-[12px] md:text-base font-medium dark:text-gray-200">
-                            {item.deadline}
+                            {effectiveDeadline}
                         </span>
                     </div>
 
                     <button
-                        onClick={
-                            !isLocked
-                                ? () => navigate(`/student/assignment/${item.id}`)
-                                : undefined
-                        }
-                        disabled={isLocked}
-                        className={`w-full sm:w-44 py-2.5 rounded-2xl text-sm font-semibold tracking-wider transition-all ${isLocked
-                            ? "bg-[#F4F4F4] text-[#808080] cursor-not-allowed"
-                            : "bg-[#F67300] text-white hover:opacity-90 cursor-pointer"
-                            }`}
+                        onClick={(e) => {
+                            e.stopPropagation(); // Prevent card click
+                            handleClick();
+                        }}
+                        className={`w-full sm:w-44 py-2.5 rounded-2xl text-sm font-semibold tracking-wider transition-all bg-[#F67300] text-white hover:opacity-90 cursor-pointer`}
                     >
-                        {isLocked ? item.status : "View Assignment"}
+                        {isSubmitted ? "View Submission" : "View Assignment"}
                     </button>
 
                 </div>

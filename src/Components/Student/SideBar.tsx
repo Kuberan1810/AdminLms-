@@ -15,10 +15,10 @@ import {
 const PlatformList = [
   { label: "Dashboard", icon: Home3, path: "/student/dashboard" },
   { label: "Courses", icon: DocumentText1, path: "/student/courses" },
-  { label: "Assignments", icon: Note1, path: "/student/assignments", comingSoon: true },
-  { label: "Community", icon: People, path: "/student/community", comingSoon: true },
-  { label: "Chat", icon: Messages3, path: "/student/chat", comingSoon: true },
-  { label: "Test", icon: ClipboardText, path: "/student/test", comingSoon: true },
+  { label: "Assignments", icon: Note1, path: "/student/assignments",},
+  { label: "Community", icon: People, path: "/student/community" },
+  { label: "Chat", icon: Messages3, path: "/student/chat" },
+  { label: "Test", icon: ClipboardText, path: "/student/test" },
   { label: "Attendance", icon: CalendarTick, path: "/student/attendance", comingSoon: true },
 ];
 
@@ -42,21 +42,25 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
               onClick={(e) => item.comingSoon && e.preventDefault()}
               className={`relative flex flex-col items-center justify-center ${item.comingSoon ? "opacity-50 cursor-not-allowed" : ""}`}
             >
-              {({ isActive }) => (
-                <>
-                  <Icon
-                    size={24}
-                    variant={isActive && !item.comingSoon ? "Bold" : "Outline"}
-                    className={isActive && !item.comingSoon ? "text-[#F67300]" : "text-[#626262] dark:text-[#A3A3A3]"}
-                    color="currentColor"
-                  />
-                  {item.comingSoon && (
-                    <span className="absolute -top-2.5 -right-3 text-[8px] bg-[#F3F5F7] dark:bg-[#3B3B3B] text-[#808080] dark:text-[#CCCCCC] px-1 rounded-full font-bold">
-                      Soon
-                    </span>
-                  )}
-                </>
-              )}
+              {({ isActive }) => {
+                const isAssignment = item.label === "Assignments" && window.location.pathname.includes("/student/assignment");
+                const effectiveActive = isActive || isAssignment;
+                return (
+                  <>
+                    <Icon
+                      size={24}
+                      variant={effectiveActive && !item.comingSoon ? "Bold" : "Outline"}
+                      className={effectiveActive && !item.comingSoon ? "text-[#F67300]" : "text-[#626262] dark:text-[#A3A3A3]"}
+                      color="currentColor"
+                    />
+                    {item.comingSoon && (
+                      <span className="absolute -top-2.5 -right-3 text-[8px] bg-[#F3F5F7] dark:bg-[#3B3B3B] text-[#808080] dark:text-[#CCCCCC] px-1 rounded-full font-bold">
+                        Soon
+                      </span>
+                    )}
+                  </>
+                );
+              }}
             </NavLink>
           );
         })}
@@ -103,23 +107,31 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
                 key={item.label}
                 to={item.path}
                 onClick={(e) => item.comingSoon && e.preventDefault()}
-                className={({ isActive }) =>
-                  `
+                className={({ isActive }) => {
+                  const isAssignment = item.label === "Assignments" && window.location.pathname.includes("/student/assignment");
+                  const effectiveActive = isActive || isAssignment;
+                  
+                  return `
                   flex items-center rounded-xl transition w-full
                   ${collapsed
                     ? "justify-center px-4 py-2.5"
                     : "gap-3 px-4 py-2.5"
                   }
-                  ${isActive && !item.comingSoon
+                  ${effectiveActive && !item.comingSoon
                     ? "bg-[#FAFAFA] dark:bg-[#2A2A2A] text-[#F67300] font-semibold "
                     : "text-[#626262] dark:text-[#A3A3A3]"
                   }
                   ${!collapsed && !item.comingSoon && "hover:bg-[#FAFAFA] dark:hover:bg-[#2A2A2A]"}
                   ${item.comingSoon ? "opacity-60 cursor-not-allowed" : ""}
-                `
+                `;
+                }
                 }
               >
-                {({ isActive }) => (
+                {({ isActive }) => {
+                  const isAssignment = item.label === "Assignments" && window.location.pathname.includes("/student/assignment");
+                  const effectiveActive = isActive || isAssignment;
+
+                  return (
                   <>
                     {/* ICON */}
                     <div
@@ -132,7 +144,7 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
                       `}
                     >
                       {item.label === "Courses" ? (
-                        isActive && !item.comingSoon ? (
+                        effectiveActive && !item.comingSoon ? (
                           <DocumentText size={24} variant="Bold" className="text-[#F67300]" color="currentColor" />
                         ) : (
                           <DocumentText1 size={24} className="text-[#626262] dark:text-[#A3A3A3]" color="currentColor" />
@@ -140,8 +152,8 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
                       ) : (
                         <Icon
                           size={24}
-                          variant={isActive && !item.comingSoon ? "Bold" : "Outline"}
-                          className={isActive && !item.comingSoon ? "text-[#F67300]" : "text-[#626262] dark:text-[#A3A3A3]"}
+                          variant={effectiveActive && !item.comingSoon ? "Bold" : "Outline"}
+                          className={effectiveActive && !item.comingSoon ? "text-[#F67300]" : "text-[#626262] dark:text-[#A3A3A3]"}
                           color="currentColor"
                         />
                       )}
@@ -152,16 +164,17 @@ export default function Sidebar({ collapsed, setCollapsed }: Props) {
                       <div className="flex items-center justify-between w-full">
                         <span className="text-xl font-medium">
                           {item.label}
-                        </span>
+                         </span>
                         {item.comingSoon && (
                           <span className="text-[10px] bg-[#F3F5F7] dark:bg-[#3B3B3B] text-[#808080] dark:text-[#CCCCCC] px-2 py-0.5 rounded-full font-medium ml-2">
-                            Soon
+                             Soon
                           </span>
                         )}
                       </div>
                     )}
                   </>
-                )}
+                  );
+                }}
               </NavLink>
             );
           })}

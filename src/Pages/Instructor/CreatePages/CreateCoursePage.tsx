@@ -1,9 +1,13 @@
 import { DocumentText } from "iconsax-react";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { capitalizeWords } from "../../../utils/capitalize";
+import { useState } from "react";
 
 const CreateCoursePage = () => {
     const navigate = useNavigate();
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
 
     const handleBack = () => navigate(-1);
     const handleClose = () => navigate("/instructor/dashboard");
@@ -78,6 +82,9 @@ const CreateCoursePage = () => {
                             <input
                                 type="text"
                                 placeholder="E.g AI/AML"
+                                autoCapitalize="words"
+                                value={title}
+                                onChange={(e) => setTitle(capitalizeWords(e.target.value))}
                                 className="w-full h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] outline-none focus:border-[#F67300] text-[#333333] placeholder:text-[#D3D3D3]"
                             />
                         </div>
@@ -89,6 +96,9 @@ const CreateCoursePage = () => {
                         <div className="relative">
                             <textarea
                                 placeholder="E.g Am101"
+                                autoCapitalize="words"
+                                value={description}
+                                onChange={(e) => setDescription(capitalizeWords(e.target.value))}
                                 className="w-full h-[134px] p-[15px] rounded-[10px] border border-[#D3D3D3] outline-none focus:border-[#F67300] text-[#333333] placeholder:text-[#D3D3D3] resize-none"
                             />
                         </div>

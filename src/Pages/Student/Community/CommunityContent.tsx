@@ -50,7 +50,15 @@ export default function CommunityContent() {
     setPosts(prev => prev.filter(post => post.id !== id));
   };
   
-
+  const handlePin = (id: number) => {
+  setPosts((prev) =>
+    prev.map((post) =>
+      post.id === id
+        ? { ...post, isPinned: !post.isPinned }
+        : post
+    )
+  );
+};
 
   const handleSave = (id: number) => {
     setPosts((prev) =>

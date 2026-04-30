@@ -14,6 +14,7 @@ import LessonDetails from "../Pages/Student/Courses/LessonDetails";
 import Assignments from "../Pages/Student/Assignment/Assignment";
 import AssignmentList from "../Pages/Student/Assignment/AssignmentDetails/AssignmentList";
 import AssignSubmission from "../Pages/Student/Assignment/AssignSubmission/AssignSubmission";
+import ViewSubmission from "../Pages/Student/Assignment/ViewSubmission/ViewSubmission";
 import Community from "../Pages/Student/Community/Community";
 import Chat from "../Pages/Student/Chat/Chat";
 import Test from "../Pages/Student/Test/Test";
@@ -47,6 +48,20 @@ import CreateCoursePage from "../Pages/Instructor/CreatePages/CreateCoursePage";
 import CreateTestPage from "../Pages/Instructor/CreatePages/CreateTestPage";
 import Chats from "../Pages/Student/Chats/Chat";
 
+/* ================= ADMIN ================= */
+import AdminDashboard from "../Pages/Admin/Dashboard/Dashboard";
+import AdminCourses from "../Pages/Admin/Courses/Courses";
+import AdminLayout from "../Components/Admin/AdminLayout";
+import AdminInstructors from "../Pages/Admin/Users/Instructors/Instructors";
+import AdminStudents from "../Pages/Admin/Users/Students/Students";
+import AdminCommunity from "../Pages/Admin/Community/Community";
+import AdminChat from "../Pages/Admin/Chat/Chat";
+import AdminReports from "../Pages/Admin/Reports/Reports";
+import CourseOverview from "../Pages/Admin/Courses/BatchesOverview/BatchesOverview";
+import BatchesOverview from "../Pages/Admin/Courses/CourseOverview/CoursesOverview";
+
+
+
 
 export default function AppRoutes() {
     return (
@@ -66,8 +81,9 @@ export default function AppRoutes() {
                     <Route path="courses/:courseId/lessons/:lessonId" element={<LessonDetails />} />
 
                     <Route path="assignments" element={<Assignments />} />
-                    <Route path="assignment/:assignmentId" element={<AssignmentList />} />
-                    <Route path="assignment/:assignmentId/:resourceId" element={<AssignSubmission />} />
+                    <Route path="assignment/:assignmentSlug" element={<AssignmentList />} />
+                    <Route path="assignment/:assignmentSlug/view-submission" element={<ViewSubmission />} />
+                    <Route path="assignment/:assignmentSlug/submit" element={<AssignSubmission />} />
                     <Route path="community" element={<Community />} />
                     <Route path="chat" element={<Chat />} />
                     <Route path="chats" element={<Chats />} />
@@ -90,7 +106,7 @@ export default function AppRoutes() {
                 <Route path="/instructor/students" element={<StudentsPage />} />
                 <Route path="/instructor/students/profile/:id" element={<StudentProfilePage />} />
                 <Route path="/instructor/tests/results" element={<TestResultsPage />} />
-                <Route path="/instructor/tests/results/review-test/:studentId" element={<ReviewTestPage />} />
+                <Route path="/instructor/tests/review/:testId/:submissionId" element={<ReviewTestPage />} />
                 <Route path="/instructor/batch-details/:batchId" element={<Batches />} />
                 <Route path="/instructor/batch-details/upload-resources/:chapterId" element={<UploadResources />} />
                 <Route path="/instructor/batch-details/resource-info/:chapterId" element={<ResourceInfoSection />} />
@@ -118,11 +134,26 @@ export default function AppRoutes() {
 
                 <Route path="/instructor/create-assignment/details" element={<CreateAssignmentPage />} />
                 <Route path="/instructor/assignment-details" element={<AssignmentDetailsPage />} />
-                <Route path="/instructor/assignment/assignment-review" element={<AssignmentSubmissionsPage />} />
+                <Route path="/instructor/assignment/:assignmentSlug/review" element={<AssignmentSubmissionsPage />} />
                 <Route path="/instructor/create-assignment" element={<CreateAssignmentDetailsPage />} />
             </Route>
+
+            {/* ADMIN */}
+            {/* <Route element={<ProtectedRoute allowedRole="admin" />}> */}
+            <Route path="/admin" element={<AdminLayout />}>
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="courses" element={<AdminCourses />} />
+                <Route path="courses/:courseId" element={<CourseOverview />} />
+                <Route path="courses/:courseId/batches/:batchId" element={<BatchesOverview />} />
+                <Route path="users/instructors" element={<AdminInstructors />} />
+                <Route path="users/students" element={<AdminStudents />} />
+                <Route path="community" element={<AdminCommunity />} />
+                <Route path="chat" element={<AdminChat />} />
+                <Route path="reports" element={<AdminReports />} />
+            </Route>
+            {/* </Route> */}
+
 
         </Routes>
     );
 }
-3

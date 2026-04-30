@@ -114,7 +114,18 @@ const InstructorHeader = () => {
       subtitle: "View and analyze student Assginments submission.",
     };
   }
-
+  if (location.pathname.startsWith("/instructor/assignment-details")) {
+    header = {
+      title: "Assignment Details",
+      subtitle: "View and analyze student Assginments.",
+    };
+  }
+  if (location.pathname.startsWith("/instructor/assignment/assignment-review")) {
+    header = {
+      title: "Assignment Submissions",
+      subtitle: "View and analyze student Assginments.",
+    };
+  }
 
   /* ================= OUTSIDE CLICK HANDLER ================= */
   useEffect(() => {
@@ -197,7 +208,7 @@ const InstructorHeader = () => {
           {/* SEARCH */}
           <div className="relative" ref={searchRef}>
             <div className="hidden md:flex items-center gap-2 px-3 py-2.5 lg:py-3 border border-[#F2EEF4] dark:border-[#363636] rounded-[15px] text-sm text-[#626262] dark:text-white bg-white dark:bg-[#2A2A2A] transition-colors duration-300">
-              <SearchNormal1 size={18} className="text-[#626262] dark:text-white"  color="currentColor" />
+              <SearchNormal1 size={18} className="text-[#626262] dark:text-white" color="currentColor" />
               <input
                 type="text"
                 placeholder="Search for classes, assignments"
@@ -236,7 +247,7 @@ const InstructorHeader = () => {
               onClick={() => setShowNotifications(true)}
               className="relative p-2 sm:p-2.5 rounded-[10px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#363636] cursor-pointer transition-colors duration-300 text-[#626262] dark:text-white"
             >
-              <NotificationBing size={24}  color="currentColor" />
+              <NotificationBing size={24} color="currentColor" />
 
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-semibold bg-[#F67300] text-white rounded-full">
@@ -287,7 +298,7 @@ const InstructorHeader = () => {
             onClick={() => setShowSettings(true)}
             className="p-2 sm:p-2.5 rounded-[10px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#363636] cursor-pointer transition-colors duration-300 text-[#626262] dark:text-white"
           >
-            <Setting size={24}  color="currentColor" />
+            <Setting size={24} color="currentColor" />
           </button>
 
           <AnimatePresence>

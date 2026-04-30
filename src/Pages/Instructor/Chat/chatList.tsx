@@ -4,9 +4,11 @@ interface Props {
   chats: Chat[];
   activeId: string;
   onSelect: (chat: Chat) => void;
+  activeTab: 'groups' | 'dms';
+  onTabChange: (tab: 'groups' | 'dms') => void;
 }
 
-const ChatList = ({ chats, activeId, onSelect }: Props) => {
+const ChatList = ({ chats, activeId, onSelect, activeTab, onTabChange }: Props) => {
   return (
     <div
       className="
@@ -31,6 +33,23 @@ const ChatList = ({ chats, activeId, onSelect }: Props) => {
           "
           placeholder="Search conversations..."
         />
+      </div>
+
+
+
+      <div className="flex px-4 pb-4 gap-2">
+        <button 
+          onClick={() => onTabChange('groups')}
+          className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${activeTab === 'groups' ? 'bg-[#FF7A00] text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'}`}
+        >
+          Groups
+        </button>
+        <button 
+          onClick={() => onTabChange('dms')}
+          className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${activeTab === 'dms' ? 'bg-[#FF7A00] text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'}`}
+        >
+          Direct Messages
+        </button>
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide px-4 pb-4">

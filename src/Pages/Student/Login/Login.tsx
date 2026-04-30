@@ -113,6 +113,8 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your mail"
+                  autoCapitalize="none"
+                  autoComplete="email"
                   className={`
                     w-full rounded-xl px-4 py-3 text-sm
                     border ${error ? "border-red-400" : "border-[#DCE6F2]"}
@@ -132,6 +134,8 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
+                  autoCapitalize="none"
+                  autoComplete="current-password"
                   className={`
                     w-full rounded-xl px-4 py-3 text-sm
                     border ${error ? "border-red-400" : "border-[#DCE6F2]"}

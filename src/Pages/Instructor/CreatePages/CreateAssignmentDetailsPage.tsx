@@ -1,105 +1,140 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ClipboardText } from "iconsax-react";
-import { ChevronLeft } from "lucide-react";
-import { useAppSelector, useAppDispatch } from "../../../store/hooks";
-import { addModule, addChapter, addTest } from "../../../store/slices/ResourcesSlice";
+import { ChevronLeft, ChevronDown } from "lucide-react";
+import {
+    getCourses,
+    getBatches,
+    getModules,
+} from "../../../services/assignmentService";
+import type {
+    Course,
+    Module,
+} from "../../../services/assignmentService";
 
-interface CreateAssignmentDetailsPageProps {
-    initialModuleId?: string;
-}
-
-const CreateAssignmentDetailsPage = ({ initialModuleId }: CreateAssignmentDetailsPageProps) => {
+const CreateAssignmentDetailsPage = () => {
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const modules = useAppSelector((state) => state.resource.modules);
 
-    // Initial Data Logic (from BatchesSection) - to handle refresh
+    // ─── Dropdown State ────────────────────────────────────────────────────────
+    const [courseOpen, setCourseOpen] = useState(false);
+    const [batchOpen, setBatchOpen] = useState(false);
+    const [moduleOpen, setModuleOpen] = useState(false);
+    const [moduleSearch, setModuleSearch] = useState("");
+
+    // ─── API Data State ────────────────────────────────────────────────────────
+    const [courses, setCourses] = useState<Course[]>([]);
+    const [batches, setBatches] = useState<string[]>([]);
+    const [modules, setModules] = useState<Module[]>([]);
+
+    // ─── Loading State ─────────────────────────────────────────────────────────
+    const [loadingCourses, setLoadingCourses] = useState(true);
+    const [loadingBatches, setLoadingBatches] = useState(false);
+    const [loadingModules, setLoadingModules] = useState(false);
+
+    // ─── Selected Values ───────────────────────────────────────────────────────
+    const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+    const [selectedBatchName, setSelectedBatchName] = useState<string>("");
+    const [selectedModuleId, setSelectedModuleId] = useState<number | null>(null);
+
+    // ─── Fetch Courses on Mount ────────────────────────────────────────────────
     useEffect(() => {
-        if (modules.allIds.length === 0) {
-            const moduleId = crypto.randomUUID();
-            dispatch(addModule({ id: moduleId, title: "Frontier AI Systems & Deployment" }));
-
-            const chapter1Id = crypto.randomUUID();
-            dispatch(addChapter({ id: chapter1Id, title: "AI Agents (LangChain, CrewAI, AutoGen)", moduleId }));
-
-            const chapter2Id = crypto.randomUUID();
-            dispatch(addChapter({ id: chapter2Id, title: "Deployment Basics", moduleId }));
-
-            // Add mock test 
-            const test1Id = crypto.randomUUID();
-            dispatch(addTest({
-                id: test1Id,
-                name: "AI Fundamentals Quiz",
-                date: "2024-01-15",
-                moduleId,
-                course: "Am101",
-                batch: "Batch-01",
-                category: "quiz",
-                description: "A quiz on AI fundamentals",
-                fromTime: "10:00",
-                toTime: "11:00",
-                questions: [],
-                totalMarks: 100,
-                createdAt: new Date().toISOString()
-            }));
-        }
-    }, [dispatch, modules.allIds.length]);
-
-    // State for inputs
-    const [courseName, setCourseName] = useState("Am101");
-    const [batchId, setBatchId] = useState("Batch-01");
-
-    // Searchable Dropdown State
-    const [selectedModuleId, setSelectedModuleId] = useState(() => initialModuleId || modules.allIds[0] || "");
-    const [searchTerm, setSearchTerm] = useState(() => {
-        if (initialModuleId && modules.byId[initialModuleId]) {
-            return modules.byId[initialModuleId].title;
-        }
-        const defaultId = modules.allIds[0];
-        if (defaultId && modules.byId[defaultId]) {
-            return modules.byId[defaultId].title;
-        }
-        return "";
-    });
-
-    useEffect(() => {
-        if (!selectedModuleId && modules.allIds.length > 0) {
-            const firstId = modules.allIds[0];
-            setSelectedModuleId(firstId);
-            if (modules.byId[firstId]) {
-                setSearchTerm(modules.byId[firstId].title);
+        const fetchCourses = async () => {
+            try {
+                setLoadingCourses(true);
+                const data = await getCourses();
+                setCourses(data);
+            } catch (err) {
+                console.error("Failed to fetch courses:", err);
+            } finally {
+                setLoadingCourses(false);
             }
-        }
-    }, [modules, selectedModuleId]);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+        };
+        fetchCourses();
+    }, []);
 
-    const filteredModules = modules.allIds.filter(id =>
-        modules.byId[id].title.toLowerCase().includes(searchTerm.toLowerCase())
+    // ─── Fetch Batches when Course Changes ─────────────────────────────────────
+    useEffect(() => {
+        if (selectedCourseId === null) {
+            setBatches([]);
+            setSelectedBatchName("");
+            setModules([]);
+            setSelectedModuleId(null);
+            return;
+        }
+        const fetchBatches = async () => {
+            try {
+                setLoadingBatches(true);
+                setBatches([]);
+                setSelectedBatchName("");
+                setModules([]);
+                setSelectedModuleId(null);
+                
+                const data = await getBatches(selectedCourseId);
+                setBatches(data);
+            } catch (err) {
+                console.error("Failed to fetch batches:", err);
+            } finally {
+                setLoadingBatches(false);
+            }
+        };
+        fetchBatches();
+    }, [selectedCourseId]);
+
+    // ─── Fetch Modules when Batch Changes ──────────────────────────────────────
+    useEffect(() => {
+        if (selectedCourseId === null || !selectedBatchName) {
+            setModules([]);
+            setSelectedModuleId(null);
+            return;
+        }
+        const fetchModules = async () => {
+            try {
+                setLoadingModules(true);
+                setModules([]);
+                setSelectedModuleId(null);
+
+                const data = await getModules(selectedCourseId, selectedBatchName);
+                setModules(data);
+            } catch (err) {
+                console.error("Failed to fetch modules:", err);
+            } finally {
+                setLoadingModules(false);
+            }
+        };
+        fetchModules();
+    }, [selectedCourseId, selectedBatchName]);
+
+    // ─── Filtered Modules ──────────────────────────────────────────────────────
+    const filteredModules = modules.filter(m => 
+        m.module_name.toLowerCase().includes(moduleSearch.toLowerCase())
     );
 
-    const handleModuleSelect = (id: string, title: string) => {
-        setSelectedModuleId(id);
-        setSearchTerm(title);
-        setIsDropdownOpen(false);
-    };
+    // ─── Helpers ───────────────────────────────────────────────────────────────
+    const getCourseName = () =>
+        courses.find((c) => c.course_id === selectedCourseId)?.course_name || "";
+    const getModuleName = () =>
+        modules.find((m) => m.module_id === selectedModuleId)?.module_name || "";
 
     const handleNext = () => {
         navigate("/instructor/create-assignment/details", {
             state: {
-                course: courseName,
-                batch: batchId,
-                moduleId: selectedModuleId, // Pass the actual ID
-                module: modules.byId[selectedModuleId]?.title || "Module" // Pass title for display if needed
-            }
+                course: getCourseName(),
+                courseId: selectedCourseId,
+                batch: selectedBatchName,
+                moduleId: selectedModuleId,
+                module: getModuleName(),
+            },
         });
     };
 
     const handleClose = () => navigate("/instructor/dashboard");
     const handleBack = () => navigate(-1);
 
+    const isFormValid = selectedCourseId !== null && selectedBatchName !== "" && selectedModuleId !== null;
+
     return (
         <div className="w-full h-screen flex flex-col md:flex-row overflow-hidden relative bg-white">
+            {/* Left Panel */}
             <div className="w-full flex-1 bg-[#F67300] p-6 md:p-[30px] flex flex-col justify-center md:justify-start items-center md:items-stretch gap-4 md:gap-[40px] text-white shrink-0 min-h-[220px] md:min-h-auto rounded-b-[30px] md:rounded-none relative">
                 <button
                     onClick={handleBack}
@@ -110,7 +145,7 @@ const CreateAssignmentDetailsPage = ({ initialModuleId }: CreateAssignmentDetail
                 </button>
 
                 <div className="flex w-[84px] h-[84px] bg-white/20 rounded-[30px] items-center justify-center mb-2 md:mb-0">
-                    <ClipboardText size={42} variant="Bold"  color="white" />
+                    <ClipboardText size={42} variant="Bold" color="white" />
                 </div>
 
                 <div className="z-10 flex flex-col items-center md:items-start text-center md:text-left">
@@ -134,76 +169,185 @@ const CreateAssignmentDetailsPage = ({ initialModuleId }: CreateAssignmentDetail
             </div>
 
             {/* Right Content Area */}
-            <div
-                onClick={() => setIsDropdownOpen(false)}
-                className="flex-5 p-4 md:p-[40px] flex flex-col max-h-full overflow-y-auto relative"
-            >
+            <div className="flex-5 p-4 md:p-[40px] flex flex-col max-h-full overflow-y-auto relative">
                 <div className="mb-6 md:mb-[30px]">
-                    <h2 className="text-2xl md:text-[32px] font-semibold leading-[100%] text-[#333333]">Assignment Details</h2>
+                    <h2 className="text-2xl md:text-[32px] font-semibold leading-[100%] text-[#333333]">
+                        Assignment Details
+                    </h2>
                 </div>
 
-                <form className="flex flex-col gap-[20px] flex-1 w-full" onClick={(e) => e.stopPropagation()}>
-                    {/* Course Name / ID */}
+                <form className="flex flex-col gap-[20px] flex-1 w-full relative" onSubmit={(e) => e.preventDefault()}>
+                    {/* ── Course Dropdown ──────────────────────────────────────── */}
                     <div className="flex flex-col gap-[8px]">
-                        <label className="text-[16px] font-medium text-[#333333]">Course Name / ID</label>
-                        <input
-                            type="text"
-                            value={courseName}
-                            onChange={(e) => setCourseName(e.target.value)}
-                            placeholder="E.g Am101"
-                            className="w-full h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] outline-none focus:border-[#F67300] text-[#333333] placeholder:text-[#D3D3D3]"
-                        />
-                    </div>
-
-                    {/* Batch ID */}
-                    <div className="flex flex-col gap-[8px]">
-                        <label className="text-[16px] font-medium text-[#333333]">Batch ID</label>
-                        <input
-                            type="text"
-                            value={batchId}
-                            onChange={(e) => setBatchId(e.target.value)}
-                            placeholder="E.g Batch-01"
-                            className="w-full h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] outline-none focus:border-[#F67300] text-[#333333] placeholder:text-[#D3D3D3]"
-                        />
-                    </div>
-
-                    {/* Module (Searchable) */}
-                    <div className="flex flex-col gap-[8px] relative">
-                        <label className="text-[16px] font-medium text-[#333333]">Module</label>
+                        <label className="text-[16px] font-medium text-[#333333]">
+                            Course Name
+                        </label>
                         <div className="relative">
-                            <input
-                                type="text"
-                                value={searchTerm}
-                                onChange={(e) => {
-                                    setSearchTerm(e.target.value);
-                                    setIsDropdownOpen(true);
-                                    if (e.target.value === "") {
-                                        setSelectedModuleId("");
-                                    }
+                            <div
+                                onClick={() => {
+                                    if (!loadingCourses) setCourseOpen(!courseOpen);
+                                    setBatchOpen(false);
+                                    setModuleOpen(false);
                                 }}
-                                onFocus={() => setIsDropdownOpen(true)}
-                                placeholder="Select or Type Module"
-                                className="w-full h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] outline-none focus:border-[#F67300] text-[#333333] placeholder:text-[#D3D3D3]"
-                            />
-                            {isDropdownOpen && filteredModules.length > 0 && (
-                                <ul className="absolute z-10 w-full mt-1 bg-white border border-[#D3D3D3] rounded-[10px] max-h-[200px] overflow-y-auto shadow-lg">
-                                    {filteredModules.map(moduleId => (
-                                        <li
-                                            key={moduleId}
-                                            onClick={() => handleModuleSelect(moduleId, modules.byId[moduleId].title)}
-                                            className="px-[15px] py-2 hover:bg-orange-50 cursor-pointer text-[#333333] text-sm"
-                                        >
-                                            {modules.byId[moduleId].title}
-                                        </li>
-                                    ))}
-                                </ul>
+                                className={`w-full h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] bg-white flex items-center justify-between transition-colors ${loadingCourses ? "opacity-50 cursor-wait" : "cursor-pointer"}`}
+                            >
+                                <span className={selectedCourseId ? "text-[#333333]" : "text-[#333333]"}>
+                                    {selectedCourseId ? getCourseName() : (loadingCourses ? "Loading courses..." : "Select your course")}
+                                </span>
+                                <ChevronDown size={20} color="#333333" className={`transition-transform duration-200 ${courseOpen ? "rotate-180" : ""}`} />
+                            </div>
+
+                            {courseOpen && (
+                                <div className="absolute mt-1 w-full max-h-60 overflow-y-auto bg-white rounded-[12px] border border-[#E5E5E5] shadow-lg z-1200">
+                                    {courses.length === 0 ? (
+                                        <div className="p-3 text-gray-400">No Courses Found</div>
+                                    ) : (
+                                        courses.map((course) => (
+                                            <div
+                                                key={course.course_id}
+                                                onClick={() => {
+                                                    setSelectedCourseId(course.course_id);
+                                                    setCourseOpen(false);
+                                                }}
+                                                className={`px-4 py-3 flex items-center justify-between cursor-pointer hover:bg-[#F5F7FF] ${
+                                                    selectedCourseId === course.course_id
+                                                        ? "bg-[#F5F7FF] text-[#333]"
+                                                        : "text-[#333333]"
+                                                }`}
+                                            >
+                                                <span>{course.course_name}</span>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* ── Batch Dropdown ───────────────────────────────────────── */}
+                    <div className="flex flex-col gap-[8px]">
+                        <label className="text-[16px] font-medium text-[#333333]">
+                            Batch
+                        </label>
+                        <div className="relative">
+                            <div
+                                onClick={() => {
+                                    if (selectedCourseId !== null && !loadingBatches) setBatchOpen(!batchOpen);
+                                    setCourseOpen(false);
+                                    setModuleOpen(false);
+                                }}
+                                className={`w-full h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] flex items-center justify-between transition-colors ${
+                                    selectedCourseId === null || loadingBatches
+                                        ? "bg-[#F9F9F9] opacity-50 cursor-not-allowed"
+                                        : "bg-white cursor-pointer"
+                                }`}
+                            >
+                                <span className={selectedBatchName ? "text-[#333333]" : "text-[#D3D3D3]"}>
+                                    {selectedBatchName ? selectedBatchName : (selectedCourseId === null ? "Select a course first" : loadingBatches ? "Loading batches..." : "Select Batch")}
+                                </span>
+                                <ChevronDown size={20} color="#333333" className={`transition-transform duration-200 ${batchOpen ? "rotate-180" : ""}`} />
+                            </div>
+
+                            {batchOpen && selectedCourseId !== null && (
+                                <div className="absolute mt-1 w-full max-h-60 overflow-y-auto bg-white rounded-[12px] border border-[#E5E5E5] shadow-lg z-1200">
+                                    {batches.length === 0 ? (
+                                        <div className="p-3 text-gray-400">No batches available for this course</div>
+                                    ) : (
+                                        batches.map((batch) => (
+                                            <div
+                                                key={batch}
+                                                onClick={() => {
+                                                    setSelectedBatchName(batch);
+                                                    setBatchOpen(false);
+                                                }}
+                                                className={`px-4 py-3 flex items-center justify-between cursor-pointer hover:bg-[#F5F7FF] ${
+                                                    selectedBatchName === batch
+                                                        ? "bg-[#F5F7FF] text-[#333]"
+                                                        : "text-[#333333]"
+                                                }`}
+                                            >
+                                                <span>{batch}</span>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* ── Module Dropdown (Searchable) ─────────────────────────── */}
+                    <div className="flex flex-col gap-[8px]">
+                        <label className="text-[16px] font-medium text-[#333333]">
+                            Module
+                        </label>
+                        <div className="relative">
+                            <div
+                                onClick={() => {
+                                    if (selectedBatchName && !loadingModules) setModuleOpen(true);
+                                    setCourseOpen(false);
+                                    setBatchOpen(false);
+                                }}
+                                className={`w-full h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] flex items-center justify-between transition-colors ${
+                                    !selectedBatchName || loadingModules
+                                        ? "bg-[#F9F9F9] opacity-50 cursor-not-allowed"
+                                        : "bg-white cursor-text"
+                                }`}
+                            >
+                                <input 
+                                    type="text"
+                                    value={moduleSearch}
+                                    onChange={(e) => {
+                                        setModuleSearch(e.target.value);
+                                        setModuleOpen(true);
+                                        // Reset selected ID if they type something new
+                                        if (selectedModuleId !== null && e.target.value !== getModuleName()) {
+                                            setSelectedModuleId(null);
+                                        }
+                                    }}
+                                    onFocus={() => {
+                                        if (selectedBatchName && !loadingModules) setModuleOpen(true);
+                                    }}
+                                    placeholder={!selectedBatchName ? "Select a batch first" : loadingModules ? "Loading modules..." : "Select or type Module"}
+                                    disabled={!selectedBatchName || loadingModules}
+                                    className="w-full h-full bg-transparent outline-none text-[#333333] placeholder-[#D3D3D3]"
+                                />
+                                <ChevronDown size={20} color="#333333" className={`transition-transform duration-200 cursor-pointer ${moduleOpen ? "rotate-180" : ""}`} onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (selectedBatchName && !loadingModules) setModuleOpen(!moduleOpen);
+                                }} />
+                            </div>
+
+                            {moduleOpen && selectedBatchName && (
+                                <div className="absolute mt-1 w-full max-h-60 overflow-y-auto bg-white rounded-[12px] border border-[#E5E5E5] shadow-lg z-1100">
+                                    {filteredModules.length === 0 ? (
+                                        <div className="p-3 text-gray-400">No modules found</div>
+                                    ) : (
+                                        filteredModules.map((mod) => (
+                                            <div
+                                                key={mod.module_id}
+                                                onClick={() => {
+                                                    setSelectedModuleId(mod.module_id);
+                                                    setModuleSearch(mod.module_name);
+                                                    setModuleOpen(false);
+                                                }}
+                                                className={`px-4 py-3 flex items-center justify-between cursor-pointer hover:bg-[#F5F7FF] ${
+                                                    selectedModuleId === mod.module_id
+                                                        ? "bg-[#F5F7FF] text-[#333]"
+                                                        : "text-[#333333]"
+                                                }`}
+                                            >
+                                                <span>{mod.module_name}</span>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>
                 </form>
 
                 {/* Footer Buttons */}
-                <div className="flex justify-end gap-3.75 mt-8 w-full ">
+                <div className="flex justify-end gap-3.75 mt-8 w-full relative z-0">
                     <button
                         onClick={handleClose}
                         className="px-15 py-2 rounded-[10px] bg-white text-gray-700 md:border-2 border border-[#F2EEF4] cursor-pointer hover:bg-gray-100 transition-colors"
@@ -212,15 +356,14 @@ const CreateAssignmentDetailsPage = ({ initialModuleId }: CreateAssignmentDetail
                     </button>
                     <button
                         onClick={handleNext}
-                        disabled={!selectedModuleId}
+                        disabled={!isFormValid}
                         className="px-15 py-2 rounded-[10px] bg-[#F67300] text-white hover:bg-[#fd8720] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Next
                     </button>
-
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { UploadCloud, Trash2, FileText, Pencil, ArrowLeft } from "lucide-react";
+import { UploadCloud, Trash2, Pencil, ArrowLeft } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { addResource, updateChapter, removeResource } from "../../../../store/slices/ResourcesSlice";
 import { useParams } from "react-router-dom";
@@ -172,22 +172,15 @@ const ClassResources: React.FC = () => {
             onDrop={onDrop}
             onDragOver={(e) => e.preventDefault()}
             onClick={() => inputRef.current?.click()}
-            className="border-2 border-dashed border-[#000000] dark:border-[#4B4B4B] rounded-xl py-10 sm:py-14 px-4 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-[#1E1E1E] transition"
+            className="border-2 border-dashed border-gray-300 hover:border-[#F67300] rounded-[30px] p-12 flex flex-col items-center justify-center bg-white hover:bg-[#fafafa] dark:bg-[#3a3a3a] dark:hover:bg-[#4a4a4a] cursor-pointer transition-all group"
           >
-            <div className="w-14 h-14 bg-[#F67300] rounded-full flex items-center justify-center mb-4 shadow-sm">
-              <UploadCloud size={28} className="text-white" />
+            <div className="w-16 h-16 orange opacity-90 rounded-full flex items-center justify-center mb-6 transition-transform group-hover:scale-105">
+              <UploadCloud size={32} className="text-white" />
             </div>
-
-            <p className="font-medium text-lg dark:text-white">Upload Material</p>
-
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Drag and drop files here or click to select files
-            </p>
-
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-              Supported formats: pdf, doc, docx, txt • Maximum size 10MB
-            </p>
-
+            <p className="text-base md:text-2xl font-medium text-[#333] dark:text-white mb-2">Upload your files</p>
+            <p className="text-sm md:text-lg text-[#626262] dark:text-gray-400 mb-2 text-center">Drag and drop files here or click to select files</p>
+            <p className="text-sm md:text-base text-[#626262] dark:text-gray-400">Supported formats: pdf, doc, docx, txt</p>
+            <p className="text-sm md:text-base text-[#626262] dark:text-gray-400">Maximum file size: 10MB</p>
             <input
               ref={inputRef}
               type="file"
@@ -199,70 +192,72 @@ const ClassResources: React.FC = () => {
           </div>
 
           {/* File List */}
-          <div className="mt-6 space-y-3">
+          <div className="mt-5 space-y-5">
             {/* Existing Resources */}
             {existingResources.map((res) => (
               <div
                 key={res.id}
-                className="bg-gray-50 dark:bg-[#1E1E1E] rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-colors"
+                className="group flex items-center justify-between transition-all duration-300 sm:rounded-3xl rounded-[20px] gap-10 py-1 md:pr-5 pr-3 pl-1 border border-[#F2EEF4]"
               >
-                <div className="shrink-0">
-                  <FileText className="text-red-500" />
+                <div className="flex items-center gap-4">
+                  <div className="sm:px-6.5 sm:py-5 px-4 py-3 sm:rounded-3xl rounded-[20px] bg-[#FEE2E2]">
+                    <span className="text-xs font-bold uppercase text-red-600">PDF</span>
+                  </div>
+                  <div className="max-w-md">
+                    <h4 className="text-sm md:text-lg text-[#4D4D4D] dark:text-gray-300 truncate max-w-45">{res.name}</h4>
+                    <div className="flex items-center gap-5">
+                      <p className="text-xs md:text-base text-[#808080] dark:text-gray-400 mt-1">{res.size}</p>
+                      <p className="text-xs md:text-base text-[#3EA465]">Uploaded ✓</p>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate dark:text-white">{res.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{res.size}</p>
-                  <p className="text-xs text-green-600 mt-1">Uploaded</p>
-                </div>
-
-                <div className="shrink-0 self-start sm:self-auto">
-                  <Trash2
-                    size={18}
-                    onClick={() => handleDeleteExisting(res.id)}
-                    className="text-gray-500 hover:text-red-500 cursor-pointer"
-                  />
-                </div>
+                <button onClick={() => handleDeleteExisting(res.id)} className="text-[#626262] hover:text-red-500 transition-colors cursor-pointer">
+                  <Trash2 size={20} />
+                </button>
               </div>
             ))}
 
             {/* New Uploads */}
-            {files.map((f) => (
-              <div
-                key={f.id}
-                className="bg-gray-50 dark:bg-[#1E1E1E] rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-colors"
-              >
-                <div className="shrink-0">
-                  <FileText className="text-red-500" />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate dark:text-white">{f.file.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{formatSize(f.file.size)}</p>
-
-                  {f.status === "uploading" && (
-                    <div className="h-2 bg-gray-200 rounded mt-2 overflow-hidden">
-                      <div
-                        className="h-2 bg-orange-500 transition-all"
-                        style={{ width: `${f.progress}%` }}
-                      />
+            {files.map((f) => {
+              const ext = f.file.name.split('.').pop()?.toLowerCase() || '';
+              const isPdf = ext === 'pdf';
+              const isDoc = ['doc','docx'].includes(ext);
+              const isXl = ['xls','xlsx'].includes(ext);
+              const iconBg = isPdf ? 'bg-[#FEE2E2]' : isDoc ? 'bg-[#DDEBFD]' : isXl ? 'bg-[#CFFFE7]' : 'bg-[#FFF5D5]';
+              const iconColor = isPdf ? 'text-red-600' : isDoc ? 'text-blue-500' : isXl ? 'text-green-600' : 'text-yellow-600';
+              return (
+                <div
+                  key={f.id}
+                  className="group flex items-center justify-between transition-all duration-300 sm:rounded-3xl rounded-[20px] gap-10 py-1 md:pr-5 pr-3 pl-1 border border-[#F2EEF4]"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`sm:px-6.5 sm:py-5 px-4 py-3 sm:rounded-3xl rounded-[20px] ${iconBg}`}>
+                      <span className={`text-xs font-bold uppercase ${iconColor}`}>{ext || 'FILE'}</span>
                     </div>
-                  )}
-
-                  {f.status === "done" && (
-                    <p className="text-xs text-green-600 mt-1">Ready to submit</p>
-                  )}
+                    <div className="max-w-md">
+                      <h4 className="text-sm md:text-lg text-[#4D4D4D] dark:text-gray-300 truncate max-w-45">{f.file.name}</h4>
+                      <div className="flex items-center gap-5">
+                        <p className="text-xs md:text-base text-[#808080] dark:text-gray-400 mt-1">{formatSize(f.file.size)}</p>
+                        {f.status === 'uploading' && (
+                          <div className="max-w-full">
+                            <p className="text-xs text-gray-400 mb-1">Uploading...</p>
+                            <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div className="h-full bg-[#F67300] transition-all duration-300" style={{ width: `${f.progress}%` }} />
+                            </div>
+                          </div>
+                        )}
+                        {f.status === 'done' && (
+                          <p className="text-xs md:text-base text-[#3EA465]">Ready ✓</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <button onClick={() => handleDelete(f.id)} className="text-[#626262] hover:text-red-500 transition-colors cursor-pointer">
+                    <Trash2 size={20} />
+                  </button>
                 </div>
-
-                <div className="shrink-0 self-start sm:self-auto">
-                  <Trash2
-                    size={18}
-                    onClick={() => handleDelete(f.id)}
-                    className="text-gray-500 hover:text-red-500 cursor-pointer"
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

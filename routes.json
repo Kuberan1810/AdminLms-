@@ -1,0 +1,14 @@
+[
+  "/assignments/courses",
+  "/assignments/batches",
+  "/assignments/modules",
+  "/assignments/",
+  "/assignments/{assignment_id}/resources",
+  "/assignments/{assignment_id}",
+  "/assignments/{assignment_id}/submissions",
+  "/assignments/my/list",
+  "/assignments/dashboard",
+  "/assignments/{assignment_id}/submit",
+  "/assignments/{assignment_id}/my-submission",
+  "/assignments/{assignment_id}/submissions/{submission_id}/grade"
+]

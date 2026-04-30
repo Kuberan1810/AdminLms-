@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import type { Chat, Message } from "../Chat/data/chat.types";
 import {
   Send,
   ChevronLeft,
@@ -11,13 +10,20 @@ import {
 } from "lucide-react";
 
 interface Props {
-  chat: Chat;
+  chat: any; // We'll pass the mapped chat object
+  isPrivate?: boolean;
   onViewMembers?: () => void;
   onBack?: () => void;
+  onlineCount?: number;
+  typingUsers?: Record<number, string>;
 }
 
-const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
-  const [messages, setMessages] = useState<Message[]>(chat.messages);
+import { useSendGroupMessage, useLikeGroupMessage, usePinGroupMessage, useBookmarkGroupMessage } from "../../../hooks/chat/useGroup";
+import { useSendDMMessage, useLikeDMMessage, useBookmarkDMMessage } from "../../../hooks/chat/useDM";
+import { useUploadChatFile } from "../../../hooks/chat/useUpload";
+import type { ChatAttachment } from "../../../types/chat";
+
+const ChatWindow = ({ chat, onViewMembers, onBack, onlineCount, typingUsers }: Props) => {
   const [text, setText] = useState("");
   const [activeReply, setActiveReply] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
@@ -25,42 +31,38 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
   // const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [uploadedAttachmentId, setUploadedAttachmentId] = useState<number | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const sendGroupMsgMutation = useSendGroupMessage();
+  const toggleGroupLikeMutation = useLikeGroupMessage();
+  const toggleGroupPinMutation = usePinGroupMessage();
+  const toggleGroupBookmarkMutation = useBookmarkGroupMessage();
+
+  const sendDMMsgMutation = useSendDMMessage();
+  const toggleDMLikeMutation = useLikeDMMessage();
+  const toggleDMBookmarkMutation = useBookmarkDMMessage();
+  const uploadMutation = useUploadChatFile();
 
   const currentUserRole: "Instructor" | "Student" = "Instructor";
 
   useEffect(() => {
-    setMessages(chat.messages);
-  }, [chat]);
-
-  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [chat.messages]);
 
   const handleSend = () => {
-    if (!text.trim() && !selectedImage) return;
+    if (!text.trim() && !uploadedAttachmentId) return;
 
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      sender: "me",
-      role: "Instructor",
-      name: "Radha Krishnan",
-      image: selectedImage || undefined,
-      text,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      likes: 0,
-      liked: false,
-      saved: false,
-      replies: [],
-      pinned: false,
-    };
+    const attachmentIds = uploadedAttachmentId ? [uploadedAttachmentId] : [];
 
-    setMessages((prev) => [...prev, newMessage]);
+    if (chat.type === "individual") {
+       sendDMMsgMutation.mutate({ conversationId: chat.id, content: text, attachmentIds });
+    } else {
+       sendGroupMsgMutation.mutate({ groupId: chat.id, content: text, attachmentIds });
+    }
     setText("");
     setSelectedImage(null);
+    setUploadedAttachmentId(null);
   };
 
   /*
@@ -78,112 +80,33 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // 1. Show preview
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setSelectedImage(reader.result as string);
-    };
+    reader.onloadend = () => setSelectedImage(reader.result as string);
     reader.readAsDataURL(file);
+
+    // 2. Upload and store ID
+    uploadMutation.mutate(file, {
+        onSuccess: (data: ChatAttachment) => setUploadedAttachmentId(data.id)
+    });
   };
 
-  const handleLike = (id: string) => {
-    setMessages((prev) =>
-      prev.map((msg) => {
-        if (msg.id === id) {
-          const alreadyLiked = msg.liked;
-          return {
-            ...msg,
-            liked: !alreadyLiked,
-            likes: alreadyLiked
-              ? (msg.likes || 1) - 1
-              : (msg.likes || 0) + 1,
-          };
-        }
-
-        return {
-          ...msg,
-          replies:
-            msg.replies?.map((reply) => {
-              if (reply.id === id) {
-                const alreadyLiked = reply.liked;
-                return {
-                  ...reply,
-                  liked: !alreadyLiked,
-                  likes: alreadyLiked
-                    ? (reply.likes || 1) - 1
-                    : (reply.likes || 0) + 1,
-                };
-              }
-              return reply;
-            }) || [],
-        };
-      })
-    );
+  const handleLike = (id: string | number) => {
+    if (chat.type === "individual") toggleDMLikeMutation.mutate({ messageId: Number(id) });
+    else toggleGroupLikeMutation.mutate({ messageId: Number(id) });
   };
 
-  const handleSave = (id: string) => {
-    setMessages((prev) =>
-      prev.map((msg) => {
-        if (msg.id === id) {
-          return { ...msg, saved: !msg.saved };
-        }
-
-        return {
-          ...msg,
-          replies:
-            msg.replies?.map((reply) =>
-              reply.id === id
-                ? { ...reply, saved: !reply.saved }
-                : reply
-            ) || [],
-        };
-      })
-    );
-  };
-  const handlePin = (id: string) => {
-    setMessages(prev =>
-      prev.map(msg =>
-        msg.id === id
-          ? { ...msg, pinned: !msg.pinned }
-          : msg
-      )
-    );
+  const handleSave = (id: string | number) => {
+    if (chat.type === "individual") toggleDMBookmarkMutation.mutate({ messageId: Number(id) });
+    else toggleGroupBookmarkMutation.mutate({ messageId: Number(id) });
   };
 
+  const handlePin = (id: string | number) => {
+    if (chat.type === "group") toggleGroupPinMutation.mutate({ groupId: chat.id, messageId: Number(id) });
+  };
 
-
-  const handleReplySubmit = (id: string) => {
-    if (!replyText.trim()) return;
-
-    setMessages((prev) =>
-      prev.map((msg) =>
-        msg.id === id
-          ? {
-            ...msg,
-            replies: [
-              ...(msg.replies || []),
-              {
-                id: Date.now().toString(),
-                sender: "me",
-                role: "Instructor",
-                name: "Radha Krishnan",
-                text: replyText,
-                time: new Date().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }),
-                likes: 0,
-                liked: false,
-                saved: false,
-                pinned: false,
-              },
-            ],
-          }
-          : msg
-      )
-    );
-
-    setReplyText("");
-    setActiveReply(null);
+  const handleReplySubmit = () => {
+    console.warn("Replies are not natively supported in Group Messages.");
   };
 
   return (
@@ -211,13 +134,17 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
           </div>
         </div>
 
-        {chat.type === "group" && onViewMembers && (
-          <button
-            onClick={onViewMembers}
-            className="px-4 py-2 text-xs border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#333]" >
-            View Members
-          </button>
-        )}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-green-500 font-medium whitespace-nowrap hidden sm:inline-block">
+                {onlineCount ? `${onlineCount} Online` : 'Connected'}
+              </span>
+              <button
+                onClick={onViewMembers}
+                className="w-10 h-10 flex border-[1.5px] border-[#FF7A00] items-center justify-center rounded-full bg-white dark:bg-[#2A2A2A] text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition"
+              >
+                <Pin size={18} className="text-[#FF7A00]" />
+              </button>
+            </div>
 
         {chat.type === "individual" && (
           <button className="px-4 py-2 text-xs border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#333]" >
@@ -229,7 +156,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         {chat.type === "individual" && (
           <div className="space-y-6 py-6 px-2 rounded-lg">
-            {messages.map((msg) => {
+            {chat.messages.map((msg: any) => {
               const isMe = msg.sender === "me";
 
               return (
@@ -285,7 +212,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
         )}
 
         {chat.type === "group" &&
-          messages.map((msg) => (
+          chat.messages.map((msg: any) => (
             <div key={msg.id} className="mb-4">
 
               <div className="relative border border-gray-100 dark:border-gray-700 bg-white dark:bg-[#2A2A2A] p-4 rounded-xl">
@@ -325,6 +252,11 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
                           <span className="px-2 py-0.5 text-xs text-orange-500 dark:text-orange-400 bg-orange-50 dark:bg-[#3D2B20] rounded-full">
                             {msg.role}
                           </span>
+                          {msg.is_private && (
+                            <span className="text-[10px] bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-1.5 py-0.5 rounded font-bold border border-blue-200 dark:border-blue-800">
+                              PRIVATE
+                            </span>
+                          )}
 
                           <span className="text-xs text-gray-500 dark:text-gray-400">
                             {msg.time}
@@ -358,7 +290,7 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
 
                     {msg.replies && msg.replies.length > 0 && (
                       <div className="mt-3 space-y-6 border-l-2 border-[#FF7A00] pl-3">
-                        {msg.replies.map((reply) => (
+                        {msg.replies.map((reply: any) => (
                           <div key={reply.id} className="flex gap-3">
                             <div className="w-8 h-8 rounded-full bg-[#FF7A00] text-white flex items-center justify-center text-xs font-semibold shrink-0">
                               {reply.sender === "me" ? "RK" : "ST"}
@@ -440,14 +372,14 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
-                        handleReplySubmit(msg.id);
+                        handleReplySubmit();
                       }
                     }}
                     className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#2A2A2A] text-gray-900 dark:text-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#FF7A00] focus:outline-none"
                     placeholder="Write a reply..."
                   />
                   <button
-                    onClick={() => handleReplySubmit(msg.id)}
+                    onClick={() => handleReplySubmit()}
                     className="bg-[#FF7A00] text-white px-4 rounded-lg text-sm"
                   >
                     Reply
@@ -476,15 +408,19 @@ const ChatWindow = ({ chat, onViewMembers, onBack }: Props) => {
       )}
 
         <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex gap-4 items-center bg-white dark:bg-[#1E1E1E] shrink-0">
-        <label className="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+        <button 
+          onClick={() => fileInputRef.current?.click()}
+          className="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        >
           <Paperclip size={16} />
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/*"
             className="hidden"
             onChange={handleImageSelect}
           />
-        </label>
+        </button>
 
         <input
           value={text}

@@ -43,20 +43,20 @@ const initialSchedules: Schedule[] = [
         id: 1,
         title: "AM101 - AI / ML Frontier AI Engineer",
         batch: "Batch-A",
-        time: "8:30 - 09:30 am",
+        time: "8:00 - 09:00 am",
         date: formattedDate,
         displayDate: displayDate,
         status: "join",
     },
-    // {
-    //     id: 2,
-    //     title: "AM101 - AI / ML Frontier AI Engineer",
-    //     batch: "Batch-B",
-    //     time: "5:30 - 7:00 pm",
-    //     date: formattedDate,
-    //     displayDate: displayDate,
-    //     status: "soon",
-    // },
+    {
+        id: 2,
+        title: "AM101 - AI / ML Frontier AI Engineer",
+        batch: "Batch-B",
+        time: "7:00 - 8:00 am",
+        date: formattedDate,
+        displayDate: displayDate,
+        status: "join",
+    },
 ];
 
 export const ScheduleProvider = ({ children }: { children: ReactNode }) => {

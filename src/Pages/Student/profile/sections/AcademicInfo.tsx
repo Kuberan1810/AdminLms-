@@ -265,12 +265,20 @@ const AcademicInfo = () => {
             <div className="space-y-4">
               {filteredAssignments.map((item, i) => {
                 const getStatusStyles = (status: string) => {
-                  switch (status) {
-                    case 'In Progress': return 'bg-[#FFEDDE] text-[#F67300] ';
-                    case 'Submitted': return 'bg-[#2A9A4610] text-[#2A9A46] ';
-                    case 'Overdue': return 'bg-[#F32D2D10] text-[#F32D2D] ';
-                    case 'Submitted Late': return 'bg-[#F32D2D10] text-[#F32D2D]';
-                    default: return 'bg-gray-50 text-gray-400 ';
+                  const s = status?.toLowerCase() || '';
+                  switch (s) {
+                    case 'in progress':
+                    case 'in_progress': 
+                      return 'bg-[#FFEDDE] dark:bg-[#F67300]/10 text-[#F67300] dark:text-[#ff9d4d]';
+                    case 'submitted':
+                    case 'graded':
+                      return 'bg-[#2A9A4610] dark:bg-[#2A9A46]/10 text-[#2A9A46] dark:text-[#4ade80]';
+                    case 'overdue':
+                    case 'late':
+                    case 'submitted late':
+                    case 'submitted_late':
+                      return 'bg-[#F32D2D10] dark:bg-[#F32D2D]/10 text-[#F32D2D] dark:text-[#f87171]';
+                    default: return 'bg-gray-50 dark:bg-gray-800 text-gray-400 ';
                   }
                 };
 

@@ -1,83 +1,76 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
-
-export type NotificationCategory = "reminder" | "score" | "system";
-
-export interface NotificationType {
-    id: number;
-    title: string;
-    subtitle: string;
-    date: Date;
-    category: NotificationCategory;
-    unread: boolean;
-}
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { getNotifications, markAllNotificationsRead, markNotificationRead, type NotificationGroup } from "../../services/notificationService";
 
 interface NotificationContextType {
-    notifications: NotificationType[];
+    notificationGroups: NotificationGroup[];
     unreadCount: number;
-    markAsRead: (id: number) => void;
-    markAllAsRead: () => void;
+    markAsRead: (id: number) => Promise<void>;
+    markAllAsRead: () => Promise<void>;
+    fetchNotifications: () => Promise<void>;
 }
 
 const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
-    const [notifications, setNotifications] = useState<NotificationType[]>([
-        // {
-        //     id: 1,
-        //     title: "Schedule Reminder",
-        //     subtitle: "Upcoming class : AI agent starts in 15 mins",
-        //     date: new Date(Date.now() - 15 * 60000),
-        //     category: "reminder",
-        //     unread: true,
-        // },
-        // {
-        //     id: 2,
-        //     title: "Test Score",
-        //     subtitle: "Final grades for test name have been posted",
-        //     date: new Date(Date.now() - 25 * 60000),
-        //     category: "score",
-        //     unread: true,
-        // },
-        // {
-        //     id: 3,
-        //     title: "System Alert",
-        //     subtitle: "Your Test submission was successful",
-        //     date: new Date(Date.now() - 24 * 60 * 60000),
-        //     category: "system",
-        //     unread: true,
-        // },
-        // {
-        //     id: 4,
-        //     title: "Schedule Reminder",
-        //     subtitle: "Upcoming class : AI agent starts in 15 mins",
-        //     date: new Date(Date.now() - 26 * 60 * 60000),
-        //     category: "reminder",
-        //     unread: false,
-        // },
-        
-    ]);
+    const [notificationGroups, setNotificationGroups] = useState<NotificationGroup[]>([]);
+    const [unreadCount, setUnreadCount] = useState<number>(0);
 
-    
-
-    const unreadCount = notifications.filter(n => n.unread).length;
-
-    const markAsRead = (id: number) => {
-        setNotifications(prev =>
-            prev.map(n =>
-                n.id === id ? { ...n, unread: false } : n
-            )
-        );
+    const fetchNotifications = async () => {
+        try {
+            const data = await getNotifications();
+            setNotificationGroups(data.groups || []);
+            setUnreadCount(data.unread_count || 0);
+        } catch (error) {
+            console.error("Failed to fetch notifications:", error);
+        }
     };
 
-    const markAllAsRead = () => {
-        setNotifications(prev =>
-            prev.map(n => ({ ...n, unread: false }))
-        );
+    useEffect(() => {
+        fetchNotifications();
+        // Optional polling every minute
+        const interval = setInterval(fetchNotifications, 60000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const markAsRead = async (id: number) => {
+        try {
+            // Optimistically update
+            setNotificationGroups(prev => prev.map(group => ({
+                ...group,
+                notifications: group.notifications.map(n => 
+                    n.id === id ? { ...n, is_read: true } : n
+                )
+            })));
+            setUnreadCount(prev => Math.max(0, prev - 1));
+
+            await markNotificationRead(id);
+            fetchNotifications(); // Sync with backend state
+        } catch (error) {
+            console.error("Failed to mark notification as read:", error);
+            fetchNotifications();
+        }
+    };
+
+    const markAllAsRead = async () => {
+        try {
+            // Optimistic
+            setNotificationGroups(prev => prev.map(group => ({
+                ...group,
+                notifications: group.notifications.map(n => ({ ...n, is_read: true }))
+            })));
+            setUnreadCount(0);
+
+            await markAllNotificationsRead();
+            fetchNotifications();
+        } catch (error) {
+            console.error("Failed to mark all notifications as read:", error);
+            fetchNotifications();
+        }
     };
 
     return (
         <NotificationContext.Provider
-            value={{ notifications, unreadCount, markAsRead, markAllAsRead }}
+            value={{ notificationGroups, unreadCount, markAsRead, markAllAsRead, fetchNotifications }}
         >
             {children}
         </NotificationContext.Provider>

@@ -1,0 +1,70 @@
+{
+  "assignment_id": {
+    "type": "integer",
+    "title": "Assignment Id"
+  },
+  "course_code": {
+    "type": "string",
+    "title": "Course Code"
+  },
+  "course_name": {
+    "type": "string",
+    "title": "Course Name"
+  },
+  "module_name": {
+    "type": "string",
+    "title": "Module Name"
+  },
+  "title": {
+    "type": "string",
+    "title": "Title"
+  },
+  "due_date": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "Due Date"
+  },
+  "due_time": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "Due Time"
+  },
+  "status": {
+    "type": "string",
+    "title": "Status"
+  },
+  "submission_id": {
+    "anyOf": [
+      {
+        "type": "integer"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "Submission Id"
+  },
+  "grade": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "title": "Grade"
+  }
+}

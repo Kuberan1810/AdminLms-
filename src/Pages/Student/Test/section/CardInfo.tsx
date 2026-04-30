@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 
 interface CountdownTimerProps {
   onExpire?: () => void;
+  targetDate?: Date;
 }
 
-export default function CountdownTimer({ onExpire }: CountdownTimerProps) {
-  // Target date - dynamically set to 10 seconds from now for testing purposes
-  // In production, this would use a real date from test data
-  const [targetDate] = useState(() => new Date(new Date().getTime() + 10000));
+export default function CountdownTimer({ onExpire, targetDate: propTargetDate }: CountdownTimerProps) {
+  // Target date - use prop if provided, otherwise default to 10 seconds for testing
+  const [targetDate] = useState(() => propTargetDate || new Date(new Date().getTime() + 10000));
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,

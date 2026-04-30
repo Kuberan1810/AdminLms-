@@ -1,0 +1,60 @@
+{
+  "tags": [
+    "Assignments"
+  ],
+  "summary": "Submit Assignment",
+  "description": "Student submits an assignment.\nAccepts optional text and/or an uploaded file.\nRe-submitting replaces the previous submission.",
+  "operationId": "submit_assignment_assignments__assignment_id__submit_post",
+  "security": [
+    {
+      "HTTPBearer": []
+    }
+  ],
+  "parameters": [
+    {
+      "name": "assignment_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+        "type": "integer",
+        "title": "Assignment Id"
+      }
+    }
+  ],
+  "requestBody": {
+    "content": {
+      "multipart/form-data": {
+        "schema": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Body_submit_assignment_assignments__assignment_id__submit_post"
+            }
+          ],
+          "title": "Body"
+        }
+      }
+    }
+  },
+  "responses": {
+    "200": {
+      "description": "Successful Response",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/AssignmentSubmissionResponse"
+          }
+        }
+      }
+    },
+    "422": {
+      "description": "Validation Error",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/HTTPValidationError"
+          }
+        }
+      }
+    }
+  }
+}

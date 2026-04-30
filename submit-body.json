@@ -1,0 +1,29 @@
+{
+  "properties": {
+    "submission_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Submission Text"
+    },
+    "file": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "binary"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "File"
+    }
+  },
+  "type": "object",
+  "title": "Body_submit_assignment_assignments__assignment_id__submit_post"
+}

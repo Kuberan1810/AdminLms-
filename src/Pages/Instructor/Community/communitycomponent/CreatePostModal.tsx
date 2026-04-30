@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Upload, File, ChevronDown, Hash, Tag } from "lucide-react";
+import { capitalizeWords } from "../../../../utils/capitalize";
 import type { Post } from "../types/post";
 
 interface Props {
@@ -116,8 +117,9 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
           <label className="text-sm font-medium">Title :</label>
           <input
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setTitle(capitalizeWords(e.target.value))}
             placeholder="Enter Post Title"
+            autoCapitalize="words"
             className="w-full mt-1 bg-gray-100 dark:bg-[#2A2A2A] text-gray-900 dark:text-gray-100 rounded-md px-3 py-2 text-sm outline-none"
           />
         </div>
@@ -127,8 +129,9 @@ const CreatePostModal = ({ onClose, onSubmit }: Props) => {
           <label className="text-sm font-medium">Content :</label>
           <textarea
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => setContent(capitalizeWords(e.target.value))}
             placeholder="Write your Post here..."
+            autoCapitalize="words"
             rows={4}
             maxLength={10000}
             className="w-full mt-1 bg-gray-100 dark:bg-[#2A2A2A] text-gray-900 dark:text-gray-100 rounded-md px-3 py-2 text-sm outline-none resize-none"

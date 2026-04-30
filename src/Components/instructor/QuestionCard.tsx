@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { ChevronDown, Trash2 } from "lucide-react";
 import RequiredToggle from "./RequiredToggle";
+import { capitalizeWords } from "../../utils/capitalize";
 
 type QuestionType = "mcq" | "checkbox" | "short" | "long";
 
 interface Props {
   index: number;
-  question: string;
+  text: string;
   type: QuestionType;
   options: string[];
   required: boolean;
@@ -20,7 +21,7 @@ interface Props {
 
 const QuestionCard = ({
   index,
-  question,
+  text,
   type,
   options,
   required,
@@ -47,12 +48,16 @@ const QuestionCard = ({
     <div className="border border-[#E5E5E5] bg-white rounded-xl mx-8 p-4 mb-4">
       {/* ================= HEADER ================= */}
       <div className="flex justify-between items-center mb-4 gap-4">
-        <input
-          value={question}
-          placeholder={`${index}. Question`}
-          onChange={(e) => onChange({ question: e.target.value })}
-          className="font-medium text-[16px] w-full outline-none"
-        />
+        <div className="flex items-center gap-2 w-full">
+          <span className="font-semibold text-[#333333] shrink-0">{index}.</span>
+          <input
+            value={text}
+            placeholder="Question"
+            autoCapitalize="words"
+            onChange={(e) => onChange({ text: capitalizeWords(e.target.value) })}
+            className="font-medium text-[16px] w-full outline-none"
+          />
+        </div>
 
         {/*  DROPDOWN */}
         <div className="relative min-w-[160px]">
@@ -100,9 +105,10 @@ const QuestionCard = ({
             <input
               value={opt}
               placeholder={`Option ${i + 1}`}
+              autoCapitalize="words"
               onChange={(e) => {
                 const updated = [...options];
-                updated[i] = e.target.value;
+                updated[i] = capitalizeWords(e.target.value);
                 onChange({ options: updated });
               }}
               className="outline-none w-full bg-transparent"

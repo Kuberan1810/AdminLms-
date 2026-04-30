@@ -100,21 +100,16 @@ export default function ChatCommunitySection() {
             </div>
 
             <div className="flex-1 overflow-scroll scrollbar-hide">
-                <div className="h-full flex flex-col items-center justify-center py-10 text-center">
-                    <div className="p-4 bg-[#FFF0EF] dark:bg-[#3D2B2A] rounded-full mb-4">
-                        <Note1 size={32} color="#EF7A02" />
+                {tab === "chat" ? (
+                    <div className="h-full flex flex-col items-center justify-center py-10 text-center">
+                        <div className="p-4 bg-[#FFF0EF] dark:bg-[#3D2B2A] rounded-full mb-4">
+                            <Note1 size={32} color="#EF7A02" />
+                        </div>
+                        <p className="text-[#626262] dark:text-[#E0E0E0] text-base font-medium">Coming Soon</p>
+                        <p className="text-[#989898] dark:text-[#A3A3A3] text-sm mt-1">Direct Chat will be available soon.</p>
                     </div>
-                    <p className="text-[#626262] dark:text-[#E0E0E0] text-base font-medium">Coming Soon</p>
-                    <p className="text-[#989898] dark:text-[#A3A3A3] text-sm mt-1">This feature will appear in a few days.</p>
-                </div>
-                {false && (
-                    tab === "chat" ? (
-                        <EnterpriseChat />
-                    ) : (
-                        // <EnterpriseCommunity />
-                        // <CommunityContent />
-                        <CommunityMobile />
-                    )
+                ) : (
+                    <CommunityMobile />
                 )}
             </div>
         </div>

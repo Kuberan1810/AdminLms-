@@ -34,13 +34,15 @@ const Header = () => {
   const searchRef = useRef<HTMLDivElement>(null);
 
   const path = location.pathname.split("/")[2];
-  // gets: dashboard, profile, courses
 
   let header =
     headerMap[`/${path}`] || {
       title: "Dashboard",
       subtitle: "Welcome ",
     };
+
+  // Skip overriding header title for assignments as per user request
+
 
   //  Create Assignment Section
   // if (location.pathname.startsWith("/student/assignments")) {

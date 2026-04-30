@@ -29,7 +29,7 @@ const TestSummaryModal = () => {
         // Auto submit the test permanently when time is up in the summary screen too
         toast.success("Time's up! Your test has been automatically submitted.");
         dispatch(fullResetTest());
-        navigate("student/dashboard");
+        navigate("/student/dashboard");
       } else {
         dispatch(tickTimer());
       }

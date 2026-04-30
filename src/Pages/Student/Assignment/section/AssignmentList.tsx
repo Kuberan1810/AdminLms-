@@ -1,8 +1,12 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { FilterSearch } from 'iconsax-react';
 import { ChevronDown } from 'lucide-react';
-import { Assignments, type StatusType } from "../data/AssignmentData";
+import { type StatusType } from "../data/AssignmentData";
 import AssignmentCard from "./AssignmentCard";
+import { useStudentAssignments } from '../../../../hooks/useAssignments';
+import { useQueries } from "@tanstack/react-query";
+import { getMySubmission } from '../../../../services/assignmentService';
+import type { AssignmentResourceResponse } from '../../../../services/assignmentService';
 
 interface AssignmentListProps {
   selectedCourse: string | null;
@@ -33,34 +37,141 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ selectedCourse }) => {
     'All status',
     'In Progress',
     'Submitted',
+    'Graded',
     'Overdue',
     'Submitted Late'
   ];
 
   const getStatusStyles = (status: string) => {
-    switch (status) {
-      case 'In Progress': return 'bg-[#FFEDDE] text-[#F67300] ';
-      case 'Submitted': return 'bg-[#2A9A4610] text-[#2A9A46] ';
-      case 'Overdue': return 'bg-[#F32D2D10] text-[#F32D2D] ';
-      case 'Submitted Late': return 'bg-[#F32D2D10] text-[#F32D2D]';
-      default: return 'bg-gray-50 text-gray-400 ';
+    const s = status?.toLowerCase() || '';
+    switch (s) {
+      case 'in progress':
+      case 'in_progress': 
+        return 'bg-[#FFEDDE] dark:bg-[#F67300]/10 text-[#F67300] dark:text-[#ff9d4d]';
+      case 'submitted':
+      case 'graded':
+        return 'bg-[#2A9A4610] dark:bg-[#2A9A46]/10 text-[#2A9A46] dark:text-[#4ade80]';
+      case 'overdue':
+      case 'late':
+      case 'submitted late':
+      case 'submitted_late':
+        return 'bg-[#F32D2D10] dark:bg-[#F32D2D]/10 text-[#F32D2D] dark:text-[#f87171]';
+      default: return 'bg-gray-50 dark:bg-gray-800 text-gray-400 ';
     }
   };
+  
+  const formatDate = (dateString: string | null, status: string, submittedAt?: string | null) => {
+    const options: Intl.DateTimeFormatOptions = { 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    };
+
+    if (status === 'Submitted' || status === 'Submitted Late') {
+        if (submittedAt) {
+            const date = new Date(submittedAt);
+            return `Submitted on: ${date.toLocaleString('en-US', options)}`;
+        }
+        return `Submitted successfully`;
+    }
+
+    if (!dateString) return "No deadline";
+    const date = new Date(dateString);
+    const formatted = date.toLocaleString('en-US', options);
+    
+    if (status === 'Overdue') {
+        return `Last date: ${formatted}`;
+    }
+    return `Due ${formatted}`;
+  };
+
+  const SkeletonCard = () => (
+    <div className="boxStyle animate-pulse border border-[#F2EEF4] dark:border-[#3B3B3B] rounded-[28px] p-6 mb-5 dark:bg-[#2A2A2A]">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div className="flex-1 w-full">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-7 w-48 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+            <div className="h-5 w-20 bg-gray-100 dark:bg-gray-800 rounded-full"></div>
+          </div>
+          <div className="h-5 w-32 bg-gray-100 dark:bg-gray-800 rounded-lg mb-4"></div>
+          <div className="h-4 w-full bg-gray-50 dark:bg-gray-900 rounded-lg mb-2"></div>
+          <div className="h-4 w-2/3 bg-gray-50 dark:bg-gray-900 rounded-lg"></div>
+        </div>
+        <div className="flex flex-col items-start lg:items-end gap-3 w-full lg:w-auto">
+          <div className="h-5 w-32 bg-gray-100 dark:bg-gray-800 rounded-lg"></div>
+          <div className="h-10 w-44 bg-gray-200 dark:bg-gray-700 rounded-2xl mt-2"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const { data: assignments = [], isLoading: isAssignmentsLoading } = useStudentAssignments();
+
+  const submissionQueries = useQueries({
+    queries: assignments.map((item: any) => ({
+      queryKey: ["my-submission", item.id],
+      queryFn: () => getMySubmission(item.id),
+      retry: false,
+    }))
+  });
+
+  const isLoading = isAssignmentsLoading || submissionQueries.some(q => q.isLoading);
 
   const filteredAssignments = useMemo(() => {
-    return Assignments.filter(item => {
-      const matchesCourse = selectedCourse
-        ? item.course.includes(selectedCourse)
-        : true;
+    return assignments
+      .map((item: any, index: number) => {
+        let status: StatusType = 'In Progress';
+        
+        const mySubmission = submissionQueries[index]?.data;
+        const isSuccess = submissionQueries[index]?.isSuccess;
 
-      const matchesStatus =
-        statusFilter === 'All status'
-          ? true
-          : item.status === statusFilter;
+        // Find the submitted_at timestamp wherever it might be hiding
+        const submissionObj = item.submission || item.student_submission || (item.submissions && item.submissions[0]);
+        const submittedAt = mySubmission?.submitted_at || item.submitted_at || submissionObj?.submitted_at;
+        
+        if (submittedAt || (isSuccess && mySubmission) || (item.status === 'Submitted' || item.status === 'completed') || submissionObj) {
+            status = mySubmission?.grade ? 'Graded' : 'Submitted';
+        } else if (item.due_date) {
+            const dueDate = new Date(item.due_date);
+            if (dueDate < new Date()) {
+                status = 'Overdue';
+            }
+        }
 
-      return matchesCourse && matchesStatus;
-    });
-  }, [selectedCourse, statusFilter]);
+        return {
+          id: item.id,
+          title: item.title,
+          course: item.module_name || item.course_name || "",
+          description: item.description || "",
+          objective: "", // Backend doesn't provide this yet
+          expectedOutcome: item.expected_outcome || "",
+          status: status,
+          deadline: formatDate(item.due_date, status, submittedAt),
+          resources: item.resources.map((r: AssignmentResourceResponse) => ({
+              id: r.id,
+              title: r.file_name,
+              url: r.file_path,
+              type: (r.file_type?.includes('pdf') ? 'pdf' : 'link') as "pdf" | "link"
+          }))
+        } as const;
+      })
+      .filter((item) => {
+        const matchesCourse = selectedCourse
+          ? item.course.includes(selectedCourse)
+          : true;
+
+        const matchesStatus =
+          statusFilter === 'All status'
+            ? true
+            : item.status === (statusFilter as any); // Cast for comparison
+
+        return matchesCourse && matchesStatus;
+      });
+  }, [assignments, selectedCourse, statusFilter, submissionQueries]);
+
+  // Removed early return for isLoading to keep header/filters visible
 
   return (
     <div className="boxStyle">
@@ -114,7 +225,10 @@ const AssignmentList: React.FC<AssignmentListProps> = ({ selectedCourse }) => {
 
       {/* CARD LIST */}
       <div className="space-y-5">
-        {filteredAssignments.length > 0 ? (
+        {isLoading ? (
+          /* SKELETON LOADING STATE */
+          [1, 2, 3].map(i => <SkeletonCard key={i} />)
+        ) : filteredAssignments.length > 0 ? (
           filteredAssignments.map((item) => (
             <AssignmentCard
               key={item.id}

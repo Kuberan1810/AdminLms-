@@ -1,174 +1,246 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, FileText, Download, Pencil, FileCheck, Link as LinkIcon } from "lucide-react";
 import InstructorDashboardLayout from "../../../Components/instructor/InstructorDashboardLayout";
+import { useEffect, useState } from "react";
+import { getAssignmentById } from "../../../services/assignmentService";
+import type { AssignmentResponse, AssignmentResourceResponse } from "../../../services/assignmentService";
+import InstructorAssignmentHeader from "../../../Components/instructor/InstructorAssignmentHeader";
+import ResourceCard from "../../Student/Assignment/AssignmentDetails/section/AssignmentResousesCard";
+import { CalendarRemove } from "iconsax-react";
 
-interface Resource {
-    name: string;
-    url: string;
-}
+const BASE_URL = "https://lms-backend-apis.onrender.com";
+
+const formatDate = (dateString: string | null) => {
+    if (!dateString) return "No deadline";
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = { 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    };
+    return date.toLocaleString('en-US', options);
+};
+
+const slugify = (text: string) => {
+    return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')     // Replace spaces with -
+        .replace(/[^\w-]+/g, '')    // Remove all non-word chars
+        .replace(/--+/g, '-');      // Replace multiple - with single -
+};
 
 const AssignmentDetailsPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const state = location.state || {}; // Rename to 'state' to avoid shadowing confusion, though 'assignment' is fine
+    const state = location.state || {};
+
+    const [apiAssignment, setApiAssignment] = useState<AssignmentResponse | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (state?.id) {
+            setIsLoading(true);
+            getAssignmentById(state.id)
+                .then(setApiAssignment)
+                .catch((err) => console.error("Error fetching assignment:", err))
+                .finally(() => setIsLoading(false));
+        }
+    }, [state?.id]);
+
+    const assignment = apiAssignment || state;
 
     const handleEdit = () => {
-        navigate("/instructor/create-assignment", { state: { ...state, isEdit: true } });
+        navigate("/instructor/create-assignment/details", { 
+            state: { 
+                // Identification
+                id: assignment.id || state.id,
+                isEdit: true,
+                // Content fields (API names)
+                title: assignment.title,
+                description: assignment.description || "",
+                objective: assignment.objective || "",
+                expected_outcome: assignment.expected_outcome || "",
+                due_date: assignment.due_date || null,
+                // Context
+                batch: assignment.batch_name || state.batch,
+                batch_name: assignment.batch_name || state.batch,
+                courseId: assignment.course_id || state.courseId,
+                module: assignment.module_name || state.moduleInfo,
+                moduleInfo: assignment.module_name || state.moduleInfo,
+                moduleId: state.moduleId,
+                course: state.course,
+                // Resources array (AssignmentResourceResponse objects)
+                resources: assignment.resources || []
+            } 
+        });
     };
 
-    // Creating mock resources from string array for now since the type in other files was string[]
-    const resources: Resource[] = (state.resources || []).map((res: string) => ({
-        name: res,
-        url: "#"
-    }));
+    const handleReview = () => {
+        const slug = slugify(assignment.title || "assignment");
+        navigate(`/instructor/assignment/${slug}/review`, { 
+            state: { 
+                ...assignment,
+                assignmentId: assignment.id || state.id 
+            } 
+        });
+    };
 
-    const downloadFile = (res: Resource) => {
-        if (!res.url || res.url === "#") {
-            // Mock download for demo
-            const element = document.createElement("a");
-            const file = new Blob(["This is a mock file content for " + res.name], { type: "text/plain" });
-            element.href = URL.createObjectURL(file);
-            element.download = res.name;
-            document.body.appendChild(element); // Required for this to work in FireFox
-            element.click();
-            document.body.removeChild(element);
-            return;
-        }
-        const link = document.createElement("a");
-        link.href = res.url;
-        link.download = res.name;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    const isImage = (fileName: string) =>
+        ['.jpg', '.jpeg', '.png', '.gif', '.webp'].some(ext => fileName.toLowerCase().endsWith(ext));
+
+    const isPdf = (fileName: string) => fileName.toLowerCase().endsWith('.pdf');
+
+    const resources = (assignment.resources || []).map((res: any) => {
+        const r = res as AssignmentResourceResponse;
+        const url = r.file_path?.startsWith('http') ? r.file_path : `${BASE_URL}${r.file_path}`;
+        return {
+            id: r.id,
+            title: r.file_name,
+            url: url,
+            type: isPdf(r.file_name) ? 'pdf' : (isImage(r.file_name) ? 'image' : 'link')
+        };
+    });
+
+    if (isLoading) {
+        return (
+            <InstructorDashboardLayout>
+                <div className="sm:px-6 px-4 py-8 animate-pulse space-y-6">
+                    {/* Header Skeleton */}
+                    <div className="boxStyle bg-white h-48 flex flex-col gap-4">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                            <div className="w-1/3 h-8 bg-gray-200 rounded-xl"></div>
+                        </div>
+                        <div className="w-20 h-6 bg-gray-100 rounded-full"></div>
+                        <div className="w-40 h-4 bg-gray-100 rounded-lg"></div>
+                    </div>
+
+                    {/* Content Skeleton */}
+                    <div className="boxStyle bg-white space-y-10">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="space-y-4">
+                                <div className="w-32 h-6 bg-gray-200 rounded-lg"></div>
+                                <div className="space-y-2">
+                                    <div className="w-full h-4 bg-gray-100 rounded-lg"></div>
+                                    <div className="w-5/6 h-4 bg-gray-100 rounded-lg"></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Resources Skeleton */}
+                    <div className="boxStyle bg-white">
+                        <div className="w-48 h-8 bg-gray-200 rounded-xl mb-8"></div>
+                        <div className="space-y-4">
+                            {[1, 2].map(i => (
+                                <div key={i} className="h-20 bg-gray-50 border border-gray-100 rounded-[24px]"></div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </InstructorDashboardLayout>
+        );
+    }
+
+    const mappedAssignment = {
+        id: assignment.id || state.id,
+        title: assignment.title,
+        course: assignment.module_name || assignment.moduleInfo || "GENERAL MODULE",
+        description: assignment.description || "",
+        objective: assignment.objective || "",
+        expectedOutcome: assignment.expected_outcome || assignment.outcome || "",
+        status: (assignment.status || "In Progress") as any,
+        deadline: formatDate(assignment.due_date),
+        resources: resources
     };
 
     return (
         <InstructorDashboardLayout>
-            <div className="mx-auto space-y-6 max-w-7xl">
+            <div className="sm:px-6 px-4 py-8">
+                
+                {/* Assignment Description Section */}
+                <div className="w-full">
+                    <div className="boxStyle mb-5 ">
+                        <div className="mb-10">
+                            <InstructorAssignmentHeader 
+                                title={mappedAssignment.title}
+                                status={mappedAssignment.status}
+                                deadline={mappedAssignment.deadline}
+                                courseCode={mappedAssignment.course}
+                            />
+                        </div>
+                        <div className="space-y-10 ">
+                            <section>
+                                <h2 className="md:text-2xl text-lg font-medium text-[#333333] dark:text-gray-300 md:mb-5 mb-2">Description:</h2>
+                                <p className="text-[#4D4D4D] md:text-[18px] text-[15px] dark:text-gray-200 leading-[1.6] font-normal whitespace-pre-wrap">
+                                    {mappedAssignment.description}
+                                </p>
+                            </section>
+                            
+                            {mappedAssignment.objective && (
+                                <section>
+                                    <h2 className="md:text-2xl text-lg font-medium text-[#333333] dark:text-gray-300 md:mb-5 mb-2">Objective:</h2>
+                                    <p className="text-[#4D4D4D] md:text-[18px] text-[15px] dark:text-gray-200 leading-[1.6] font-normal whitespace-pre-wrap">
+                                        {mappedAssignment.objective}
+                                    </p>
+                                </section>
+                            )}
 
-                {/* Header Section */}
-                <div className="flex flex-col gap-2">
-                    <div className="flex items-start gap-4">
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="mt-1 p-1 rounded-full hover:bg-gray-100 transition-colors"
-                        >
-                            <ArrowLeft size={24} className="text-[#333333]" />
-                        </button>
-                        <div className="flex-1 space-y-3">
-                            <h1 className="text-2xl sm:text-3xl font-semibold text-[#1A1A1A]">
-                                {state.title || "Build Q&A system using RAG"}
-                            </h1>
-
-                            <div className="flex flex-wrap items-center gap-3 text-sm">
-                                <span className="bg-[#FFF2E5] text-[#F67300] px-3 py-1 rounded-full text-xs font-medium">
-                                    {state.status || "In Progress"}
-                                </span>
-                                <div className="flex items-center gap-1.5 text-gray-500">
-                                    <FileCheck size={14} />
-                                    <span>Due {state.dueDate || "Jan 26, 11:59 PM"}</span>
-                                </div>
-                            </div>
-
-                            <p className="text-sm text-gray-500">
-                                {state.batchInfo || "AM101 - AI / ML Frontier Ai Engineer"}
-                            </p>
+                            {mappedAssignment.expectedOutcome && (
+                                <section>
+                                    <h2 className="md:text-2xl text-lg font-medium text-[#333333] dark:text-gray-300 md:mb-5 mb-2">Expected Outcome:</h2>
+                                    <p className="text-[#4D4D4D] md:text-[18px] text-[15px] dark:text-gray-200 leading-[1.6] font-normal whitespace-pre-wrap">
+                                        {mappedAssignment.expectedOutcome}
+                                    </p>
+                                </section>
+                            )}
                         </div>
                     </div>
                 </div>
 
-                {/* Main Content Card */}
-                <div className="bg-white rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm">
-                    {/* Description */}
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-medium text-[#1A1A1A]">Description:</h3>
-                        <p className="text-gray-600 leading-relaxed">
-                            {state.description || "Build a Question Answering (Q&A) system using Retrieval-Augmented Generation (RAG). In this assignment, you will combine a language model with external knowledge sources to generate more accurate and context-aware answers instead of relying only on the model's memory."}
-                        </p>
-                    </div>
+                {/* Resources Section (matches student version layout but with instructor buttons) */}
+                <div className="boxStyle bg-white">
+                    <h2 className="md:text-2xl text-xl font-medium text-[#333333] dark:text-white md:mb-5 mb-2">
+                        Assignment Resources
+                    </h2>
 
-                    {/* Objective */}
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-medium text-[#1A1A1A]">Objective:</h3>
-                        <p className="text-gray-600 leading-relaxed">
-                            {state.objective || "Design and implement a basic retrieval pipeline that searches relevant information, passes it as context to the language model, and produces meaningful responses."}
-                        </p>
-                    </div>
-
-                    {/* Expected Outcome */}
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-medium text-[#1A1A1A]">Expected Outcome:</h3>
-                        <p className="text-gray-600 leading-relaxed">
-                            {state.outcome || "A working RAG-based Q&A system that can answer questions accurately using provided data, demonstrating the practical application of AI in learning platforms."}
-                        </p>
-                    </div>
-                </div>
-
-                {/* Resources Card */}
-                <div className="bg-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
-                    <h2 className="text-lg font-medium text-[#1A1A1A]">Resources</h2>
-
-                    <div className="space-y-3">
+                    <div className="flex flex-col gap-10">
+                        {/* Resource List */}
                         {resources.length > 0 ? (
-                            resources.map((res, index) => {
-                                const isPdf = res.name.toLowerCase().endsWith('.pdf');
-                                return (
-                                    <div key={index} className="flex items-center justify-between p-4 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-colors group">
-                                        <div className="flex items-center gap-4">
-                                            {/* Icon */}
-                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${isPdf ? 'bg-[#FFEDED]' : 'bg-[#E5F6FF]'
-                                                }`}>
-                                                {isPdf ? (
-                                                    <FileText className="text-[#FF4D4D]" size={24} />
-                                                ) : (
-                                                    <LinkIcon className="text-[#0095FF]" size={24} />
-                                                )}
-                                            </div>
-
-                                            {/* Info */}
-                                            <div className="min-w-0">
-                                                <p className="text-sm font-medium text-[#1A1A1A] truncate">{res.name}</p>
-                                                <p className="text-xs text-gray-500 mt-0.5">
-                                                    {isPdf ? "2.4MB" : "external-link.com"}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {/* Action */}
-                                        <button
-                                            onClick={() => downloadFile(res)}
-                                            className="p-2 text-gray-400 hover:text-[#F67300] transition-colors"
-                                        >
-                                            <Download size={20} />
-                                        </button>
-                                    </div>
-                                );
-                            })
+                            <div className="flex flex-col gap-5">
+                                {resources.map((res: any) => (
+                                    <ResourceCard key={res.id} resource={res} />
+                                ))}
+                            </div>
                         ) : (
-                            <div className="p-8 text-center text-gray-500 italic flex flex-col items-center gap-2 text-sm">
-                                <FileText size={32} className="opacity-20" />
-                                <span>No resources attached.</span>
+                            <div className="flex flex-col items-center justify-center py-10 rounded-3xl">
+                                <div className="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-full flex items-center justify-center mb-4">
+                                    <CalendarRemove size="32" variant="Outline" color="#F67300" className="text-[#F67300]" />
+                                </div>
+                                <h3 className="text-lg font-semibold text-[#333] dark:text-white mb-1">No Resources Found</h3>
+                                <p className="text-[#626262] dark:text-gray-400 text-sm">There are no resources available for this assignment.</p>
                             </div>
                         )}
-                    </div>
-                </div>
 
-                {/* Actions Footer */}
-                <div className="flex justify-end gap-4 pb-8">
-                    <button
-                        onClick={() => navigate(`/instructor/assignment-submissions?id=${state.id}`, { state: state })}
-                        className="flex items-center justify-center gap-2 bg-[#F67300] text-white px-6 py-3 rounded-xl shadow font-medium"
-                    >
-                        <FileCheck size={18} />
-                        <span>Review Assignment</span>
-                    </button>
-                    <button
-                        onClick={handleEdit}
-                        className="flex items-center justify-center gap-2 bg-[#F67300] text-white px-6 py-3 rounded-xl shadow font-medium"
-                    >
-                        <Pencil size={18} />
-                        <span>Edit Assignment</span>
-                    </button>
+                        {/* Action Buttons (Extra Buttons for Instructor) */}
+                        <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-6">
+                            <button
+                                onClick={handleEdit}
+                                className="px-10 py-3 rounded-2xl bg-white border border-[#F2EEF4] text-[#626262] font-medium text-[15px] transition-all cursor-pointer hover:bg-gray-50 flex items-center gap-2"
+                            >
+                                Edit Assignment
+                            </button>
+                            <button
+                                onClick={handleReview}
+                                className="px-10 py-3 rounded-2xl bg-[#F67300] text-white font-medium text-[15px] transition-all cursor-pointer hover:bg-[#ff9232] shadow-sm"
+                            >
+                                Review Submissions
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </InstructorDashboardLayout>

@@ -1,150 +1,43 @@
-
 import { MessageCircle } from 'lucide-react';
 import CourseQACard from './components/CourseQACard';
+import { useChatWebSocket } from "../../../hooks/chat/useChatWebSocket";
 import AskQuestionModal from './components/AskQuestionModal';
-import { useState } from 'react';
-
-type Reply = {
-  instructorName: string;
-  role: string;
-  avatar: string;
-  timeAgo: string;
-  content: string;
-};
-
-type Comment = {
-  userName: string;
-  role: string;
-  avatar: string;
-  timeAgo: string;
-  content: string;
-};
-
-type QAType = {
-  id: number;
-  studentName: string;
-  role: string;
-  avatar: string;
-  timeAgo: string;
-  isPinned?: boolean;
-  title: string;
-  description: string;
-  likes: number;
-  comments: number;
-  reply?: Reply;
-  allComments: Comment[];
-  isBookmarked?: boolean;
-  privacy: 'public' | 'private';
-  file?: string | null;
-};
+import { useState, useMemo } from 'react';
+import { useQAFeed, useCreateQAPost, useDeleteQAPost } from '../../../hooks/chat';
+import { useMyCourses } from '../../../hooks/useMyCourses';
+import { useAuth } from '../../../context/AuthContext';
 
 const Chat = () => {
-
-  const currentUser = "Philip Stanton";
+  const { user } = useAuth();
+  const currentUser = user?.name || "Philip Stanton";
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  /* ================= INITIAL DATA ================= */
-  const initialQAData: QAType[] = [
-    {
-      id: 1,
-      studentName: "Tim David",
-      role: "Student",
-      avatar: "https://i.pravatar.cc/150?u=TimDavid",
-      timeAgo: "30 mins ago",
-      isPinned: true,
-      title: "Supervised vs Unsupervised Learning",
-      description:
-        "Can you explain the difference between supervised and unsupervised learning?",
-      likes: 7,
-      comments: 2,
-      reply: {
-        instructorName: "Radha Krishnan",
-        role: "Instructor",
-        avatar: "https://i.pravatar.cc/150?u=RadhaKrishnan",
-        timeAgo: "10 mins ago",
-        content:
-          "Supervised learning uses labeled data, while unsupervised learning finds patterns in unlabeled data."
-      },
-      allComments: [],
-      privacy: 'public'
-    },
-    {
-      id: 2,
-      studentName: "Jayakumar",
-      role: "Student",
-      avatar: "https://i.pravatar.cc/150?u=Jayakumar",
-      timeAgo: "30 mins ago",
-      title: "Frontend vs Backend",
-      description:
-        "What is the difference between frontend and backend development?",
-      likes: 56,
-      comments: 1,
-      reply: {
-        instructorName: "Srinivasan",
-        role: "Instructor",
-        avatar: "https://i.pravatar.cc/150?u=Srinivasan",
-        timeAgo: "10 mins ago",
-        content:
-          "Frontend focuses on UI/UX. Backend handles server, database and APIs."
-      },
-      allComments: [],
-      privacy: 'public'
-    },
-    {
-  id: 3,
-  studentName: "Arulkanth",
-  role: "Student",
-  avatar: "https://i.pravatar.cc/150?u=Arulkanth",
-  timeAgo: "25 mins ago",
-  title: "What is an API?",
-  description:
-    "What is an API and why is it important in web development?",
-  likes: 72,
-  isPinned: true,
-  comments: 0,
-  reply: {
-    instructorName: "Radha Krishnan",
-    role: "Instructor",
-    avatar: "https://i.pravatar.cc/150?u=RadhaKrishnan",
-    timeAgo: "5 mins ago",
-    content:
-      "An API (Application Programming Interface) allows different software systems to communicate with each other. It enables frontend and backend systems to exchange data efficiently."
-  },
-  allComments: [],
-  privacy: 'public'
-},
-{
-  id: 4,
-  studentName: "Arulkanth",
-  role: "Student",
-  avatar: "https://i.pravatar.cc/150?u=Arulkanth",
-  timeAgo: "25 mins ago",
-  title: "What is an API?",
-  description:
-    "What is an API and why is it important in web development?",
-  likes: 72,
-  comments: 0,
-  reply: {
-    instructorName: "Radha Krishnan",
-    role: "Instructor",
-    avatar: "https://i.pravatar.cc/150?u=RadhaKrishnan",
-    timeAgo: "5 mins ago",
-    content:
-      "An API (Application Programming Interface) allows different software systems to communicate with each other. It enables frontend and backend systems to exchange data efficiently."
-  },
-  allComments: [],
-  privacy: 'public'
-}
-  ];
-
-  const [allQAData, setAllQAData] = useState<QAType[]>(initialQAData);
-  const [myQuestions, setMyQuestions] = useState<QAType[]>([]);
   const [activeTab, setActiveTab] = useState<'all' | 'my'>('all');
+
+  const { data: courses = [] } = useMyCourses();
+  
+  // For now, pick the first course/batch to show the chat
+  const activeCourse = courses[0];
+  const courseId = activeCourse?.id;
+
+  const { isConnected, onlineCount, typingUsers } = useChatWebSocket({
+      type: 'qa',
+      id: courseId || null
+  });
+
+  // 3) New QA fetching hookuses numeric id for chat usually, or course_id string. 
+  // Based on useMyCourses, c.id ?? c.course_id. 
+  // Let's use activeCourse.id
+  const batchName = "Batch-A"; // Placeholder, usually from enrollment data. 
+  // In a real app, this might come from the user object or another API.
+  // I'll assume "Batch-A" for demonstration if not available.
+
+  const { data: posts = [], isLoading } = useQAFeed(courseId, batchName);
+  const sendMessageMutation = useCreateQAPost();
+  const deleteMessageMutation = useDeleteQAPost();
 
   /* ================= DELETE FUNCTION ================= */
   const handleDelete = (id: number) => {
-    setAllQAData(prev => prev.filter(post => post.id !== id));
-    setMyQuestions(prev => prev.filter(post => post.id !== id));
+    deleteMessageMutation.mutate({ courseId, batchName, questionId: id });
   };
 
   /* ================= ADD QUESTION ================= */
@@ -154,32 +47,45 @@ const Chat = () => {
     privacy: 'private' | 'public';
     file?: File | null;
   }) => {
-
-    const fileURL = data.file ? URL.createObjectURL(data.file) : null;
-
-    const newQuestion: QAType = {
-      id: Date.now(),
-      studentName: currentUser,
-      role: "Student",
-      avatar: "https://i.pravatar.cc/150?u=Philip",
-      timeAgo: "Just now",
-      isPinned: false,
-      title: data.title,
-      description: data.question,
-      file: fileURL,
-      likes: 0,
-      comments: 0,
-      allComments: [],
-      privacy: data.privacy
-    };
-
-    setMyQuestions(prev => [newQuestion, ...prev]);
-    setAllQAData(prev => [newQuestion, ...prev]);
+    // Note: The /chat API only takes "content". 
+    // Title and privacy are NOT in the provided openapi.json ChatPost schema.
+    // I will combine title and question into content, or just use question.
+    const fullContent = data.title ? `**${data.title}**\n\n${data.question}` : data.question;
+    
+    sendMessageMutation.mutate({ 
+      courseId, 
+      batchName, 
+      content: fullContent,
+      isPrivate: data.privacy === 'private'
+    });
+    setIsModalOpen(false);
   };
 
-  /* ================= SORT PINNED ON TOP ================= */
-  const sortedPosts = [...(activeTab === 'all' ? allQAData : myQuestions)]
-    .sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
+  /* ================= FILTERING & SORTING ================= */
+  const filteredPosts = useMemo(() => {
+    let result = posts;
+    
+    // Visibility Filter: Only show public posts, OR private posts that I wrote
+    result = result.filter(p => p.visibility === 'public' || (p.author.id === user?.id || p.author.name === currentUser));
+
+    if (activeTab === 'my') {
+        result = result.filter(p => p.author.id === user?.id || p.author.name === currentUser);
+    }
+    
+    return [...result].sort((a, b) => (b.is_pinned ? 1 : 0) - (a.is_pinned ? 1 : 0));
+  }, [posts, activeTab, user?.id, currentUser]);
+
+
+  /* ================= INITIAL DATA ================= */
+
+
+  if (isLoading) {
+    return (
+        <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        </div>
+    );
+  }
 
   return (
  
@@ -210,24 +116,62 @@ const Chat = () => {
           </button>
         </div>
 
+        {/* WS Indicator Row */}
+        {isConnected && (
+          <div className="flex items-center justify-end px-3 mb-4">
+            <span className="text-xs text-green-500 font-medium">
+               ● {onlineCount} {onlineCount === 1 ? 'User' : 'Users'} Online
+            </span>
+          </div>
+        )}
+
+        {/* Typing Indicator */}
+        {typingUsers && Object.keys(typingUsers).length > 0 && (
+          <div className="px-3 mb-2 text-xs text-gray-500 italic text-right">
+            {Object.values(typingUsers).join(", ")} {Object.keys(typingUsers).length === 1 ? 'is' : 'are'} typing...
+          </div>
+        )}
+
         {/* POSTS */}
         <div className="flex flex-col gap-4">
-          {sortedPosts.map((qa) => (
-            <div key={qa.id}>
+          {filteredPosts.map((post) => (
+            <div key={post.id}>
               <CourseQACard
-                {...qa}
-                isOwner={qa.studentName === currentUser}
-                onDelete={() => handleDelete(qa.id)}
+                id={post.id}
+                courseId={courseId}
+                batchName={batchName}
+                studentName={post.author.name}
+                role={post.author.role}
+                avatar={""} // Avatar not in API
+                timeAgo={new Date(post.created_at).toLocaleString()}
+                title={""} // Title not in API, content might contain it
+                description={post.content}
+                likes={post.like_count}
+                comments={post.reply_count}
+                isPinned={post.is_pinned}
+                isBookmarked={post.is_bookmarked_by_me}
+                isLiked={post.is_liked_by_me}
+                isPrivate={post.visibility === 'private'}
+                replies={post.replies}
+                isOwner={post.author.id === user?.id || post.author.name === currentUser}
+                onDelete={() => handleDelete(post.id)}
               />
             </div>
           ))}
 
-          {activeTab === 'my' && myQuestions.length === 0 && (
+          {activeTab === 'my' && filteredPosts.length === 0 && (
             <div className="text-center py-16 text-gray-400 italic">
-              You haven't posted any questions yet.
+              You haven't posted any messages yet.
+            </div>
+          )}
+          
+          {activeTab === 'all' && filteredPosts.length === 0 && (
+            <div className="text-center py-16 text-gray-400 italic">
+              No messages found in this batch.
             </div>
           )}
         </div>
+
 
       {/* Floating Button */}
       <button

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { NotificationBing/*, ArrowLeft, Notification*/ } from "iconsax-react";
 import { ChevronDown, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { capitalizeWords } from "../../../utils/capitalize";
 import API_BASE from "../../../config/axios";
 
 interface Course {
@@ -139,6 +140,33 @@ const AddStudentPage = () => {
         }
     };
 
+    const resetFormForNextStudent = async () => {
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setShowSuccessModal(false);
+        setIsCopied(false);
+
+        // Fetch a new ID if possible
+        if (selectedClass) {
+            try {
+                setLoadingId(true);
+                const courseId = selectedClass.course_id || selectedClass.id;
+                const res = await API_BASE.get('/enroll/generate-id', {
+                    params: { course_id: courseId },
+                    headers: { 'ngrok-skip-browser-warning': 'true' }
+                });
+                const newId = res.data?.student_id || res.data?.data?.student_id || res.data?.id || res.data;
+                setStudentId(typeof newId === 'string' ? newId : JSON.stringify(newId));
+            } catch (error) {
+                console.error("Failed to generate student ID:", error);
+                setStudentId("");
+            } finally {
+                setLoadingId(false);
+            }
+        }
+    };
+
     const handleEnroll = async () => {
         if (!selectedClass) {
             alert("Please select a valid course");
@@ -258,7 +286,7 @@ const AddStudentPage = () => {
                             </div>
 
                             {classOpen && (
-                                <div className="absolute mt-1 w-full max-h-60 overflow-y-auto bg-white rounded-[12px] border border-[#E5E5E5] shadow-lg z-[1200]">
+                                <div className="absolute mt-1 w-full max-h-60 overflow-y-auto bg-white rounded-[12px] border border-[#E5E5E5] shadow-lg z-1200">
                                     {loadingCourses ? (
                                         <div className="p-3 text-gray-400">Loading...</div>
                                     ) : courses.length === 0 ? (
@@ -316,14 +344,16 @@ const AddStudentPage = () => {
                     <div className="flex flex-col md:flex-row gap-[10px] md:gap-[20px]">
                         <input
                             placeholder="First Name"
+                            autoCapitalize="words"
                             value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            onChange={(e) => setFirstName(capitalizeWords(e.target.value))}
                             className="flex-1 h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] outline-none focus:border-[#F67300]"
                         />
                         <input
                             placeholder="Last Name"
+                            autoCapitalize="words"
                             value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            onChange={(e) => setLastName(capitalizeWords(e.target.value))}
                             className="flex-1 h-[45px] px-[15px] rounded-[10px] border border-[#D3D3D3] outline-none focus:border-[#F67300]"
                         />
                     </div>
@@ -362,7 +392,7 @@ const AddStudentPage = () => {
                             </div>
 
                             {batchOpen && (
-                                <div className="absolute mt-1 w-full max-h-60 overflow-y-auto bg-white rounded-[12px] border border-[#E5E5E5] shadow-lg z-[1200]">
+                                <div className="absolute mt-1 w-full max-h-60 overflow-y-auto bg-white rounded-[12px] border border-[#E5E5E5] shadow-lg z-1200">
                                     {!selectedClass ? (
                                         <div className="p-3 text-gray-400">Please select a class first</div>
                                     ) : loadingBatches ? (
@@ -429,7 +459,7 @@ const AddStudentPage = () => {
 
             {/* Success Modal */}
             {showSuccessModal && (
-                <div className="fixed inset-0 bg-black/50 z-[2000] flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black/50 z-2000 flex items-center justify-center p-4">
                     <div className="bg-white rounded-[30px] p-8 md:p-10 w-full max-w-[500px] flex flex-col items-center shadow-2xl animate-in fade-in zoom-in duration-300">
                         {/* Check Icon */}
                         <div className="w-[80px] h-[80px] bg-[#00A84D] rounded-full flex items-center justify-center mb-6 shadow-lg shadow-green-200">
@@ -443,7 +473,7 @@ const AddStudentPage = () => {
                         </h3>
 
                         <div className="space-y-2.5 mb-6 text-center w-full">
-                            <div className="text-[16px] md:text-[18px] text-[#333333] break-words">
+                            <div className="text-[16px] md:text-[18px] text-[#333333] wrap-break-word">
                                 <span className="font-semibold">Email: </span> {email || "email@example.com"}
                             </div>
                             <div className="text-[16px] md:text-[18px] text-[#333333] ">
@@ -462,10 +492,10 @@ const AddStudentPage = () => {
                                     Copied
                                 </button>
                                 <button
-                                    onClick={() => navigate("/instructor/dashboard")}
+                                    onClick={resetFormForNextStudent}
                                     className="flex items-center gap-2  text-[#333333] text-sm hover:underline cursor-pointer hover:opacity-80"
                                 >
-                                    <ChevronDown className="rotate-90" size={16} /> Back to Dashboard
+                                    <ChevronLeft size={16} /> Add Another Student
                                 </button>
                             </div>
                         ) : (
@@ -477,7 +507,7 @@ const AddStudentPage = () => {
                                     Copy
                                 </button>
                                 <button
-                                    onClick={() => setShowSuccessModal(false)}
+                                    onClick={resetFormForNextStudent}
                                     className="px-8 h-[44px] md:border-2 border border-[#F2EEF4] cursor-pointer hover:bg-gray-100 text-[#333333] rounded-[10px] font-medium  transition-colors"
                                 >
                                     Done

@@ -2,25 +2,13 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Heart, MessageCircle, Bookmark, Pin, Trash2 } from 'lucide-react';
 import { DirectSend } from 'iconsax-react';
-
-interface Reply {
-  instructorName: string;
-  role: string;
-  avatar: string;
-  timeAgo: string;
-  content: string;
-}
-
-interface Comment {
-  userName: string;
-  role: string;
-  avatar: string;
-  timeAgo: string;
-  content: string;
-}
+import type { ChatReply } from '../../../../types/chat';
+import { useLikeQAPost, useBookmarkQAPost, usePostQAReply, useDeleteQAPost } from '../../../../hooks/chat/useQA';
 
 interface CourseQACardProps {
   id: number;
+  courseId: number | string;
+  batchName: string;
   studentName: string;
   role: string;
   avatar: string;
@@ -30,16 +18,20 @@ interface CourseQACardProps {
   likes: number;
   comments: number;
   isPinned?: boolean;
-  reply?: Reply;
-  allComments?: Comment[];
+  replies?: ChatReply[];
   isBookmarked?: boolean;
+  isLiked?: boolean;
   privacy?: 'public' | 'private';
+  isPrivate?: boolean;
   file?: string | null;
   isOwner?: boolean;
   onDelete?: () => void;
 }
 
 const CourseQACard: React.FC<CourseQACardProps> = ({
+  id,
+  courseId,
+  batchName,
   studentName,
   role,
   timeAgo,
@@ -48,57 +40,49 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
   likes,
   comments,
   isPinned,
-  reply,
-  allComments = [],
-  isBookmarked: initialIsBookmarked,
+  replies = [],
+  isBookmarked,
+  isLiked,
   privacy = 'public',
+  isPrivate,
   file,
   isOwner,
-  onDelete
 }) => {
-
-  const [localLikes, setLocalLikes] = useState(likes);
-  const [isLiked, setIsLiked] = useState(false);
-  const [localIsBookmarked, setLocalIsBookmarked] = useState(initialIsBookmarked || false);
   const [showComments, setShowComments] = useState(false);
-  const [localCommentsList, setLocalCommentsList] = useState<Comment[]>(allComments);
   const [newComment, setNewComment] = useState('');
-  const [localCommentCount, setLocalCommentCount] = useState(comments);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+
+  const toggleLikeMutation = useLikeQAPost();
+  const toggleBookmarkMutation = useBookmarkQAPost();
+  const replyMutation = usePostQAReply();
+  const deleteMutation = useDeleteQAPost();
+
   const handleLike = () => {
-    setLocalLikes(prev => isLiked ? prev - 1 : prev + 1);
-    setIsLiked(!isLiked);
+    toggleLikeMutation.mutate({ courseId, batchName, questionId: id });
   };
 
   const handleBookmark = () => {
-    setLocalIsBookmarked(!localIsBookmarked);
+    toggleBookmarkMutation.mutate({ courseId, batchName, questionId: id });
   };
 
   const handleAddComment = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!newComment.trim()) return;
-
-    const commentToAdd: Comment = {
-      userName: "Philip Stanton",
-      role: "Student",
-      avatar: "",
-      timeAgo: "Just now",
-      content: newComment.trim()
-    };
-
-    setLocalCommentsList(prev => [...prev, commentToAdd]);
-    setLocalCommentCount(prev => prev + 1);
+    replyMutation.mutate({ courseId, batchName, questionId: id, content: newComment.trim() });
     setNewComment('');
   };
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase();
+      ? name
+          .split(' ')
+          .map(word => word[0])
+          .join('')
+          .toUpperCase()
+      : "??";
   };
+
 
   return (
     <div className="bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#2C2C2C] rounded-[10px] p-3 relative w-full flex flex-col gap-1">
@@ -112,7 +96,7 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
         </button>
       )}
       {showDeletePopup && createPortal(
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100]">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-[#1E1E1E] text-[#333] dark:text-white rounded-2xl shadow-xl w-[450px] h-[150px] p-6">
 
             <h3 className="text-lg font-semibold mb-4 text-center">
@@ -129,7 +113,7 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
 
               <button
                 onClick={() => {
-                  onDelete?.();
+                  deleteMutation.mutate({ courseId, batchName, questionId: id });
                   setShowDeletePopup(false);
                 }}
                 className="px-5 py-2 rounded-full bg-orange-500 text-white hover:bg-red-600"
@@ -142,13 +126,20 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
         document.body
       )}
 
-      {/* PINNED LABEL */}
-      {isPinned && (
-        <div className="absolute top-4 right-10 flex items-center gap-1 text-[#626262] dark:text-[#CFCFCF] text-xs">
-          <Pin className="w-3 h-3" />
-          <span>Instructor Pinned Message</span>
-        </div>
-      )}
+      {/* PINNED LABEL & PRIVATE BADGE */}
+      <div className="absolute top-4 right-10 flex flex-col items-end gap-1">
+        {isPinned && (
+          <div className="flex items-center gap-1 text-[#626262] dark:text-[#CFCFCF] text-xs">
+            <Pin className="w-3 h-3" />
+            <span>Instructor Pinned Message</span>
+          </div>
+        )}
+        {isPrivate && (
+          <div className="flex items-center gap-1 px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded border border-blue-100 dark:border-blue-800">
+            <span>PRIVATE</span>
+          </div>
+        )}
+      </div>
 
       {/* HEADER */}
       <div className="flex items-center gap-3">
@@ -203,22 +194,22 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
         </div>
       )}
 
-      {/* INSTRUCTOR REPLY */}
-      {reply && (
-        <div className="ml-5 pl-4 border-l-2 border-[#EF7A02] flex flex-col gap-2">
+      {/* REPLIES */}
+      {replies.map((reply) => (
+        <div key={reply.id} className="ml-5 pl-4 border-l-2 border-[#EF7A02] flex flex-col gap-2 mb-2">
           <div className="flex items-center gap-3">
             <div className="w-[35px] h-[35px] rounded-full bg-[#EF7A02] flex items-center justify-center text-white text-[14px] font-bold">
-              {getInitials(reply.instructorName)}
+              {getInitials(reply.author.name)}
             </div>
             <div>
               <h4 className="text-[15px] font-semibold text-[#333333] dark:text-white">
-                {reply.instructorName}
+                {reply.author.name}
               </h4>
               <div className="flex gap-2 text-xs text-[#989898]">
                 <span className="px-2 py-0.5 bg-[#E0FDFE] text-[#00A3FF] rounded">
-                  {reply.role}
+                  {reply.author.role}
                 </span>
-                <span>{reply.timeAgo}</span>
+                <span>{new Date(reply.created_at).toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -226,7 +217,7 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
             {reply.content}
           </p>
         </div>
-      )}
+      ))}
 
       {/* PRIVACY BADGE */}
       <div>
@@ -237,11 +228,11 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
         </div>
       </div>
 
-      <div className="h-[1px] mt-1 bg-[#E2E8ED] dark:bg-[#2C2C2C] -mx-3.5" />
+      <div className="h-px mt-1 bg-[#E2E8ED] dark:bg-[#2C2C2C] -mx-3.5" />
 
       {previewOpen && file && createPortal(
         <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4"
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
           onClick={() => setPreviewOpen(false)}
         >
           <img
@@ -259,29 +250,27 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
 
           <button
             onClick={handleLike}
-            className={`flex items-center gap-2 text-sm ${isLiked ? 'text-orange-500' : 'text-orange-500 dark:text-text-orange-500 '
-              }`}
+            className={`flex items-center gap-2 text-sm ${isLiked ? 'text-orange-500 font-bold' : 'text-gray-500'}`}
           >
             <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-            <span className="font-semibold">{localLikes}</span>
+            <span className="font-semibold">{likes}</span>
           </button>
 
           <button
             onClick={() => setShowComments(!showComments)}
-            className="flex items-center gap-2 text-orange-500 dark:text-orange-500 text-sm"
+            className="flex items-center gap-2 text-gray-500 text-sm"
           >
             <MessageCircle className="w-4 h-4" />
-            <span className="font-semibold">{localCommentCount}</span>
+            <span className="font-semibold">{comments}</span>
           </button>
         </div>
 
         <button
           onClick={handleBookmark}
-          className="text-[#EF7A02]"
+          className={`${isBookmarked ? 'text-[#EF7A02]' : 'text-gray-400'}`}
         >
           <Bookmark
-            className={`w-5 h-5 ${localIsBookmarked ? 'fill-current' : ''
-              }`}
+            className={`w-5 h-5 ${isBookmarked ? 'fill-current' : ''}`}
           />
         </button>
       </div>
@@ -289,7 +278,7 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
       {/* COMMENTS */}
       {showComments && (
         <div className="flex flex-col gap-4 mt-1">
-          <div className="h-[1px] bg-[#E2E8ED] -mx-3.5" />
+          <div className="h-px bg-[#E2E8ED] -mx-3.5" />
           <h5 className="text-[16px] font-semibold text-[#333] dark:text-white">Comments</h5>
 
           <form onSubmit={handleAddComment} className="flex gap-3 items-center">
@@ -313,16 +302,16 @@ const CourseQACard: React.FC<CourseQACardProps> = ({
             </div>
           </form>
 
-          {localCommentsList.length > 0 ? (
-            localCommentsList.map((comment, index) => (
-              <div key={index} className="flex gap-3">
+          {replies.length > 0 ? (
+            replies.map((reply) => (
+              <div key={reply.id} className="flex gap-3">
                 <div className="w-[35px] h-[35px] rounded-full bg-[#EF7A02] flex items-center justify-center text-white text-[14px] font-bold">
-                  {getInitials(comment.userName)}
+                  {getInitials(reply.author.name)}
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#333] dark:text-white">{comment.userName}</h4>
+                  <h4 className="font-bold text-[#333] dark:text-white">{reply.author.name}</h4>
                   <p className="text-[14px] text-[#626262] dark:text-[#CFCFCF]">
-                    {comment.content}
+                    {reply.content}
                   </p>
                 </div>
               </div>

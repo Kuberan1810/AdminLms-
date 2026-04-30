@@ -1,0 +1,14 @@
+{
+  "description": "Successful Response",
+  "content": {
+    "application/json": {
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/StudentDashboardAssignmentItem"
+        },
+        "title": "Response Student Dashboard Assignments Assignments Dashboard Get"
+      }
+    }
+  }
+}

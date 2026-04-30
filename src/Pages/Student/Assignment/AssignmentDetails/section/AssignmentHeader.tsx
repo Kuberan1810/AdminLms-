@@ -23,12 +23,20 @@ const AssignmentHeader: React.FC<AssignmentHeaderProps> = ({
 
   // Status style helper moved here to keep it self-contained
   const getStatusStyles = (status: string) => {
-    switch (status) {
-      case 'In Progress': return 'bg-[#FFEDDE] text-[#F67300] ';
-      case 'Submitted': return 'bg-[#2A9A4610] text-[#2A9A46] ';
-      case 'Overdue': return 'bg-[#F32D2D10] text-[#F32D2D] ';
-      case 'Submitted Late': return 'bg-[#F32D2D10] text-[#F32D2D]';
-      default: return 'bg-gray-50 text-gray-400 ';
+    const s = status?.toLowerCase() || '';
+    switch (s) {
+      case 'in progress':
+      case 'in_progress': 
+        return 'bg-[#FFEDDE] dark:bg-[#F67300]/10 text-[#F67300] dark:text-[#ff9d4d]';
+      case 'submitted':
+      case 'graded':
+        return 'bg-[#2A9A4610] dark:bg-[#2A9A46]/10 text-[#2A9A46] dark:text-[#4ade80]';
+      case 'overdue':
+      case 'late':
+      case 'submitted late':
+      case 'submitted_late':
+        return 'bg-[#F32D2D10] dark:bg-[#F32D2D]/10 text-[#F32D2D] dark:text-[#f87171]';
+      default: return 'bg-gray-50 dark:bg-[#333] text-gray-400 dark:text-gray-300';
     }
   };
 
@@ -38,10 +46,9 @@ const AssignmentHeader: React.FC<AssignmentHeaderProps> = ({
         {/* Back Button */}
         <button
           onClick={handleBack}
-          className="p-1 -ml-1 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+          className="p-1 -ml-1 hover:bg-gray-100 dark:hover:bg-[#333] rounded-full transition-colors cursor-pointer"
         >
-            <ArrowLeft strokeWidth={1.7} className="md:size-7.5 size-5 text-gray-500 dark:text-gray-300"  color="#333333" />
-    
+            <ArrowLeft strokeWidth={1.7} className="md:size-7.5 size-5 text-gray-500 dark:text-gray-300" color="currentColor" />
         </button>
 
         <h1 className="lg:text-3xl md:text-2xl text-xl  font-medium text-[#333333] tracking-tight dark:text-gray-300">

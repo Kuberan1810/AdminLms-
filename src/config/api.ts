@@ -1,2 +1,2 @@
 export const BASE_URL =
-    "https://lms-backend-apis.onrender.com";
+    import.meta.env.MODE === 'development' ? "/api" : "https://lms-backend-apis.onrender.com";

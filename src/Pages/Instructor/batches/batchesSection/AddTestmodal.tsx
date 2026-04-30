@@ -1,77 +1,93 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Calendar } from "lucide-react";
+import { Calendar, X } from "lucide-react";
+import { capitalizeWords } from "../../../../utils/capitalize";
 
 export default function AddTestModal({
-    setShowTestModal,
-    handleAddTestFromParent,
+    isOpen,
+    onClose,
+    onAdd,
 }: {
-    setShowTestModal: (value: boolean) => void;
-    handleAddTestFromParent: (data: {
+    isOpen: boolean;
+    onClose: () => void;
+    onAdd: (data: {
         name: string;
         date: Date | null;
     }) => void;
 }) {
     const [testName, setTestName] = useState("");
-    const [testDate, setTestDate] = useState<Date | null>(null);
+    const [testDate, setTestDate] = useState<Date | null>(new Date());
+
+    if (!isOpen) return null;
 
     const handleSubmit = () => {
         if (!testName || !testDate) return;
 
-        handleAddTestFromParent({
+        onAdd({
             name: testName,
             date: testDate,
         });
 
         setTestName("");
         setTestDate(null);
-        setShowTestModal(false);
     };
 
     return (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl p-6 w-[350px] shadow-xl">
-                <h3 className="text-lg font-semibold mb-4">Add Test</h3>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-1200 p-4 font-['Urbanist'] animate-in fade-in duration-200">
+            <div className="bg-white rounded-2xl p-7 w-full max-w-[380px] shadow-2xl relative animate-in zoom-in-95 duration-200">
+                <button 
+                  onClick={onClose}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                >
+                    <X size={20} />
+                </button>
 
-                {/* Test Name */}
-                <input
-                    value={testName}
-                    onChange={(e) => setTestName(e.target.value)}
-                    placeholder="Test name"
-                    className="border border-[#F2EEF4] p-2 rounded-lg w-full mb-4 text-[#626262] focus:outline-none focus:ring-2 focus:ring-[#F67300]"
-                />
+                <h3 className="text-xl font-bold mb-6 text-[#1A1A1A]">Add New Test</h3>
 
-                {/* Professional Date Picker */}
-                <div className="relative mb-5">
-                    <DatePicker
-                        selected={testDate}
-                        onChange={(date: Date | null) => setTestDate(date)}
-                        dateFormat="dd/MM/yyyy"
-                        placeholderText="Select date"
-                        className="border border-[#F2EEF4] p-2 pr-10 rounded-lg w-full text-[#626262] focus:outline-none focus:ring-2 focus:ring-[#F67300]"
-                    />
+                <div className="space-y-5">
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-[#333]">Test Title</label>
+                        <input
+                            value={testName}
+                            onChange={(e) => setTestName(capitalizeWords(e.target.value))}
+                            placeholder="Enter test title"
+                            autoCapitalize="words"
+                            className="w-full border border-[#F2EEF4] p-3 rounded-xl text-[#333] placeholder:text-[#9E9E9E] focus:outline-none focus:ring-2 focus:ring-[#F67300]/20 focus:border-[#F67300] transition-all bg-white"
+                        />
+                    </div>
 
-                    <Calendar
-                        size={18}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#626262]"
-                    />
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-[#333]">Scheduled Date</label>
+                        <div className="relative">
+                            <DatePicker
+                                selected={testDate}
+                                onChange={(date: Date | null) => setTestDate(date)}
+                                dateFormat="dd / MM / yyyy"
+                                placeholderText="Select date"
+                                className="w-full border border-[#F2EEF4] p-3 pr-11 rounded-xl text-[#333] focus:outline-none focus:ring-2 focus:ring-[#F67300]/20 focus:border-[#F67300] transition-all bg-white"
+                            />
+                            <Calendar
+                                size={18}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9E9E9E]"
+                            />
+                        </div>
+                    </div>
                 </div>
 
-                {/* Buttons */}
-                <div className="flex justify-end gap-5">
+                <div className="flex gap-4 mt-8">
                     <button
-                        onClick={() => setShowTestModal(false)}
-                        className="cursor-pointer hover:bg-gray-100 px-4 py-1.5 rounded-lg"
+                        onClick={onClose}
+                        className="flex-1 py-3 rounded-xl border border-[#F2EEF4] text-[#808080] font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                         Cancel
                     </button>
-
                     <button
                         onClick={handleSubmit}
-                        className="bg-[#F67300] hover:bg-[#fa943a] text-white px-5 py-1.5 rounded-lg cursor-pointer"
+                        disabled={!testName || !testDate}
+                        className={`flex-1 py-3 rounded-xl bg-[#F67300] text-white font-bold hover:bg-[#fa943a] transition-all shadow-md shadow-orange-100 cursor-pointer ${(!testName || !testDate) && 'opacity-50 cursor-not-allowed'}`}
                     >
-                        Add
+                        Next
                     </button>
                 </div>
             </div>

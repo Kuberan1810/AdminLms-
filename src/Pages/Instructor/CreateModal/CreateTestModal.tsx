@@ -85,7 +85,7 @@ const CreateTestModal = ({ onClose, onBack }: CreateTestModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 z-[1100] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/30 z-1100 overflow-y-auto">
       <div className="bg-white min-h-screen">
 
         {step === 1 && (
@@ -281,7 +281,7 @@ const CreateTestModal = ({ onClose, onBack }: CreateTestModalProps) => {
                 <QuestionCard
                   key={q.id}
                   index={index + 1}
-                  question={q.text}
+                  text={q.text}
                   type={q.type}
                   options={q.options}
                   required={q.required}
