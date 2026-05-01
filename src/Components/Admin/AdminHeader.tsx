@@ -37,6 +37,7 @@ const AdminHeader = () => {
   // gets: dashboard, profile, courses
 
   let header =
+    headerMap[location.pathname] ||
     headerMap[`/admin/${path}`] ||
     headerMap[`/${path}`] || {
       title: "Admin Dashboard",

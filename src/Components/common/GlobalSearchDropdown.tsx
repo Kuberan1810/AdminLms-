@@ -10,7 +10,7 @@ import { batchClasses } from "../../Pages/Instructor/dashboard/sections/batchDum
 
 interface GlobalSearchDropdownProps {
     query: string;
-    role: 'student' | 'instructor';
+    role: 'student' | 'instructor' | 'admin';
     onClose: () => void;
 }
 
@@ -47,7 +47,12 @@ export default function GlobalSearchDropdown({ query, role, onClose }: GlobalSea
 
     const hasStudentResults = studentCourses.length > 0 || studentCurrentClasses.length > 0;
     const hasInstructorResults = instructorBatches.length > 0;
-    const hasResults = role === 'student' ? hasStudentResults : hasInstructorResults;
+    const hasResults =
+        role === 'student'
+            ? hasStudentResults
+            : role === 'instructor'
+            ? hasInstructorResults
+            : hasStudentResults || hasInstructorResults;
 
     return (
         <motion.div
@@ -131,6 +136,59 @@ export default function GlobalSearchDropdown({ query, role, onClose }: GlobalSea
                                                 <div className="flex items-center gap-3">
                                                     <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
                                                         <MonitorRecorder size={18}  color="purple" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-800 line-clamp-1">{batch.batch}</p>
+                                                        <p className="text-xs text-gray-500">{batch.title}</p>
+                                                    </div>
+                                                </div>
+                                                <ArrowRight2 size={16} className="text-[#626262] group-hover:text-orange-500" />
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </>
+                        )}
+
+                        {/* ================= ADMIN RESULTS ================= */}
+                        {role === 'admin' && (
+                            <>
+                                {studentCourses.length > 0 && (
+                                    <div className="mb-2">
+                                        <h4 className="px-3 py-2 text-xs font-semibold text-[#626262] uppercase tracking-wider">Courses</h4>
+                                        {studentCourses.map((course, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => handleNavigate(`/admin/courses`)}
+                                                className="cursor-pointer w-full text-left px-3 py-2.5 hover:bg-gray-100 rounded-lg flex items-center justify-between group transition-colors"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 bg-[#F6730020] rounded-lg ">
+                                                        <DocumentText1 size={18} color="#F67300" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-800 line-clamp-1">{course.course.title}</p>
+                                                        <p className="text-xs text-gray-500">{course.course.instructor.name}</p>
+                                                    </div>
+                                                </div>
+                                                <ArrowRight2 size={16} className="text-[#626262] group-hover:text-orange-500" color="#626262" />
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {instructorBatches.length > 0 && (
+                                    <div>
+                                        <h4 className="px-3 py-2 text-xs font-semibold text-[#626262] uppercase tracking-wider">Batches</h4>
+                                        {instructorBatches.map((batch, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => handleNavigate(`/admin/courses`)}
+                                                className="cursor-pointer w-full text-left px-3 py-2.5 hover:bg-gray-100 rounded-lg flex items-center justify-between group transition-colors"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
+                                                        <MonitorRecorder size={18} color="purple" />
                                                     </div>
                                                     <div>
                                                         <p className="text-sm font-medium text-gray-800 line-clamp-1">{batch.batch}</p>
