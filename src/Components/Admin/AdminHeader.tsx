@@ -159,7 +159,7 @@ const AdminHeader = () => {
               {showSearchPopup && searchParams.get("search") && (
                 <GlobalSearchDropdown
                   query={searchParams.get("search") || ""}
-                  role="admin"
+                  role="student"
                   onClose={() => setShowSearchPopup(false)}
                 />
               )}
