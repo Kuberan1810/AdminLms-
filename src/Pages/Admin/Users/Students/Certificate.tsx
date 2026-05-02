@@ -1,4 +1,3 @@
-import React from 'react';
 
 import UploadSection from './certificateSections/UploadSection';
 import QueueStatusSection from './certificateSections/QueueStatusSection';

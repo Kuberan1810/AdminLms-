@@ -1,30 +1,33 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MoreVertical, ChevronLeft, ChevronRight, SortDesc } from 'lucide-react';
-import avatarImg from '../../../../../assets/avatar.jpg';
+import { 
+  Search, 
+  MoreVertical, 
+  ChevronLeft, 
+  ChevronRight, 
+  Mail, 
+  FileText, 
+  Users, 
+  Trash2, 
+  ListFilter, 
+  SlidersHorizontal,
+  ChevronDown,
+  Check
+} from "lucide-react";
 import { Sort } from 'iconsax-react';
 
-const studentsData = [
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: '', status: 'Active', attendance: '85%', dateJoined: '2023-10-01' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: '', status: 'Leave', attendance: '85%', dateJoined: '2023-09-15' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Active', attendance: '85%', dateJoined: '2023-10-05' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Leave', attendance: '85%', dateJoined: '2023-08-20' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', attendance: '85%', dateJoined: '2023-11-01' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', attendance: '85%', dateJoined: '2023-11-02' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'Q1103 - Quantum Intelligence', courseSubtitle: '', status: 'Active', attendance: '85%', dateJoined: '2023-07-10' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'Q1103 - Quantum Intelligence', courseSubtitle: '', status: 'Dropped', attendance: '85%', dateJoined: '2023-06-05' },
-];
+import { mockStudents, type Student } from '../mockData';
 
 const StatusBadge = ({ status }: { status: string }) => {
   const styles: Record<string, string> = {
-    Active: 'bg-[#047C2E]/10 text-[#047C2E] dark:bg-green-500/10 dark:text-green-400',
-    Leave: 'bg-[#F6810C]/10 text-[#F6810C] dark:bg-orange-500/10 dark:text-orange-400',
-    Pending: 'bg-[#3111E8]/10 text-[#3111E8] dark:bg-purple-500/10 dark:text-purple-400',
-    Dropped: 'bg-[#EA1115]/10 text-[#EA1115] dark:bg-red-500/10 dark:text-red-400',
+    Active: 'bg-[#047C2E]/10 text-[#047C2E]',
+    Leave: 'bg-[#F6810C]/10 text-[#F6810C]',
+    Pending: 'bg-[#3111E8]/10 text-[#3111E8]',
+    Dropped: 'bg-[#EA1115]/10 text-[#EA1115]',
   };
 
   return (
-    <span className={`px-3 py-1 rounded-full text-xs font-medium ${styles[status] || 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'}`}>
+    <span className={`inline-block px-3 py-1 rounded-full text-[12px] font-regular ${styles[status] || 'bg-gray-100 text-gray-600'}`}>
       {status}
     </span>
   );
@@ -34,14 +37,37 @@ const TableSection = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  const [sortOrder, setSortOrder] = useState<'Newest' | 'Oldest'>('Newest');
-
+  const [sortBy, setSortBy] = useState("Newest");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const itemsPerPage = 8;
 
+  const [activeActionMenu, setActiveActionMenu] = useState<string | null>(null);
+  const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+
+  const menuRef = useRef<HTMLDivElement>(null);
+  const statusRef = useRef<HTMLDivElement>(null);
+  const sortRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setActiveActionMenu(null);
+      }
+      if (statusRef.current && !statusRef.current.contains(event.target as Node)) {
+        setIsStatusOpen(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setIsSortOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const filteredAndSortedData = useMemo(() => {
-    let data = [...studentsData];
+    let data = [...mockStudents];
 
     if (searchTerm) {
       const lowerQuery = searchTerm.toLowerCase();
@@ -57,202 +83,264 @@ const TableSection = () => {
     }
 
     data.sort((a, b) => {
+      if (sortBy === "Name A-Z") return a.name.localeCompare(b.name);
+      if (sortBy === "Name Z-A") return b.name.localeCompare(a.name);
       const dateA = new Date(a.dateJoined).getTime();
       const dateB = new Date(b.dateJoined).getTime();
-      return sortOrder === 'Newest' ? dateB - dateA : dateA - dateB;
+      return sortBy === 'Newest' ? dateB - dateA : dateA - dateB;
     });
 
     return data;
-  }, [searchTerm, statusFilter, sortOrder]);
+  }, [searchTerm, statusFilter, sortBy]);
 
-  const totalPages = 7;
-
+  const totalPages = Math.ceil(filteredAndSortedData.length / itemsPerPage);
   const currentData = filteredAndSortedData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  const toggleSort = () => {
-    setSortOrder(prev => prev === 'Newest' ? 'Oldest' : 'Newest');
-    setCurrentPage(1);
+  const confirmDelete = () => {
+    if (studentToDelete) {
+      // In real app, call delete API
+      setStudentToDelete(null);
+    }
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
-  };
-
-  const getPaginationGroup = () => {
-    if (totalPages <= 5) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
-    }
-    if (currentPage <= 3) {
-      return [1, 2, 3, '...', totalPages];
-    }
-    if (currentPage >= totalPages - 2) {
-      return [1, '...', totalPages - 2, totalPages - 1, totalPages];
-    }
-    return [1, '...', currentPage, '...', totalPages];
-  };
+  const statusOptions = ["All", "Active", "Leave", "Pending", "Dropped"];
+  const sortOptions = ["Newest", "Oldest", "Name A-Z", "Name Z-A"];
 
   return (
-    <div>
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4">
-        <div className="relative w-full sm:w-[400px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888888] dark:text-[#A3A3A3]" size={18} />
+    <div className="space-y-6">
+      {/* Filter Bar */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+        <div className="relative w-full md:w-[400px]">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#626262]" size={18} />
           <input
             type="text"
             placeholder="Search by name, ID or email..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[12px] text-[14px] text-[#6B7280] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#F67300]/20 focus:border-[#F67300] transition-all placeholder:text-[#888888] dark:placeholder:text-[#A3A3A3]"
+            className="w-full pl-11 pr-4 py-3 bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#3B3B3B] rounded-[18px] text-sm focus:outline-none focus:ring-1 focus:ring-[#F67300]/50 transition-all placeholder:text-[#888888]"
             value={searchTerm}
-            onChange={handleSearchChange}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto relative">
 
-          <button
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className={`flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[12px] text-[12px] font-semibold transition-colors ${statusFilter !== 'All' ? 'text-[#F67300] border-[#F67300] dark:border-[#F67300]' : 'text-[#333333] dark:text-white hover:bg-gray-50 dark:hover:bg-[#333333]'}`}
-          >
-            <Sort size={16} color='black' />
-            {statusFilter === 'All' ? 'Filter' : statusFilter}
-          </button>
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          {/* Status Filter */}
+          <div ref={statusRef} className="relative">
+            <button
+              onClick={() => setIsStatusOpen(!isStatusOpen)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#3B3B3B] rounded-xl text-sm font-semibold text-[#333333] dark:text-white hover:bg-gray-50 dark:hover:bg-[#333] transition-all min-w-[140px] justify-between cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <ListFilter size={18} className="text-[#626262]" />
+                <span>{statusFilter === "All" ? "Filter Status" : statusFilter}</span>
+              </div>
+              <ChevronDown size={16} className={`text-[#626262] transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
+            </button>
+            {isStatusOpen && (
+              <div className="absolute top-full right-0 mt-2 w-[180px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#3B3B3B] rounded-xl shadow-xl overflow-hidden z-50">
+                {statusOptions.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => { setStatusFilter(option); setIsStatusOpen(false); setCurrentPage(1); }}
+                    className="w-full text-left px-4 py-3 text-sm flex items-center justify-between hover:bg-gray-50 dark:hover:bg-[#333] transition-colors cursor-pointer"
+                  >
+                    <span className={`${statusFilter === option ? "text-[#F67300] font-bold" : "text-[#333333] dark:text-white font-medium"}`}>
+                      {option === "All" ? "All Status" : option}
+                    </span>
+                    {statusFilter === option && <Check size={16} className="text-[#F67300]" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
-          {isFilterOpen && (
-            <div className="absolute top-12 left-0 w-40 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] shadow-lg rounded-[12px] z-10 py-2">
-              {['All', 'Active', 'Leave', 'Pending', 'Dropped'].map((status) => (
-                <button
-                  key={status}
-                  className={`w-full text-left px-4 py-2 text-[12px] font-semibold hover:bg-gray-50 dark:hover:bg-[#333333] transition-colors ${statusFilter === status ? 'text-[#F67300] font-medium bg-orange-50/50 dark:bg-orange-500/10' : 'text-[#333333] dark:text-[#A3A3A3]'}`}
-                  onClick={() => {
-                    setStatusFilter(status);
-                    setIsFilterOpen(false);
-                    setCurrentPage(1);
-                  }}
-                >
-                  {status}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <button
-            onClick={toggleSort}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[12px] text-[12px] font-medium text-[#333333] dark:text-white hover:bg-gray-50 dark:hover:bg-[#333333] transition-colors"
-          >
-            <SortDesc size={16} color='black' />
-            Sort by : {sortOrder}
-          </button>
-
-
+          {/* Sort Dropdown */}
+          <div ref={sortRef} className="relative">
+            <button
+              onClick={() => setIsSortOpen(!isSortOpen)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#3B3B3B] rounded-xl text-sm font-semibold text-[#333333] dark:text-white hover:bg-gray-50 dark:hover:bg-[#333] transition-all min-w-[160px] justify-between cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal size={18} className="text-[#626262]" />
+                <span>Sort by: <span className="text-[#F67300]">{sortBy}</span></span>
+              </div>
+              <ChevronDown size={16} className={`text-[#626262] transition-transform ${isSortOpen ? "rotate-180" : ""}`} />
+            </button>
+            {isSortOpen && (
+              <div className="absolute top-full right-0 mt-2 w-[180px] bg-white dark:bg-[#2A2A2A] border border-[#F2EEF4] dark:border-[#3B3B3B] rounded-xl shadow-xl overflow-hidden z-50">
+                {sortOptions.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => { setSortBy(option); setIsSortOpen(false); }}
+                    className="w-full text-left px-4 py-3 text-sm flex items-center justify-between hover:bg-gray-50 dark:hover:bg-[#333] transition-colors cursor-pointer"
+                  >
+                    <span className={`${sortBy === option ? "text-[#F67300] font-bold" : "text-[#333333] dark:text-white font-medium"}`}>
+                      {option}
+                    </span>
+                    {sortBy === option && <Check size={16} className="text-[#F67300]" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#242424] rounded-2xl shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] dark:shadow-none dark:border dark:border-[#3B3B3B] overflow-hidden mt-6 min-h-[400px] flex flex-col justify-between">
-        <div className="overflow-x-auto">
+      {/* Table Section */}
+      <div className="bg-white dark:bg-[#2A2A2A] rounded-[20px] border border-[#F2EEF4] dark:border-[#3B3B3B] overflow-visible">
+        <div className="overflow-x-auto overflow-y-visible pb-16">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[#E5E5E5] dark:border-[#3B3B3B] text-[16px] font-medium text-[#222222] dark:text-[#A3A3A3] bg-[#FFFBF8] dark:bg-[#242424]">
-                <th className="px-6 py-4 font-normal whitespace-nowrap">Student name</th>
-                <th className="px-6 py-4 font-normal whitespace-nowrap">Student Id</th>
-                <th className="px-6 py-4 font-normal whitespace-nowrap">Course</th>
-                <th className="px-6 py-4 font-normal whitespace-nowrap">Status</th>
-                <th className="px-6 py-4 font-normal whitespace-nowrap">Attendance</th>
-                <th className="px-6 py-4 font-normal text-center whitespace-nowrap">Action</th>
+              <tr className="bg-[#FFFBF8] dark:bg-[#3B3B3B] border-b border-[#F2EEF4] dark:border-[#3B3B3B]">
+                <th className="px-6 py-5 text-sm md:text-base font-semibold text-[#333333] dark:text-white">Student</th>
+                <th className="px-6 py-5 text-sm md:text-base font-semibold text-[#333333] dark:text-white text-center">Student Id</th>
+                <th className="px-6 py-5 text-sm md:text-base font-semibold text-[#333333] dark:text-white">Course</th>
+                <th className="px-6 py-5 text-sm md:text-base font-semibold text-[#333333] dark:text-white text-center">Status</th>
+                <th className="px-6 py-5 text-sm md:text-base font-semibold text-[#333333] dark:text-white text-center">Attendance</th>
+                <th className="px-6 py-5 text-sm md:text-base font-semibold text-[#333333] dark:text-white text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#F5F5F5] dark:divide-[#3B3B3B]">
-              {currentData.length > 0 ? (
-                currentData.map((student, idx) => (
-                  <tr
-                    key={idx}
-                    onClick={() => navigate(`/admin/users/students/${student.id}`)}
-                    className="hover:bg-gray-50/50 dark:hover:bg-[#2A2A2A] transition-colors group cursor-pointer"
-                  >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={student.avatar}
-                          alt={student.name}
-                          className="w-[35px] h-[35px] rounded-full object-covers"
-                        />
-                        <div>
-                          <p className="text-[16px] font-normal text-[#222222] dark:text-white">{student.name}</p>
-                          <p className="text-[16px] font-normal text-[#767676] dark:text-[#A3A3A3]">{student.email}</p>
+            <tbody>
+              {currentData.map((student) => (
+                <tr
+                  key={student.id}
+                  onClick={() => navigate(`/admin/users/students/${student.id}`)}
+                  className="border-b border-[#F2EEF4] dark:border-[#3B3B3B] last:border-0 hover:bg-gray-50/50 dark:hover:bg-[#333]/30 transition-all cursor-pointer group"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <img src={student.avatar} alt={student.name} className="w-10 h-10 rounded-full object-cover" />
+                      <div>
+                        <p className="text-sm md:text-base font-semibold text-[#333333] dark:text-white">{student.name}</p>
+                        <p className="text-sm md:text-base text-[#626262] dark:text-[#A3A3A3]">{student.email}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm font-medium text-[#626262] dark:text-[#A3A3A3]">
+                    {student.id}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-[14px] text-[#333333] dark:text-white">{student.course}</div>
+                    {student.courseSubtitle && (
+                      <div className="text-[14px] text-[#767676] dark:text-[#A3A3A3] mt-1">{student.courseSubtitle}</div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <StatusBadge status={student.status} />
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm font-semibold text-[#222222] dark:text-[#A3A3A3]">
+                    {student.attendance}
+                  </td>
+                  <td className="px-6 py-4 text-center relative">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveActionMenu(activeActionMenu === student.id ? null : student.id);
+                      }}
+                      className="p-1 text-[#626262] hover:bg-gray-100 dark:hover:bg-[#333] rounded-lg transition-colors cursor-pointer"
+                    >
+                      <MoreVertical size={20} />
+                    </button>
+
+                    {activeActionMenu === student.id && (
+                      <div
+                        ref={menuRef}
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute top-[80%] right-10 w-[200px] bg-white dark:bg-[#2A2A2A] shadow-xl rounded-xl border border-[#F2EEF4] dark:border-[#3B3B3B] z-50 animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
+                      >
+                        <div className="px-4 py-3 border-b border-[#F2EEF4] dark:border-[#3B3B3B]">
+                          <p className="text-sm font-semibold text-[#333333] dark:text-white text-left">Student Action</p>
+                        </div>
+                        <div className="p-2 space-y-1">
+                          <button className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-[#626262] dark:text-[#A3A3A3] hover:text-[#333333] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#333] rounded-lg transition-colors text-left cursor-pointer">
+                            <Mail size={16} />
+                            Send Mail
+                          </button>
+                          <button className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-[#626262] dark:text-[#A3A3A3] hover:text-[#333333] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#333] rounded-lg transition-colors text-left cursor-pointer">
+                            <FileText size={16} />
+                            Export Report
+                          </button>
+                          <button
+                            onClick={() => navigate(`/admin/users/students/${student.id}`)}
+                            className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-[#626262] dark:text-[#A3A3A3] hover:text-[#333333] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#333] rounded-lg transition-colors text-left cursor-pointer"
+                          >
+                            <Users size={16} />
+                            View Full Profile
+                          </button>
+                        </div>
+                        <div className="border-t border-[#F2EEF4] dark:border-[#3B3B3B] p-2">
+                          <button
+                            onClick={() => { setStudentToDelete(student); setActiveActionMenu(null); }}
+                            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-[#FF5A5F] hover:bg-[#FF5A5F]/10 rounded-lg transition-colors cursor-pointer"
+                          >
+                            <Trash2 size={16} />
+                            Delete
+                          </button>
                         </div>
                       </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-[16px] text-[#222222] dark:text-[#A3A3A3]">{student.id}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-[14px] text-[#000000] dark:text-white">{student.course}</div>
-                      {student.courseSubtitle && (
-                        <div className="text-[14px] text-[#000000] dark:text-white mt-1">{student.courseSubtitle}</div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <StatusBadge status={student.status} />
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-[16px] text-[#222222] dark:text-white font-medium">{student.attendance}</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <button className="p-2 text-[#575757] dark:text-[#A3A3A3] cursor-pointer">
-                        <MoreVertical size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-[#888888] dark:text-[#A3A3A3] text-sm">
-                    No students found matching your criteria.
+                    )}
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
         </div>
-      </div>
 
-      {/* Pagination */}
-      <div className="py-4 flex items-center justify-end gap-2">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          className="w-[32px] h-[32px] flex items-center justify-center rounded-[8px] border border-[#E5E5E5] dark:border-[#3B3B3B] text-[#888888] dark:text-[#A3A3A3] hover:bg-gray-50 dark:hover:bg-[#333333] disabled:opacity-50 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent transition-colors bg-white dark:bg-[#242424] cursor-pointer disabled:cursor-not-allowed"
-        >
-          <ChevronLeft size={16} strokeWidth={2} />
-        </button>
-
-        {getPaginationGroup().map((item, idx) => {
-          if (item === '...') {
-            return <span key={`ellipsis-${idx}`} className="text-[#888888] dark:text-[#A3A3A3] px-1 text-[14px] tracking-widest flex items-end pb-1">...</span>;
-          }
-          const page = item as number;
-          return (
+        {/* Pagination */}
+        <div className="py-6 px-6 border-t border-[#F2EEF4] dark:border-[#3B3B3B] flex items-center justify-between">
+          <p className="text-sm text-[#626262] dark:text-[#A3A3A3]">
+            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredAndSortedData.length)} of {filteredAndSortedData.length} students
+          </p>
+          <div className="flex items-center gap-2">
             <button
-              key={`page-${page}`}
-              onClick={() => setCurrentPage(page)}
-              className={`w-[32px] h-[32px] flex items-center justify-center rounded-[8px] text-[14px] transition-colors cursor-pointer ${currentPage === page
-                ? 'bg-[#F67300] text-white font-medium shadow-sm'
-                : 'text-[#4F4F4F] dark:text-[#A3A3A3] hover:bg-gray-100 dark:hover:bg-[#333333] font-medium bg-transparent'
-                }`}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="p-2 border border-[#F2EEF4] dark:border-[#3B3B3B] rounded-lg hover:bg-gray-50 dark:hover:bg-[#333] disabled:opacity-50 transition-colors cursor-pointer"
             >
-              {page}
+              <ChevronLeft size={18} />
             </button>
-          );
-        })}
-
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-          className="w-[32px] h-[32px] flex items-center justify-center rounded-[8px] border border-[#E5E5E5] dark:border-[#3B3B3B] text-[#888888] dark:text-[#A3A3A3] hover:bg-gray-50 dark:hover:bg-[#333333] disabled:opacity-50 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent transition-colors bg-white dark:bg-[#242424] cursor-pointer disabled:cursor-not-allowed"
-        >
-          <ChevronRight size={16} strokeWidth={2} />
-        </button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`w-10 h-10 rounded-lg text-sm font-medium transition-all cursor-pointer ${currentPage === page ? 'bg-[#F67300] text-white' : 'text-[#626262] dark:text-[#A3A3A3] hover:bg-gray-50 dark:hover:bg-[#333]'}`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="p-2 border border-[#F2EEF4] dark:border-[#3B3B3B] rounded-lg hover:bg-gray-50 dark:hover:bg-[#333] disabled:opacity-50 transition-colors cursor-pointer"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* Delete Modal */}
+      {studentToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#2A2A2A] rounded-2xl p-6 w-full max-w-sm shadow-xl animate-in zoom-in-95 duration-200">
+            <h3 className="text-xl font-bold text-[#333333] dark:text-white mb-2">Delete Student?</h3>
+            <p className="text-sm text-[#626262] dark:text-[#A3A3A3] mb-6">
+              Are you sure you want to remove <span className="font-semibold text-[#333333] dark:text-white">{studentToDelete.name}</span>? This action cannot be undone.
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <button onClick={() => setStudentToDelete(null)} className="px-4 py-2 rounded-xl text-sm font-medium text-[#626262] dark:text-[#A3A3A3] hover:bg-gray-100 dark:hover:bg-[#3B3B3B] transition-colors cursor-pointer border border-[#F2EEF4] dark:border-[#3B3B3B]">
+                Cancel
+              </button>
+              <button onClick={confirmDelete} className="px-4 py-2 rounded-xl text-sm font-medium text-white bg-[#FF5A5F] hover:bg-[#E0484D] transition-colors cursor-pointer">
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

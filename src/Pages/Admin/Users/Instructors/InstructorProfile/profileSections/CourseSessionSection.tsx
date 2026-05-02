@@ -17,7 +17,7 @@ const CourseSessionSection = ({ instructor }: Props) => {
             <DocumentText1 size={20} color="currentColor" />
           </div>
           <div className="-mt-1">
-            <p className="text-[14px] md:text-base font-medium text-[#333] dark:text-[#A3A3A3] mb-2.5">Courses</p>
+            <p className="text-[14px] md:text-base font-semibold text-[#333] dark:text-[#A3A3A3] mb-2.5">Courses</p>
             <div className="flex flex-wrap gap-x-8 gap-y-2">
               {instructor.courses.map((course, idx) => (
                 <span key={idx} className="text-[14px]  text-[#333333] dark:text-white mt-1 break-all">
@@ -35,7 +35,7 @@ const CourseSessionSection = ({ instructor }: Props) => {
             <Monitor size={20} color="currentColor" />
           </div>
           <div className="-mt-1">
-            <p className="text-[14px] md:text-base font-medium text-[#333] dark:text-[#A3A3A3] mb-2.5">Batches</p>
+            <p className="text-[14px] md:text-base font-semibold text-[#333] dark:text-[#A3A3A3] mb-2.5">Batches</p>
             <div className="flex flex-wrap gap-3">
               {instructor.batches?.map((batch, idx) => {
                 const styles = [

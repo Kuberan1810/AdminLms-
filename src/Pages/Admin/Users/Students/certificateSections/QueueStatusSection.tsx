@@ -4,9 +4,9 @@ import { CircleAlert, MoreHorizontal, MoreVertical } from 'lucide-react';
 
 const QueueStatusSection = () => {
   return (
-    <div className="bg-white dark:bg-[#242424] p-6 shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] border border-gray-100 dark:border-[#3B3B3B]">
+    <div className="boxStyle">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-[16px] font-medium text-[#000000] dark:text-white uppercase tracking-wider">QUEUE STATUS</h2>
+        <h2 className="text-[16px] font-medium text-[#333333] dark:text-white uppercase tracking-wider">QUEUE STATUS</h2>
         <MoreVertical size={20} className="text-gray-400 rotate-90" color='currentColor' />
       </div>
 

@@ -1,59 +1,71 @@
 import React from 'react';
 import { Profile2User, Flag, Teacher, Calendar } from 'iconsax-react';
+import { studentStats } from '../mockData';
 
 const StatsSection = () => {
+  const stats = [
+    {
+      label: "Total Students",
+      value: studentStats.totalStudents,
+      subtitle: "Enrolled Students",
+      icon: Profile2User,
+      iconColor: "text-[#F6810C]",
+      bgColor: "bg-[#FFF4EB]",
+    },
+    {
+      label: "Active Students",
+      value: studentStats.activeStudents,
+      subtitle: "Currently Active",
+      icon: Flag,
+      iconColor: "text-[#22C55E]",
+      bgColor: "bg-[#E8F8F0]",
+    },
+    {
+      label: "Graduated",
+      value: studentStats.graduated,
+      subtitle: "Completed course",
+      icon: Teacher,
+      iconColor: "text-[#EF4444]",
+      bgColor: "bg-[#FEE2E2]",
+    },
+    {
+      label: "Avg. Attendance",
+      value: studentStats.avgAttendance,
+      growth: studentStats.attendanceTrend,
+      icon: Calendar,
+      iconColor: "text-[#7036E0]",
+      bgColor: "bg-[#7036E0]/10",
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {/* Card 1 */}
-      <div className="bg-white dark:bg-[#242424] p-[24px] rounded-[16px] shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] dark:shadow-none dark:border dark:border-[#3B3B3B] flex flex-col justify-between">
-        <div className="w-[48px] h-[48px] rounded-[10px] bg-[#F6810C]/10 dark:bg-orange-500/20 flex items-center justify-center mb-4 text-orange-500">
-          <Profile2User size={20} color="currentColor" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {stats.map((stat, index) => (
+        <div
+          key={index}
+          className="boxStyle transition-all relative overflow-hidden"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className={`w-10 h-10 rounded-xl ${stat.bgColor} flex items-center justify-center`}>
+              <stat.icon className={stat.iconColor} size={20} variant="Outline" color="currentColor" />
+            </div>
+            {stat.growth && (
+              <span className="bg-[#E8F8F0] text-[#22C55E] text-[10px] font-bold px-2 py-0.5 rounded-full">
+                {stat.growth}
+              </span>
+            )}
+          </div>
+          <div>
+            <p className="text-sm md:text-base font-medium text-[#767676] dark:text-[#A3A3A3] mb-1">{stat.label}</p>
+            <div className="flex gap-2 items-center mt-2">
+              <h3 className="text-2xl md:text-3xl font-bold text-[#333333] dark:text-white mb-1">{stat.value}</h3>
+              {stat.subtitle && (
+                <p className="text-[12px] text-[#767676] dark:text-[#A3A3A3] font-medium">{stat.subtitle}</p>
+              )}
+            </div>
+          </div>
         </div>
-        <div>
-          <p className="text-[14px] font-medium text-[#767676] dark:text-[#A3A3A3] mb-1">Total Students</p>
-          <h2 className="text-[30px] font-bold text-[#222222] dark:text-white">550</h2>
-          <p className="text-[14px] font-medium text-[#767676] dark:text-[#888888] mt-2">Enrolled Students</p>
-        </div>
-      </div>
-
-      {/* Card 2 */}
-      <div className="bg-white dark:bg-[#242424] p-[24px] rounded-[16px] shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] dark:shadow-none dark:border dark:border-[#3B3B3B] flex flex-col justify-between">
-        <div className="w-[48px] h-[48px] rounded-[10px] bg-[#018450]/10 dark:bg-green-500/20 flex items-center justify-center mb-4 text-[#018450]">
-          <Flag size={20} color="currentColor" />
-        </div>
-        <div>
-          <p className="text-[14px] font-medium text-[#767676] dark:text-[#A3A3A3] mb-1">Active Students</p>
-          <h2 className="text-[30px] font-bold text-[#222222] dark:text-white">18</h2>
-          <p className="text-[14px] font-medium text-[#767676] dark:text-[#888888] mt-2">Currently Active</p>
-        </div>
-      </div>
-
-      {/* Card 3 */}
-      <div className="bg-white dark:bg-[#242424] p-[24px] rounded-[16px] shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] dark:shadow-none dark:border dark:border-[#3B3B3B] flex flex-col justify-between">
-        <div className="w-[48px] h-[48px] rounded-[10px] bg-[#E0363F]/10 dark:bg-red-500/20 flex items-center justify-center mb-4 text-[#E0363F]">
-          <Teacher size={20} color="currentColor" />
-        </div>
-        <div>
-          <p className="text-[14px] font-medium text-[#767676] dark:text-[#A3A3A3] mb-1">Graduated</p>
-          <h2 className="text-[30px] font-bold text-[#222222] dark:text-white">106</h2>
-          <p className="text-[14px] font-medium text-[#767676] dark:text-[#888888] mt-2">Completed course</p>
-        </div>
-      </div>
-
-      {/* Card 4 */}
-      <div className="bg-white dark:bg-[#242424] p-[24px] rounded-[16px] shadow-[0px_8px_32_rgba(53,44,85,0.04)] dark:shadow-none dark:border dark:border-[#3B3B3B] flex flex-col justify-between relative">
-        <div className="absolute top-6 right-6 bg-green-500/10 dark:bg-green-500/20 text-green-600 dark:text-green-400 text-[12px] font-bold px-2 py-1 rounded-md">
-          +12%
-        </div>
-        <div className="w-[48px] h-[48px] rounded-[10px] bg-[#7036E0]/10 dark:bg-purple-500/20 flex items-center justify-center mb-4 text-[#7036E0]">
-          <Calendar size={24} color="currentColor" />
-        </div>
-        <div>
-          <p className="text-[14px] font-medium text-[#767676] dark:text-[#A3A3A3] mb-1">Avg. Attendance</p>
-          <h2 className="text-[30px] font-bold text-[#222222] dark:text-white">95%</h2>
-          <p className="text-[14px] font-medium text-[#767676] dark:text-[#888888] mt-2">Monthly average</p>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };

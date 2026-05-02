@@ -55,10 +55,12 @@ export const headerMap: Record<string, { title: string; subtitle: string }> = {
         title: "Course Overview",
         subtitle: "View and manage course details and batches",
     },
+
     "/admin/courses/batch": {
         title: "Batch Overview",
         subtitle: "Manage enrolled students and batch sessions",
     },
+
     "/admin/users/instructors": {
         title: "Instructor Management",
         subtitle: "Overview of faculty members",

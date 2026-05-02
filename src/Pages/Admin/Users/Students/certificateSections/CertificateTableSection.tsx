@@ -1,19 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { SearchNormal1, More, ArrowLeft2, ArrowRight2, DocumentUpload, Sort, CloseCircle } from 'iconsax-react';
-import avatarImg from '../../../../../assets/avatar.jpg';
 import { SortAscIcon } from 'lucide-react';
 
-const certificateData = [
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', status: 'Verified', completionDate: '23/02/2026' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', status: 'Verified', completionDate: '23/02/2026' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Verified', completionDate: '23/02/2026' },
-  { id: 'BT011', name: 'Student Name ', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', completionDate: '23/02/2026', action: 'Upload' },
-  { id: 'BT011', name: 'Student Name ', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', completionDate: '23/02/2026', action: 'Upload' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', status: 'Verified', completionDate: '23/02/2026' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', status: 'Verified', completionDate: '23/02/2026' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Verified', completionDate: '23/02/2026' },
-  { id: 'BT011', name: 'Student Name ', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', completionDate: '23/02/2026', action: 'Upload' },
-  { id: 'BT011', name: 'Student Name ', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', completionDate: '23/02/2026', action: 'Upload' },];
+import { mockStudents } from '../mockData';
 
 const StatusBadge = ({ status }: { status: string }) => {
   const styles: Record<string, string> = {
@@ -22,7 +11,7 @@ const StatusBadge = ({ status }: { status: string }) => {
   };
 
   return (
-    <span className={`px-2.5 py-1 rounded-[6px] text-[11px] font-medium ${styles[status] || 'bg-gray-100 text-gray-600'}`}>
+    <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${styles[status] || 'bg-gray-100 text-gray-600'}`}>
       {status}
     </span>
   );
@@ -38,13 +27,31 @@ const CertificateTableSection = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+
+  const handleUploadClick = (studentId: string) => {
+    setSelectedStudentId(studentId);
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0] && selectedStudentId) {
+      const file = e.target.files[0];
+      alert(`Uploading "${file.name}" for Student ID: ${selectedStudentId}`);
+
+      setSelectedStudentId(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const parseDate = (dateStr: string) => {
     const [day, month, year] = dateStr.split('/').map(Number);
     return new Date(year, month - 1, day).getTime();
   };
 
   const filteredAndSortedData = useMemo(() => {
-    let data = [...certificateData];
+    let data = [...mockStudents];
 
     if (searchTerm) {
       const lowerSearch = searchTerm.toLowerCase();
@@ -56,7 +63,7 @@ const CertificateTableSection = () => {
     }
 
     if (statusFilter !== 'All') {
-      data = data.filter(item => item.status === statusFilter);
+      data = data.filter(item => item.certificateStatus === statusFilter);
     }
 
     data.sort((a, b) => {
@@ -89,6 +96,13 @@ const CertificateTableSection = () => {
 
   return (
     <div className="space-y-6">
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept=".pdf,.doc,.docx,.jpg,.png"
+      />
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="relative w-full sm:w-[400px]">
           <SearchNormal1 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} color="currentColor" />
@@ -102,7 +116,7 @@ const CertificateTableSection = () => {
           {searchTerm && (
             <button
               onClick={() => setSearchTerm('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
             >
               <CloseCircle size={16} />
             </button>
@@ -112,7 +126,7 @@ const CertificateTableSection = () => {
           <div className="relative">
             <button
               onClick={() => { setIsFilterOpen(!isFilterOpen); setIsSortOpen(false); }}
-              className={`flex items-center gap-2 px-4 py-2.5 dark:bg-[#242424] border rounded-[8px] text-[12px] font-semibold transition-colors ${statusFilter !== 'All' ? 'border-[#F67300] text-[#F67300]' : 'border-[#D3D3D3] dark:border-[#3B3B3B] text-[#333333] dark:text-gray-300'
+              className={`flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#242424] border rounded-[8px] text-[12px] font-semibold transition-colors cursor-pointer ${statusFilter !== 'All' ? 'border-[#F67300] text-[#F67300]' : 'border-[#D3D3D3] dark:border-[#3B3B3B] text-[#333333] dark:text-gray-300'
                 }`}
             >
               <Sort size={16} color="currentColor" />
@@ -124,7 +138,7 @@ const CertificateTableSection = () => {
                   <button
                     key={status}
                     onClick={() => { setStatusFilter(status); setIsFilterOpen(false); }}
-                    className={`block w-full text-left px-4 py-2.5 text-[13px] transition-colors ${statusFilter === status ? 'bg-[#F67300]/10 text-[#F67300] font-medium' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A] dark:text-gray-300'
+                    className={`block w-full text-left px-4 py-2.5 text-[13px] transition-colors cursor-pointer ${statusFilter === status ? 'bg-[#F67300]/10 text-[#F67300] font-medium' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A] dark:text-gray-300'
                       }`}
                   >
                     {status}
@@ -138,7 +152,7 @@ const CertificateTableSection = () => {
           <div className="relative">
             <button
               onClick={() => { setIsSortOpen(!isSortOpen); setIsFilterOpen(false); }}
-              className="flex items-center gap-2 px-4 py-2.5 dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[8px] text-[12px] font-semibold text-[#333333] dark:text-gray-300 transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[8px] text-[12px] font-semibold text-[#333333] dark:text-gray-300 transition-colors cursor-pointer"
             >
               <SortAscIcon size={16} color="currentColor" />
               Sort: {sortOrder}
@@ -148,8 +162,8 @@ const CertificateTableSection = () => {
                 {['Newest', 'Oldest', 'A-Z', 'Z-A'].map(order => (
                   <button
                     key={order}
-                    onClick={() => { setSortOrder(order as 'Newest' | 'Oldest' | 'A-Z' | 'Z-A'); setIsSortOpen(false); }}
-                    className={`block w-full text-left px-4 py-2.5 text-[13px] transition-colors ${sortOrder === order ? 'bg-[#F67300]/10 text-[#F67300] font-medium' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A] dark:text-gray-300'
+                    onClick={() => { setSortOrder(order as any); setIsSortOpen(false); }}
+                    className={`block w-full text-left px-4 py-2.5 text-[13px] transition-colors cursor-pointer ${sortOrder === order ? 'bg-[#F67300]/10 text-[#F67300] font-medium' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A] dark:text-gray-300'
                       }`}
                   >
                     {order}
@@ -161,17 +175,17 @@ const CertificateTableSection = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#242424] rounded-2xl shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] dark:shadow-none dark:border dark:border-[#3B3B3B] overflow-hidden mt-6">
+      <div className="boxStyle overflow-hidden mt-6 !p-0">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="dark:border-[#3B3B3B] text-[#222222] dark:text-gray-400 bg-[#FFFBF8] dark:bg-[#2A2A2A]">
-                <th className="px-6 py-5 font-Medium text-[16px] whitespace-nowrap">Student name</th>
-                <th className="px-6 py-5 font-Medium text-[16px] whitespace-nowrap">Student Id</th>
-                <th className="px-6 py-5 font-Medium text-[16px] whitespace-nowrap">Course</th>
-                <th className="px-6 py-5 font-Medium text-[16px] whitespace-nowrap">Status</th>
-                <th className="px-6 py-5 font-Medium text-[16px] whitespace-nowrap">Completion date</th>
-                <th className="px-6 py-5 font-Medium text-[16px] text-center whitespace-nowrap">Action</th>
+                <th className="px-6 py-5 font-medium text-[16px] whitespace-nowrap">Student name</th>
+                <th className="px-6 py-5 font-medium text-[16px] whitespace-nowrap">Student Id</th>
+                <th className="px-6 py-5 font-medium text-[16px] whitespace-nowrap">Course</th>
+                <th className="px-6 py-5 font-medium text-[16px] whitespace-nowrap">Status</th>
+                <th className="px-6 py-5 font-medium text-[16px] whitespace-nowrap">Completion date</th>
+                <th className="px-6 py-5 font-medium text-[16px] text-center whitespace-nowrap">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50 dark:divide-[#3B3B3B]">
@@ -189,23 +203,26 @@ const CertificateTableSection = () => {
                     </td>
                     <td className="px-6 py-4 text-[16px] text-[#222222] dark:text-gray-400">{student.id}</td>
                     <td className="px-6 py-4">
-                      <div className="text-[14px] text-[#000000] dark:text-gray-400 leading-tight">{student.course}</div>
+                      <div className="text-[14px] text-[#333333] dark:text-gray-400 leading-tight">{student.course}</div>
                       {student.courseSubtitle && (
-                        <div className="text-[14px] text-[#000000] dark:text-gray-400 mt-1">{student.courseSubtitle}</div>
+                        <div className="text-[14px] text-[#333333] dark:text-gray-400 mt-1">{student.courseSubtitle}</div>
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      <StatusBadge status={student.status} />
+                      <StatusBadge status={student.certificateStatus} />
                     </td>
                     <td className="px-6 py-4 text-[16px] text-[#222222] dark:text-gray-400">{student.completionDate}</td>
                     <td className="px-6 py-4 text-center">
                       {student.action === 'Upload' ? (
-                        <button className="flex items-center gap-2 px-3 py-1 text-[#F27121] hover:bg-orange-50 dark:hover:bg-orange-500/10 rounded-lg text-[14px] font-medium transition-colors mx-auto">
+                        <button
+                          onClick={() => handleUploadClick(student.id)}
+                          className="flex items-center gap-2 px-3 py-1 text-[#F27121] hover:bg-orange-50 dark:hover:bg-orange-500/10 rounded-lg text-[14px] font-medium transition-colors mx-auto cursor-pointer"
+                        >
                           <DocumentUpload size={18} color="currentColor" variant="Bold" />
                           Upload
                         </button>
                       ) : (
-                        <button className="p-2 text-[#575757] hover:text-gray-600 dark:hover:text-gray-200 transition-colors mx-auto">
+                        <button className="p-2 text-[#575757] hover:text-gray-600 dark:hover:text-gray-200 transition-colors mx-auto cursor-pointer">
                           <More size={20} className="rotate-90" color="currentColor" />
                         </button>
                       )}
@@ -225,11 +242,11 @@ const CertificateTableSection = () => {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-end gap-2 mt-4 pr-2">
+        <div className="flex items-center justify-center sm:justify-end gap-2 mt-4 pr-2">
           <button
             onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
             disabled={currentPage === 1}
-            className={`w-[32px] h-[32px] flex items-center justify-center rounded-[6px] border border-gray-100 dark:border-[#3B3B3B] transition-colors ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50 dark:hover:bg-[#333333]'
+            className={`w-[32px] h-[32px] flex items-center justify-center rounded-[6px] border border-gray-100 dark:border-[#3B3B3B] transition-colors cursor-pointer ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50 dark:hover:bg-[#333333]'
               }`}
           >
             <ArrowLeft2 size={14} color="currentColor" />
@@ -238,7 +255,7 @@ const CertificateTableSection = () => {
             <button
               key={page}
               onClick={() => setCurrentPage(page)}
-              className={`w-[32px] h-[32px] flex items-center justify-center rounded-[6px] text-[12px] font-medium transition-colors ${currentPage === page ? 'bg-[#F67300] text-white' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#333333]'
+              className={`w-[32px] h-[32px] flex items-center justify-center rounded-[6px] text-[12px] font-medium transition-colors cursor-pointer ${currentPage === page ? 'bg-[#F67300] text-white' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#333333]'
                 }`}
             >
               {page}
@@ -247,7 +264,7 @@ const CertificateTableSection = () => {
           <button
             onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
             disabled={currentPage === totalPages}
-            className={`w-[32px] h-[32px] flex items-center justify-center rounded-[6px] border border-gray-100 dark:border-[#3B3B3B] transition-colors ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50 dark:hover:bg-[#333333]'
+            className={`w-[32px] h-[32px] flex items-center justify-center rounded-[6px] border border-gray-100 dark:border-[#3B3B3B] transition-colors cursor-pointer ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50 dark:hover:bg-[#333333]'
               }`}
           >
             <ArrowRight2 size={14} color="currentColor" />

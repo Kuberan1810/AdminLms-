@@ -4,11 +4,9 @@ import TableSection from './sections/TableSection';
 
 const Students = () => {
   return (
-    <div className="font-sans">
-      <div className="max-w-7xl mx-auto space-y-6">
-        <StatsSection />
-        <TableSection />
-      </div>
+    <div className=" space-y-6">
+      <StatsSection />
+      <TableSection />
     </div>
   );
 };
