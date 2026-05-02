@@ -2,7 +2,7 @@ import profileImg from "../assets/Images/home/profile.png";
 
 
 export const headerMap: Record<string, { title: string; subtitle: string }> = {
-    
+
     "/dashboard": {
         title: "Dashboard",
         subtitle: "Welcome ",
@@ -27,7 +27,7 @@ export const headerMap: Record<string, { title: string; subtitle: string }> = {
         title: "Chat",
         subtitle: "Conversations with mentors and classmates",
     },
-    
+
     "/test": {
         title: "Test",
         subtitle: "Attend tests and view performance",
@@ -76,10 +76,14 @@ export const headerMap: Record<string, { title: string; subtitle: string }> = {
         subtitle: "Monitor and manage system-wide communications",
     },
     "/admin/reports": {
-        title: "System Reports",
+        title: "Reports",
         subtitle: "Generate and view platform performance reports",
     },
-    
+    "/admin/users/instructors/uploaded-content": {
+        title: "Instructor Management",
+        subtitle: "Overview of faculty members",
+    },
+
 };
 
 

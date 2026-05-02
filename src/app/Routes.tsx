@@ -56,9 +56,10 @@ import AdminInstructors from "../Pages/Admin/Users/Instructors/Instructors";
 import AdminStudents from "../Pages/Admin/Users/Students/Students";
 import AdminCommunity from "../Pages/Admin/Community/Community";
 import AdminChat from "../Pages/Admin/Chat/Chat";
-import AdminReports from "../Pages/Admin/Reports/Reports";
+import Reports from "../Pages/Admin/Reports/Reports";
 import CourseOverview from "../Pages/Admin/Courses/BatchesOverview/BatchesOverview";
 import BatchesOverview from "../Pages/Admin/Courses/CourseOverview/CoursesOverview";
+import UploadedContent from "../Pages/Admin/Users/Instructors/UploadedContent";
 
 
 
@@ -146,10 +147,11 @@ export default function AppRoutes() {
                 <Route path="courses/:courseId" element={<CourseOverview />} />
                 <Route path="courses/:courseId/batches/:batchId" element={<BatchesOverview />} />
                 <Route path="users/instructors" element={<AdminInstructors />} />
+                <Route path="users/instructors/uploaded-content" element={<UploadedContent />} />
                 <Route path="users/students" element={<AdminStudents />} />
                 <Route path="community" element={<AdminCommunity />} />
                 <Route path="chat" element={<AdminChat />} />
-                <Route path="reports" element={<AdminReports />} />
+                <Route path="reports" element={<Reports />} />
             </Route>
             {/* </Route> */}
 
