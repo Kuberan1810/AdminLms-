@@ -77,18 +77,18 @@ export default function Reports() {
 
   // Bar chart
   const enrollmentData = [
-    { day: "Mon",  value: 40 },
-    { day: "Tue",  value: 25 },
-    { day: "WED",  value: 45 },
+    { day: "Mon", value: 40 },
+    { day: "Tue", value: 25 },
+    { day: "WED", value: 45 },
     { day: "THUR", value: 35 },
-    { day: "FRI",  value: 70, highlighted: true },
+    { day: "FRI", value: 70, highlighted: true },
   ];
 
   // Gauge
   const assignmentSegs = [
-    { label: "Completed",   pct: 75, color: "#5B4DEA" },
+    { label: "Completed", pct: 75, color: "#5B4DEA" },
     { label: "In progress", pct: 55, color: "#FEB000" },
-    { label: "Overdue",     pct: 30, color: "#EF4444" },
+    { label: "Overdue", pct: 30, color: "#EF4444" },
     { label: "Not Started", pct: 20, color: "#D1D5DB" },
   ];
   const gaugeArcs = buildGaugeArcs(assignmentSegs);
@@ -102,8 +102,8 @@ export default function Reports() {
 
   // Course table
   const courses = [
-    { name: "Advanced UX Research",  batches: 12, students: 28, attendance: 94.2, engagement: "High" },
-    { name: "Cloud Infrastructure",  batches: 8,  students: 38, attendance: 88.5, engagement: "Medium" },
+    { name: "Advanced UX Research", batches: 12, students: 28, attendance: 94.2, engagement: "High" },
+    { name: "Cloud Infrastructure", batches: 8, students: 38, attendance: 88.5, engagement: "Medium" },
     { name: "Digital Marketing Pro", batches: 15, students: 45, attendance: 76.0, engagement: "Low" },
   ];
 
@@ -130,7 +130,7 @@ export default function Reports() {
             <div className="flex justify-between items-start mb-auto">
               <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${k.iconBg}`}>{k.icon}</div>
               {k.change && <span className="bg-[#EBF7F5] dark:bg-[#EBF7F5]/10 text-[#16A34A] px-2.5 py-0.5 rounded-full text-[11px] font-bold leading-[16.5px] font-['Urbanist']">{k.change}</span>}
-              {k.badge  && <span className={`${k.badgeColor} px-2.5 py-0.5 rounded-full text-[11px] leading-none font-['Urbanist']`}>{k.badge}</span>}
+              {k.badge && <span className={`${k.badgeColor} px-2.5 py-0.5 rounded-full text-[11px] leading-none font-['Urbanist']`}>{k.badge}</span>}
             </div>
             <div className="mt-4">
               <p className="text-[#64748B] dark:text-slate-400 text-[12px] font-semibold uppercase tracking-[0.6px] leading-[16px] mb-1 font-['Urbanist']">{k.title}</p>
@@ -168,19 +168,19 @@ export default function Reports() {
               <svg width="325" height="175" viewBox="0 0 325 175" style={{ overflow: 'visible' }}>
                 {/* Outer Thin Grey Track */}
                 <path d={arc(0, 180, G.r + 30)} fill="none" className="stroke-[#F1F5F9] dark:stroke-slate-800" strokeWidth="8" strokeLinecap="round" />
-                
+
                 {/* Inner Grey Track */}
                 <path d={roundedSegment(0, 180, G.r, G.sw, 6)} className="fill-[#E5E7EB] stroke-[#E5E7EB] dark:fill-slate-800 dark:stroke-slate-800" strokeWidth="12" strokeLinejoin="round" />
-                
+
                 {/* Segments */}
                 {gaugeArcs.map(a => (
-                  <path 
-                    key={a.label} 
-                    d={roundedSegment(a.start, a.end, G.r, G.sw, 6)} 
-                    fill={a.color} 
-                    stroke={a.color} 
-                    strokeWidth="12" 
-                    strokeLinejoin="round" 
+                  <path
+                    key={a.label}
+                    d={roundedSegment(a.start, a.end, G.r, G.sw, 6)}
+                    fill={a.color}
+                    stroke={a.color}
+                    strokeWidth="12"
+                    strokeLinejoin="round"
                   />
                 ))}
               </svg>
@@ -222,10 +222,10 @@ export default function Reports() {
                   strokeLinecap="round" />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div 
+                <div
                   className="w-[42px] h-[42px] bg-white dark:bg-slate-800 rounded-full flex items-center justify-center border border-[#F1F5F9] dark:border-slate-700"
-                  style={{ 
-                    boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 10px 0px rgba(167, 180, 198, 0.34)' 
+                  style={{
+                    boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 10px 0px rgba(167, 180, 198, 0.34)'
                   }}
                 >
                   <Users size={20} className="text-[#94A3B8] dark:text-slate-500" />
@@ -235,7 +235,7 @@ export default function Reports() {
 
             <div className="flex justify-between w-full px-4">
               {[
-                { label: "Students",   value: "45%", color: "#D946EF" },
+                { label: "Students", value: "45%", color: "#D946EF" },
                 { label: "Instructor", value: "25%", color: "#22C55E" },
               ].map(item => (
                 <div key={item.label} className="text-center">
@@ -256,4 +256,4 @@ export default function Reports() {
 
     </div>
   );
-}
+}

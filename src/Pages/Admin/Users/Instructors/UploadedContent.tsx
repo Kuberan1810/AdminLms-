@@ -125,24 +125,24 @@ const UploadedContent = () => {
       </div>
 
       {/* ── Filters ── */}
-      <div className="flex justify-between items-center mb-8 bg-white dark:bg-slate-800 p-4 rounded-2xl border border-[#F1F5F9] dark:border-slate-700">
+      <div className="flex justify-between items-center mb-8 bg-white dark:bg-[#2D2D2D] p-4 rounded-2xl border border-[#F1F5F9] dark:border-[#3B3B3B]">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 px-[20px] py-[10px] bg-[#FBFCFD] dark:bg-slate-800 border border-[#E8EDF3] dark:border-slate-700 rounded-[13px] cursor-pointer">
-            <ListFilter size={16} className="text-[#64748B]" />
+          <div className="flex items-center gap-2 px-[20px] py-[10px] bg-[#FBFCFD] dark:bg-[#383838] border border-[#E8EDF3] dark:border-[#4A4A4A] rounded-[13px] cursor-pointer">
+            <ListFilter size={16} className="text-[#64748B] dark:text-slate-400" />
             <span className="text-[14px] font-medium text-[#222222] dark:text-slate-200 leading-none font-['Urbanist']">Content Type: All</span>
-            <ChevronDown size={14} className="text-[#94A3B8]" />
+            <ChevronDown size={14} className="text-[#94A3B8] dark:text-slate-400" />
           </div>
-          <div className="flex items-center gap-2 px-[20px] py-[10px] bg-[#FBFCFD] dark:bg-slate-800 border border-[#E8EDF3] dark:border-slate-700 rounded-[13px] cursor-pointer">
-            <FolderOpen size={16} className="text-[#64748B]" />
+          <div className="flex items-center gap-2 px-[20px] py-[10px] bg-[#FBFCFD] dark:bg-[#383838] border border-[#E8EDF3] dark:border-[#4A4A4A] rounded-[13px] cursor-pointer">
+            <FolderOpen size={16} className="text-[#64748B] dark:text-slate-400" />
             <span className="text-[14px] font-medium text-[#222222] dark:text-slate-200 leading-none font-['Urbanist']">All Chapters</span>
-            <ChevronDown size={14} className="text-[#94A3B8]" />
+            <ChevronDown size={14} className="text-[#94A3B8] dark:text-slate-400" />
           </div>
         </div>
-        <div className="flex items-center bg-[#F1F5F9] dark:bg-slate-800 p-[4px] rounded-[12px] h-[42px] gap-[8px]">
-          <button className="flex items-center justify-center w-[34px] h-[34px] bg-white dark:bg-slate-700 rounded-[10px] text-[#F6810C] cursor-pointer">
+        <div className="flex items-center bg-[#F1F5F9] dark:bg-[#252525] p-[4px] rounded-[12px] h-[42px] gap-[8px]">
+          <button className="flex items-center justify-center w-[34px] h-[34px] bg-white dark:bg-[#3D3D3D] rounded-[10px] text-[#F6810C] cursor-pointer">
             <LayoutGrid size={18} />
           </button>
-          <button className="flex items-center justify-center w-[34px] h-[34px] text-[#94A3B8] hover:text-[#64748B] cursor-pointer">
+          <button className="flex items-center justify-center w-[34px] h-[34px] text-[#94A3B8] hover:text-[#64748B] dark:hover:text-slate-200 cursor-pointer">
             <List size={18} />
           </button>
         </div>
@@ -174,14 +174,18 @@ const UploadedContent = () => {
 
                   <h4 className="text-[16px] font-semibold text-[#0B1C30] dark:text-white leading-[24px] font-['Urbanist'] mb-1 truncate">{file.name}</h4>
                   <div className="flex items-center gap-2 mb-6">
-                    <span className={`text-[10px] font-bold px-[8px] py-[2px] rounded-[6px] uppercase tracking-[-0.25px] leading-[15px] font-['Urbanist'] ${file.badgeColor || file.color}`}>
+                    <b className={`text-[10px] font-bold px-[8px] py-[2px] rounded-[6px] uppercase tracking-[-0.25px] leading-[15px] font-['Urbanist'] ${file.badgeColor || file.color}`} style={(() => {
+                      const colStr = file.badgeColor || file.color;
+                      const match = colStr.match(/text-\[#([A-Fa-f0-9]+)\]/);
+                      return match ? { color: `#${match[1]}` } : {};
+                    })()}>
                       {file.category}
-                    </span>
-                    <span className="text-[12px] text-[#94A3B8]">{file.size}</span>
+                    </b>
+                    <small className="text-[12px] text-[#94A3B8] dark:text-slate-400 font-['Urbanist']">{file.size}</small>
                   </div>
 
-                  <div className="pt-5 border-t border-[#F1F5F9] flex justify-between items-center">
-                    <span className="text-[11px] font-medium text-[#94A3B8] leading-[14px] font-['Urbanist']">{file.date}</span>
+                  <div className="pt-5 border-t border-[#F1F5F9] dark:border-[#3B3B3B] flex justify-between items-center">
+                    <small className="text-[11px] font-medium text-[#94A3B8] dark:text-slate-400 leading-[14px] font-['Urbanist']">{file.date}</small>
                     <button className="w-8 h-8 rounded-[8px] bg-[#FFF7ED] dark:bg-[#FFF7ED]/10 text-[#F6810C] flex items-center justify-center hover:bg-[#F6810C] hover:text-white transition-colors cursor-pointer">
                       <Download size={14} />
                     </button>
