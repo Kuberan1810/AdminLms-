@@ -1,5 +1,5 @@
 import React from 'react';
-import { TickCircle, More } from 'iconsax-react';
+import { TickCircle } from 'iconsax-react';
 import { CircleAlert, MoreHorizontal, MoreVertical } from 'lucide-react';
 
 const QueueStatusSection = () => {

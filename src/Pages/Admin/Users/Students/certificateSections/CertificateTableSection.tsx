@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { SearchNormal1, More, ArrowLeft2, ArrowRight2, DocumentUpload, Sort, FilterSearch, CloseCircle } from 'iconsax-react';
+import { SearchNormal1, More, ArrowLeft2, ArrowRight2, DocumentUpload, Sort, CloseCircle } from 'iconsax-react';
 import avatarImg from '../../../../../assets/avatar.jpg';
 import { SortAscIcon } from 'lucide-react';
 
@@ -148,7 +148,7 @@ const CertificateTableSection = () => {
                 {['Newest', 'Oldest', 'A-Z', 'Z-A'].map(order => (
                   <button
                     key={order}
-                    onClick={() => { setSortOrder(order as any); setIsSortOpen(false); }}
+                    onClick={() => { setSortOrder(order as 'Newest' | 'Oldest' | 'A-Z' | 'Z-A'); setIsSortOpen(false); }}
                     className={`block w-full text-left px-4 py-2.5 text-[13px] transition-colors ${sortOrder === order ? 'bg-[#F67300]/10 text-[#F67300] font-medium' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A] dark:text-gray-300'
                       }`}
                   >

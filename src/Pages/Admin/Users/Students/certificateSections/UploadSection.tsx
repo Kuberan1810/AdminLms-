@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { CloudPlus, DocumentUpload } from 'iconsax-react';
-import { CloudUpload, CloudUploadIcon } from 'lucide-react';
+import { CloudPlus } from 'iconsax-react';
+import { CloudUploadIcon } from 'lucide-react';
 
 const UploadSection = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);

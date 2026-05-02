@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Phone, Calendar, BookOpen } from 'lucide-react';
+import { Mail, Phone, Calendar } from 'lucide-react';
 import { DocumentText1 } from 'iconsax-react';
 
 const ContactInfoSection = () => {
