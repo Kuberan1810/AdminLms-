@@ -28,7 +28,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-[35px] p-7  border border-gray-100 flex flex-col h-full min-h-[200px]">
+    <div className="boxStyle flex flex-col h-full min-h-[200px]">
       {/* Top Row: Icon and Badge */}
       <div className="flex justify-between items-start mb-8  boxstyle">
         <div className={`p-[8px] rounded-[12px] ${themes[variant].bg} ${themes[variant].text}`}>
