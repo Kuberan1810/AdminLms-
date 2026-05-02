@@ -32,18 +32,22 @@ const EnrollmentGrowth: React.FC<EnrollmentGrowthProps> = ({ data }) => {
         ))}
 
         {data.map((d, i) => (
-          <div key={i} className="relative flex flex-col items-center flex-1 h-full justify-end">
+          <div key={i} className="relative flex flex-col items-center flex-1 h-full justify-end group cursor-pointer">
             <div
-              className={`w-[48px] rounded-t-[12px] ${d.highlighted ? 'bg-[#F6810C]' : 'bg-[#FFF4ED] dark:bg-slate-800'}`}
+              className={`w-[64px] rounded-t-[12px] flex flex-col justify-end items-center p-2 pt-[6px] pb-0 mb-6 relative ${d.highlighted ? 'bg-[#E3F1FF] dark:bg-[#1E293B]' : ''}`}
               style={{ height: `${(d.value / 80) * 80}%` }}
             >
-              {d.label && (
-                <div className="absolute top-1/2 left-full ml-2 -translate-y-1/2 bg-white dark:bg-slate-800 shadow-lg border border-[#E2E8F0] dark:border-slate-700 px-3 py-1.5 rounded-xl whitespace-nowrap z-10">
-                  <p className="text-[11px] font-medium text-[#171C1F] dark:text-white">{d.label}</p>
+              <div
+                className={`w-[48px] flex-1 rounded-t-[12px] ${d.highlighted ? 'bg-[#F6810C]' : 'bg-[#FFF4ED] dark:bg-slate-800'}`}
+              >
+                <div className="absolute top-1/2 left-full ml-2 -translate-y-1/2 bg-white dark:bg-slate-800 shadow-lg border border-[#E2E8F0] dark:border-slate-700 px-3 py-1.5 rounded-xl whitespace-nowrap z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200 pointer-events-none select-none">
+                  <p className="text-[11px] font-medium text-[#171C1F] dark:text-white">
+                    {d.label || `Enrollments: ${d.value}`}
+                  </p>
                 </div>
-              )}
+              </div>
             </div>
-            <span className="mt-3 text-[11px] font-bold text-[#94A3B8] dark:text-slate-500 uppercase tracking-wide">{d.day}</span>
+            <span className="text-[11px] font-bold text-[#94A3B8] dark:text-slate-500 uppercase tracking-wide h-[14px] leading-none flex items-center">{d.day}</span>
           </div>
         ))}
       </div>

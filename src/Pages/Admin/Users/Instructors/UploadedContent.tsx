@@ -1,43 +1,75 @@
 import React from 'react';
-import {
-  Search,
-  Bell,
-  Settings,
-  ChevronRight,
-  Share2,
-  Filter,
-  LayoutGrid,
-  List,
-  MoreVertical,
-  FileText,
-  Download,
-  Plus,
-  FileCode,
-  FolderOpen,
-  ChevronDown,
-  ListFilter,
-  FileQuestion,
-  Terminal,
-  Cpu,
-  X,
-  FileUp,
-  File as FileIcon
-} from 'lucide-react';
+import { ChevronRight, Share2, FileText, Cpu, Terminal, File as FileIcon, FileQuestion } from 'lucide-react';
+import { FilterBar } from './section/FilterBar';
+import { ChapterSection } from './section/ChapterSection';
+import { UploadModal } from './section/UploadModal';
 
 const UploadedContent = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedChapter, setSelectedChapter] = React.useState<number | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [selectedType, setSelectedType] = React.useState("Notes");
+
+  const [contentTypeFilter, setContentTypeFilter] = React.useState<string[]>(["All"]);
+  const [chapterFilter, setChapterFilter] = React.useState<string[]>(["All Chapters"]);
+  const [isContentTypeOpen, setIsContentTypeOpen] = React.useState(false);
+  const [isChaptersOpen, setIsChaptersOpen] = React.useState(false);
+  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('list');
+  const [openMenuFileId, setOpenMenuFileId] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    const handleGlobalClick = () => {
+      setIsContentTypeOpen(false);
+      setIsChaptersOpen(false);
+      setOpenMenuFileId(null);
+    };
+    window.addEventListener('click', handleGlobalClick);
+    return () => window.removeEventListener('click', handleGlobalClick);
+  }, []);
+
+  const [file, setFile] = React.useState<File | null>(null);
+  const [fileName, setFileName] = React.useState("");
 
   const openModal = (chapterId: number) => {
     setSelectedChapter(chapterId);
     setIsModalOpen(true);
+    setFile(null);
+    setFileName("");
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedChapter(null);
+    setIsDropdownOpen(false);
+    setFile(null);
+    setFileName("");
   };
-  const chapters = [
+
+  const deleteFile = (chapterId: number, fileId: number) => {
+    setChapters(prevChapters => prevChapters.map(ch => {
+      if (ch.id === chapterId) {
+        return {
+          ...ch,
+          fileCount: ch.fileCount - 1,
+          files: ch.files.filter(f => f.id !== fileId)
+        };
+      }
+      return ch;
+    }));
+    setOpenMenuFileId(null);
+  };
+
+  const handleDownload = (e: React.MouseEvent, fileName: string) => {
+    e.stopPropagation();
+    const link = document.createElement("a");
+    link.href = "data:text/plain;charset=utf-8," + encodeURIComponent(`Content of ${fileName}`);
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const [chapters, setChapters] = React.useState([
     {
       id: 1,
       title: "Chapter 1: Intro to AI",
@@ -103,11 +135,32 @@ const UploadedContent = () => {
         }
       ]
     }
-  ];
+  ]);
+
+  const filteredChapters = chapters
+    .map((chapter) => {
+      const filteredFiles = chapter.files.filter((file) => {
+        const matchesType =
+          contentTypeFilter.includes("All") ||
+          contentTypeFilter.some(filter => filter.toLowerCase() === file.category.toLowerCase());
+        return matchesType;
+      });
+
+      const matchesChapter =
+        chapterFilter.includes("All Chapters") || chapterFilter.includes(chapter.title);
+
+      if (!matchesChapter) return null;
+
+      return {
+        ...chapter,
+        files: filteredFiles,
+        fileCount: filteredFiles.length,
+      };
+    })
+    .filter(Boolean) as typeof chapters;
 
   return (
     <div className="p-8 bg-white dark:bg-slate-900 min-h-screen font-['Urbanist'] transition-colors duration-300">
-
       {/* ── Breadcrumbs & Uploaded Content Title ── */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -124,155 +177,44 @@ const UploadedContent = () => {
         </button>
       </div>
 
-      {/* ── Filters ── */}
-      <div className="flex justify-between items-center mb-8 bg-white dark:bg-slate-800 p-4 rounded-2xl border border-[#F1F5F9] dark:border-slate-700">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 px-[20px] py-[10px] bg-[#FBFCFD] dark:bg-slate-800 border border-[#E8EDF3] dark:border-slate-700 rounded-[13px] cursor-pointer">
-            <ListFilter size={16} className="text-[#64748B]" />
-            <span className="text-[14px] font-medium text-[#222222] dark:text-slate-200 leading-none font-['Urbanist']">Content Type: All</span>
-            <ChevronDown size={14} className="text-[#94A3B8]" />
-          </div>
-          <div className="flex items-center gap-2 px-[20px] py-[10px] bg-[#FBFCFD] dark:bg-slate-800 border border-[#E8EDF3] dark:border-slate-700 rounded-[13px] cursor-pointer">
-            <FolderOpen size={16} className="text-[#64748B]" />
-            <span className="text-[14px] font-medium text-[#222222] dark:text-slate-200 leading-none font-['Urbanist']">All Chapters</span>
-            <ChevronDown size={14} className="text-[#94A3B8]" />
-          </div>
-        </div>
-        <div className="flex items-center bg-[#F1F5F9] dark:bg-slate-800 p-[4px] rounded-[12px] h-[42px] gap-[8px]">
-          <button className="flex items-center justify-center w-[34px] h-[34px] bg-white dark:bg-slate-700 rounded-[10px] text-[#F6810C] cursor-pointer">
-            <LayoutGrid size={18} />
-          </button>
-          <button className="flex items-center justify-center w-[34px] h-[34px] text-[#94A3B8] hover:text-[#64748B] cursor-pointer">
-            <List size={18} />
-          </button>
-        </div>
-      </div>
+      <FilterBar
+        contentTypeFilter={contentTypeFilter}
+        setContentTypeFilter={setContentTypeFilter}
+        chapterFilter={chapterFilter}
+        setChapterFilter={setChapterFilter}
+        isContentTypeOpen={isContentTypeOpen}
+        setIsContentTypeOpen={setIsContentTypeOpen}
+        isChaptersOpen={isChaptersOpen}
+        setIsChaptersOpen={setIsChaptersOpen}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        chapters={chapters}
+      />
 
-      {/* ── Chapters ── */}
-      <div className="space-y-10">
-        {chapters.map(chapter => (
-          <div key={chapter.id}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-1.5 h-8 bg-[#F6810C] rounded-full"></div>
-              <h3 className="text-[20px] font-semibold text-[#0B1C30] dark:text-white leading-[28px] font-['Urbanist']">{chapter.title}</h3>
-              <span className="px-3 py-1 bg-[#F1F5F9] text-[#64748B] text-[11px] font-bold rounded-lg uppercase tracking-wider">
-                {chapter.fileCount} FILES
-              </span>
-            </div>
+      <ChapterSection
+        filteredChapters={filteredChapters}
+        viewMode={viewMode}
+        openModal={openModal}
+        openMenuFileId={openMenuFileId}
+        setOpenMenuFileId={setOpenMenuFileId}
+        deleteFile={deleteFile}
+        handleDownload={handleDownload}
+      />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {chapter.files.map(file => (
-                <div key={file.id} className="bg-white rounded-3xl border border-[#F1F5F9] p-5 transition-all group cursor-pointer">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${file.color}`}>
-                      {file.icon}
-                    </div>
-                    <button className="p-1 text-[#CBD5E1] hover:text-[#64748B] cursor-pointer">
-                      <MoreVertical size={20} />
-                    </button>
-                  </div>
-
-                  <h4 className="text-[16px] font-semibold text-[#0B1C30] dark:text-white leading-[24px] font-['Urbanist'] mb-1 truncate">{file.name}</h4>
-                  <div className="flex items-center gap-2 mb-6">
-                    <span className={`text-[10px] font-bold px-[8px] py-[2px] rounded-[6px] uppercase tracking-[-0.25px] leading-[15px] font-['Urbanist'] ${file.badgeColor || file.color}`}>
-                      {file.category}
-                    </span>
-                    <span className="text-[12px] text-[#94A3B8]">{file.size}</span>
-                  </div>
-
-                  <div className="pt-5 border-t border-[#F1F5F9] flex justify-between items-center">
-                    <span className="text-[11px] font-medium text-[#94A3B8] leading-[14px] font-['Urbanist']">{file.date}</span>
-                    <button className="w-8 h-8 rounded-[8px] bg-[#FFF7ED] dark:bg-[#FFF7ED]/10 text-[#F6810C] flex items-center justify-center hover:bg-[#F6810C] hover:text-white transition-colors cursor-pointer">
-                      <Download size={14} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-              {/* Add Card */}
-              <div
-                onClick={() => openModal(chapter.id)}
-                className="bg-white/40 border-2 border-dashed border-[#E2E8F0] rounded-3xl p-5 flex flex-col items-center justify-center min-h-[200px] cursor-pointer hover:bg-white hover:border-[#F6810C]/50 transition-all group"
-              >
-                <div className="w-12 h-12 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center text-[#94A3B8] group-hover:bg-[#FFF4ED] group-hover:text-[#F6810C] group-hover:border-[#F6810C]/20 transition-all mb-4">
-                  <Plus size={24} />
-                </div>
-                <p className="text-[14px] font-medium text-[#64748B] group-hover:text-[#F6810C] transition-all">Add to Chapter {chapter.id}</p>
-              </div>
-
-              {/* ── Upload Modal ── */}
-              {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/30 backdrop-blur-[4px] animate-in fade-in duration-200">
-                  <div className="bg-white dark:bg-slate-900 w-full max-w-[560px] rounded-[32px] border border-[#F1F5F9] dark:border-slate-800 overflow-hidden animate-in zoom-in-95 duration-200">
-                    {/* Modal Header */}
-                    <div className="px-8 py-6 flex justify-between items-center border-b border-[#F1F5F9] dark:border-slate-800">
-                      <h3 className="text-[16px] font-normal text-[#0B1C30] dark:text-white leading-[24px] font-['Urbanist']">Upload New Content</h3>
-                      <button
-                        onClick={closeModal}
-                        className="p-2 text-[#94A3B8] hover:text-[#64748B] hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer"
-                      >
-                        <X size={20} />
-                      </button>
-                    </div>
-
-                    {/* Modal Body */}
-                    <div className="p-8 space-y-6">
-                      {/* File Name Field */}
-                      <div>
-                        <label className="block text-[16px] font-normal text-[#0B1C30] dark:text-slate-200 mb-2 font-['Urbanist'] leading-[24px]">File Name</label>
-                        <input
-                          type="text"
-                          placeholder="e.g. Deep Learning Syllabus"
-                          className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-2xl text-[14px] text-[#0F172A] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#F6810C]/20 focus:border-[#F6810C] transition-all font-['Urbanist']"
-                        />
-                      </div>
-
-                      {/* Content Type Field */}
-                      <div>
-                        <label className="block text-[16px] font-normal text-[#0B1C30] dark:text-slate-200 mb-2 font-['Urbanist'] leading-[24px]">Content Type</label>
-                        <div className="relative">
-                          <select className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-2xl text-[14px] text-[#0F172A] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#F6810C]/20 focus:border-[#F6810C] transition-all font-['Urbanist'] appearance-none cursor-pointer">
-                            <option>Notes</option>
-                            <option>Assignment</option>
-                            <option>Tests</option>
-                            <option>Labs</option>
-                          </select>
-                          <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" size={18} />
-                        </div>
-                      </div>
-
-                      {/* Dropzone */}
-                      <div className="border-2 border-dashed border-[#E2E8F0] dark:border-slate-700 rounded-[24px] p-10 flex flex-col items-center justify-center bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800 transition-colors cursor-pointer group">
-                        <div className="w-16 h-16 rounded-full bg-white dark:bg-slate-700 border border-[#F1F5F9] dark:border-slate-800 flex items-center justify-center text-[#94A3B8] group-hover:text-[#F6810C] transition-colors mb-4">
-                          <FileUp size={32} />
-                        </div>
-                        <p className="text-[16px] text-[#0B1C30] dark:text-white font-normal mb-1 font-['Urbanist'] leading-[24px]">
-                          Drag & Drop files or <span className="text-[#F6810C] cursor-pointer hover:underline leading-none">Browse</span>
-                        </p>
-                        <p className="text-[13px] text-[#94A3B8] font-['Urbanist']">PDF, MP4, or ZIP files up to 100MB</p>
-                      </div>
-                    </div>
-
-                    {/* Modal Footer */}
-                    <div className="px-8 py-6 bg-white dark:bg-slate-800/50 flex justify-end items-center gap-4 border-t border-[#F1F5F9] dark:border-slate-800">
-                      <button
-                        onClick={closeModal}
-                        className="px-6 py-2.5 text-[14px] font-semibold text-[#64748B] hover:text-[#0B1C30] dark:text-slate-400 dark:hover:text-white transition-colors cursor-pointer"
-                      >
-                        Cancel
-                      </button>
-                      <button className="px-8 py-2.5 bg-[#F6810C] text-white rounded-2xl text-[14px] font-bold hover:bg-[#E6770B] transition-all cursor-pointer">
-                        Upload
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
+      <UploadModal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        fileName={fileName}
+        setFileName={setFileName}
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+        isDropdownOpen={isDropdownOpen}
+        setIsDropdownOpen={setIsDropdownOpen}
+        file={file}
+        setFile={setFile}
+        selectedChapter={selectedChapter}
+        setChapters={setChapters}
+      />
     </div>
   );
 };

@@ -1,12 +1,15 @@
+
 import { useState, useRef, useEffect } from "react";
-import { MoreVertical, ChevronLeft, ChevronRight, Mail, FileText, Users, Trash2 } from "lucide-react";
-import type { InstructorData } from "../../../../../data/InstructorMockData";
+import { MoreVertical, ChevronLeft, ChevronRight, Mail, FileText, Users, Trash2, ListFilter, Search, SlidersHorizontal } from "lucide-react";
+
+import { instructorMockData, type InstructorData } from "../../../../../data/InstructorMockData";
 
 interface Props {
   instructors: InstructorData[];
   onSelect: (instructor: InstructorData) => void;
   onDelete: (id: string) => void;
 }
+
 
 const InstructorTable = ({ instructors, onSelect, onDelete }: Props) => {
   const [activeActionMenu, setActiveActionMenu] = useState<string | null>(null);
@@ -46,6 +49,7 @@ const InstructorTable = ({ instructors, onSelect, onDelete }: Props) => {
   };
 
   return (
+
     <div className="bg-white dark:bg-[#2A2A2A] rounded-[20px] border border-[#F2EEF4] dark:border-[#3B3B3B] overflow-visible">
       <div className="overflow-x-auto overflow-y-visible pb-16">
         <table className="w-full text-left border-collapse">
@@ -161,23 +165,7 @@ const InstructorTable = ({ instructors, onSelect, onDelete }: Props) => {
             ))}
           </tbody>
         </table>
-      </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-end gap-2 p-6 border-t border-[#F2EEF4] dark:border-[#3B3B3B]">
-        <button className="p-2 text-[#626262] hover:bg-gray-100 dark:hover:bg-[#3B3B3B] rounded-lg transition-all border border-[#F2EEF4] dark:border-[#3B3B3B]">
-          <ChevronLeft size={18} />
-        </button>
-        <div className="flex items-center gap-1">
-          <button className="w-8 h-8 flex items-center justify-center bg-[#F67300] text-white text-xs font-bold rounded-lg">1</button>
-          <button className="w-8 h-8 flex items-center justify-center text-[#626262] text-xs font-medium hover:bg-gray-100 dark:hover:bg-[#3B3B3B] rounded-lg">2</button>
-          <button className="w-8 h-8 flex items-center justify-center text-[#626262] text-xs font-medium hover:bg-gray-100 dark:hover:bg-[#3B3B3B] rounded-lg">3</button>
-          <span className="text-[#626262] px-1">...</span>
-          <button className="w-8 h-8 flex items-center justify-center text-[#626262] text-xs font-medium hover:bg-gray-100 dark:hover:bg-[#3B3B3B] rounded-lg">7</button>
-        </div>
-        <button className="p-2 text-[#626262] hover:bg-gray-100 dark:hover:bg-[#3B3B3B] rounded-lg transition-all border border-[#F2EEF4] dark:border-[#3B3B3B]">
-          <ChevronRight size={18} />
-        </button>
       </div>
 
       {/* Delete Confirmation Modal */}

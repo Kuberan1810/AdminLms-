@@ -1,7 +1,9 @@
+
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import InstructorStats from "./section/InstructorStats";
 import InstructorFilters from "./section/InstructorFilters";
+
 import InstructorTable from "./section/InstructorTable";
 import { instructorMockData } from "../../../../data/InstructorMockData";
 import type { InstructorData } from "../../../../data/InstructorMockData";
@@ -66,6 +68,7 @@ const Instructors = () => {
   }, [instructorsList, searchQuery, filterStatus, sortBy]);
 
   return (
+
     <section className="pb-6 space-y-6">
       <InstructorStats />
       <InstructorFilters 
@@ -81,6 +84,7 @@ const Instructors = () => {
         onSelect={(instructor) => navigate(`/admin/users/instructors/${instructor.instructorId}`)} 
         onDelete={handleDelete}
       />
+
     </section>
   );
 };

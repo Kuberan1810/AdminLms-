@@ -12,9 +12,15 @@ interface PerformingBatchesProps {
 
 const PerformingBatches: React.FC<PerformingBatchesProps> = ({ batches }) => {
   const pieTotal = batches.reduce((s, b) => s + b.value, 0);
-  let pieAngle = -90;
+  let pieAngle = 201;
   
-  const slices = batches.map(b => {
+  const orangeSlice = batches.find(b => b.color === "#F6810C") || batches[0];
+  const pinkSlice = batches.find(b => b.color === "#EC4899") || batches[2];
+  const blueSlice = batches.find(b => b.color === "#3B82F6") || batches[1];
+
+  const orderedBatches = [orangeSlice, pinkSlice, blueSlice];
+
+  const slices = orderedBatches.map(b => {
     const deg = (b.value / pieTotal) * 360;
     const start = pieAngle;
     const end = pieAngle + deg;
