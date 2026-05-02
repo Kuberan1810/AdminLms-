@@ -1,5 +1,4 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import UploadSection from './certificateSections/UploadSection';
 import QueueStatusSection from './certificateSections/QueueStatusSection';
 import CertificateTableSection from './certificateSections/CertificateTableSection';

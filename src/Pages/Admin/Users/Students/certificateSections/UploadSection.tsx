@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { CloudPlus, DocumentUpload } from 'iconsax-react';
-import { CloudUpload, CloudUploadIcon } from 'lucide-react';
+import { CloudPlus } from 'iconsax-react';
+import { CloudUploadIcon } from 'lucide-react';
 
 const UploadSection = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -35,7 +35,7 @@ const UploadSection = () => {
   };
 
   return (
-    <div className="w-full lg:w-[750px] bg-white dark:bg-[#242424] p-6 shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] border border-gray-100 dark:border-[#3B3B3B]">
+    <div className="w-full lg:w-[750px] boxStyle">
       <div className="flex items-center gap-2 mb-6">
         <CloudPlus size={20} color="currentColor" className="text-[#00355F]" />
         <h2 className="text-[16px] font-normal text-[#1E3A8A] dark:text-white">Bulk Upload Service</h2>
@@ -46,7 +46,7 @@ const UploadSection = () => {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`border-2 border-dashed rounded-[10px] p-12 flex flex-col items-center justify-center text-center space-y-4 cursor-pointer transition-all ${isDragging ? 'border-[#F67300] bg-orange-50/10' : 'border-[#000000] dark:border-[#3B3B3B]'}`}
+        className={`border-2 border-dashed rounded-[10px] p-6 md:p-12 flex flex-col items-center justify-center text-center space-y-4 cursor-pointer transition-all ${isDragging ? 'border-[#F67300] bg-orange-50/10' : 'border-[#000000] dark:border-[#3B3B3B]'}`}
       >
         <input
           type="file"
@@ -81,7 +81,7 @@ const UploadSection = () => {
               alert(`Uploading ${selectedFile.name}...`);
               setSelectedFile(null);
             }}
-            className="px-6 py-2 bg-[#F67300] text-white rounded-xl font-semibold hover:bg-[#e66a00] transition-colors"
+            className="px-6 py-2 bg-[#F67300] text-white rounded-xl font-semibold hover:bg-[#e66a00] transition-colors cursor-pointer"
           >
             Submit
           </button>

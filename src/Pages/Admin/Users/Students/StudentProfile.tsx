@@ -8,25 +8,23 @@ import RecentActivitySection from './profileSections/RecentActivitySection';
 
 const StudentProfile = () => {
   return (
-    <div className="font-sans">
-      <div className="max-w-7xl mx-auto space-y-6">
-        
-        <ProfileHeaderSection />
+    <div className="max-w-7xl mx-auto space-y-6">
 
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-[591px] shrink-0 space-y-6">
-            <ContactInfoSection />
-            <EnrolledCoursesSection />
-            <AttendanceSection />
-          </div>
+      <ProfileHeaderSection />
 
-          <div className="flex-1 space-y-6 min-w-0">
-            <TestPerformanceSection />
-            <RecentActivitySection />
-          </div>
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="w-full lg:w-[45%] shrink-0 space-y-6">
+          <ContactInfoSection />
+          <EnrolledCoursesSection />
+          <AttendanceSection />
         </div>
 
+        <div className="flex-1 space-y-6 min-w-0">
+          <TestPerformanceSection />
+          <RecentActivitySection />
+        </div>
       </div>
+
     </div>
   );
 };

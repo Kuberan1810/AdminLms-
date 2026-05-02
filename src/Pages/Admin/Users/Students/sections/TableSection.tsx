@@ -1,19 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MoreVertical, ChevronLeft, ChevronRight, SortDesc } from 'lucide-react';
-import avatarImg from '../../../../../assets/avatar.jpg';
 import { Sort } from 'iconsax-react';
 
-const studentsData = [
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: '', status: 'Active', attendance: '85%', dateJoined: '2023-10-01' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: '', status: 'Leave', attendance: '85%', dateJoined: '2023-09-15' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Active', attendance: '85%', dateJoined: '2023-10-05' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Leave', attendance: '85%', dateJoined: '2023-08-20' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', attendance: '85%', dateJoined: '2023-11-01' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', attendance: '85%', dateJoined: '2023-11-02' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'Q1103 - Quantum Intelligence', courseSubtitle: '', status: 'Active', attendance: '85%', dateJoined: '2023-07-10' },
-  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'Q1103 - Quantum Intelligence', courseSubtitle: '', status: 'Dropped', attendance: '85%', dateJoined: '2023-06-05' },
-];
+import { mockStudents } from '../mockData';
 
 const StatusBadge = ({ status }: { status: string }) => {
   const styles: Record<string, string> = {
@@ -41,7 +31,7 @@ const TableSection = () => {
   const itemsPerPage = 8;
 
   const filteredAndSortedData = useMemo(() => {
-    let data = [...studentsData];
+    let data = [...mockStudents];
 
     if (searchTerm) {
       const lowerQuery = searchTerm.toLowerCase();
@@ -112,7 +102,7 @@ const TableSection = () => {
 
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className={`flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[12px] text-[12px] font-semibold transition-colors ${statusFilter !== 'All' ? 'text-[#F67300] border-[#F67300] dark:border-[#F67300]' : 'text-[#333333] dark:text-white hover:bg-gray-50 dark:hover:bg-[#333333]'}`}
+            className={`flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[12px] text-[12px] font-semibold transition-colors cursor-pointer ${statusFilter !== 'All' ? 'text-[#F67300] border-[#F67300] dark:border-[#F67300]' : 'text-[#333333] dark:text-white hover:bg-gray-50 dark:hover:bg-[#333333]'}`}
           >
             <Sort size={16} color='black' />
             {statusFilter === 'All' ? 'Filter' : statusFilter}
@@ -123,7 +113,7 @@ const TableSection = () => {
               {['All', 'Active', 'Leave', 'Pending', 'Dropped'].map((status) => (
                 <button
                   key={status}
-                  className={`w-full text-left px-4 py-2 text-[12px] font-semibold hover:bg-gray-50 dark:hover:bg-[#333333] transition-colors ${statusFilter === status ? 'text-[#F67300] font-medium bg-orange-50/50 dark:bg-orange-500/10' : 'text-[#333333] dark:text-[#A3A3A3]'}`}
+                  className={`w-full text-left px-4 py-2 text-[12px] font-semibold hover:bg-gray-50 dark:hover:bg-[#333333] transition-colors cursor-pointer ${statusFilter === status ? 'text-[#F67300] font-medium bg-orange-50/50 dark:bg-orange-500/10' : 'text-[#333333] dark:text-[#A3A3A3]'}`}
                   onClick={() => {
                     setStatusFilter(status);
                     setIsFilterOpen(false);
@@ -138,7 +128,7 @@ const TableSection = () => {
 
           <button
             onClick={toggleSort}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[12px] text-[12px] font-medium text-[#333333] dark:text-white hover:bg-gray-50 dark:hover:bg-[#333333] transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[12px] text-[12px] font-medium text-[#333333] dark:text-white hover:bg-gray-50 dark:hover:bg-[#333333] transition-colors cursor-pointer"
           >
             <SortDesc size={16} color='black' />
             Sort by : {sortOrder}
@@ -148,7 +138,7 @@ const TableSection = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#242424] rounded-2xl shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] dark:shadow-none dark:border dark:border-[#3B3B3B] overflow-hidden mt-6 min-h-[400px] flex flex-col justify-between">
+      <div className="boxStyle overflow-hidden mt-6 min-h-[400px] flex flex-col justify-between !p-0">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -186,9 +176,9 @@ const TableSection = () => {
                       <span className="text-[16px] text-[#222222] dark:text-[#A3A3A3]">{student.id}</span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-[14px] text-[#000000] dark:text-white">{student.course}</div>
+                      <div className="text-[14px] text-[#333333] dark:text-white">{student.course}</div>
                       {student.courseSubtitle && (
-                        <div className="text-[14px] text-[#000000] dark:text-white mt-1">{student.courseSubtitle}</div>
+                        <div className="text-[14px] text-[#333333] dark:text-white mt-1">{student.courseSubtitle}</div>
                       )}
                     </td>
                     <td className="px-6 py-4">
@@ -217,7 +207,7 @@ const TableSection = () => {
       </div>
 
       {/* Pagination */}
-      <div className="py-4 flex items-center justify-end gap-2">
+      <div className="py-4 flex items-center justify-center sm:justify-end gap-2">
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}

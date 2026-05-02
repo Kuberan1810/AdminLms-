@@ -1,10 +1,15 @@
 import React from 'react';
-import { Mail, Phone, Calendar, BookOpen } from 'lucide-react';
+import { Mail, Phone, Calendar } from 'lucide-react';
 import { DocumentText1 } from 'iconsax-react';
+import { useParams } from 'react-router-dom';
+import { mockStudents } from '../mockData';
 
 const ContactInfoSection = () => {
+  const { id } = useParams();
+  const student = mockStudents.find(s => s.id === id) || mockStudents[0];
+
   return (
-    <div className="bg-white dark:bg-[#242424] rounded-[28px] p-6 shadow-[0px_8px_32px_0px_rgba(53,44,85,0.04)] dark:shadow-none dark:border dark:border-[#3B3B3B]">
+    <div className="boxStyle">
       <h2 className="text-[24px] font-medium text-[#222222] dark:text-white mb-6">Contact Information</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="flex items-start gap-4">
@@ -13,7 +18,7 @@ const ContactInfoSection = () => {
           </div>
           <div>
             <p className="text-[16px] text-[#8C8C8C] dark:text-[#A3A3A3]">Email</p>
-            <p className="text-[16px] font-medium text-[#000000] dark:text-white mt-1 break-all">Student@gmail.com</p>
+            <p className="text-[16px] font-medium text-[#333333] dark:text-white mt-1 break-all">{student.email}</p>
           </div>
         </div>
         <div className="flex items-start gap-4">
@@ -22,7 +27,7 @@ const ContactInfoSection = () => {
           </div>
           <div>
             <p className="text-[16px] text-[#8C8C8C] dark:text-[#A3A3A3]">Phone</p>
-            <p className="text-[16px] font-medium text-[#000000] dark:text-white mt-1">+91 8976543278</p>
+            <p className="text-[16px] font-medium text-[#333333] dark:text-white mt-1">{student.phone}</p>
           </div>
         </div>
         <div className="flex items-start gap-4">
@@ -31,7 +36,7 @@ const ContactInfoSection = () => {
           </div>
           <div>
             <p className="text-[16px] text-[#8C8C8C] dark:text-[#A3A3A3]">Joined</p>
-            <p className="text-[16px] font-medium text-[#000000] dark:text-white mt-1">Jan 22, 2026</p>
+            <p className="text-[16px] font-medium text-[#333333] dark:text-white mt-1">{student.dateJoined}</p>
           </div>
         </div>
         <div className="flex items-start gap-4">
@@ -40,7 +45,7 @@ const ContactInfoSection = () => {
           </div>
           <div>
             <p className="text-[16px] text-[#8C8C8C] dark:text-[#A3A3A3]">Enrolled Course</p>
-            <p className="text-[16px] font-medium text-[#000000] dark:text-white mt-1">Quantum Intelligence</p>
+            <p className="text-[16px] font-medium text-[#333333] dark:text-white mt-1">{student.course}</p>
           </div>
         </div>
       </div>
