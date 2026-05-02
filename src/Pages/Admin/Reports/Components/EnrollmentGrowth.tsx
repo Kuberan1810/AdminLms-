@@ -33,17 +33,19 @@ const EnrollmentGrowth: React.FC<EnrollmentGrowthProps> = ({ data }) => {
 
         {data.map((d, i) => (
           <div key={i} className="relative flex flex-col items-center flex-1 h-full justify-end">
-            <div
-              className={`w-[48px] rounded-t-[12px] ${d.highlighted ? 'bg-[#F6810C]' : 'bg-[#FFF4ED] dark:bg-slate-800'}`}
-              style={{ height: `${(d.value / 80) * 80}%` }}
-            >
-              {d.label && (
-                <div className="absolute top-1/2 left-full ml-2 -translate-y-1/2 bg-white dark:bg-slate-800 shadow-lg border border-[#E2E8F0] dark:border-slate-700 px-3 py-1.5 rounded-xl whitespace-nowrap z-10">
-                  <p className="text-[11px] font-medium text-[#171C1F] dark:text-white">{d.label}</p>
-                </div>
-              )}
+            <div className={`w-[64px] h-full rounded-t-[12px] flex flex-col justify-end items-center mb-[42px] ${d.highlighted ? 'bg-[#E3F1FF] dark:bg-[#1E293B]' : ''}`}>
+              <div
+                className={`w-[48px] rounded-t-[12px] ${d.highlighted ? 'bg-[#F6810C]' : 'bg-[#FFF4ED] dark:bg-slate-800'}`}
+                style={{ height: `${(d.value / 80) * 80}%` }}
+              >
+                {d.label && (
+                  <div className="absolute top-1/2 left-full ml-2 -translate-y-1/2 bg-white dark:bg-slate-800 shadow-lg border border-[#E2E8F0] dark:border-slate-700 px-3 py-1.5 rounded-xl whitespace-nowrap z-10">
+                    <p className="text-[11px] font-medium text-[#171C1F] dark:text-white">{d.label}</p>
+                  </div>
+                )}
+              </div>
             </div>
-            <span className="mt-3 text-[11px] font-bold text-[#94A3B8] dark:text-slate-500 uppercase tracking-wide">{d.day}</span>
+            <span className="absolute bottom-0 text-[11px] font-bold text-[#94A3B8] dark:text-slate-500 uppercase tracking-wide h-[30px] flex items-center">{d.day}</span>
           </div>
         ))}
       </div>
