@@ -52,6 +52,18 @@ import PerformingBatches from './Components/PerformingBatches';
 import CoursePerformance from './Components/CoursePerformance';
 
 export default function Reports() {
+  const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
+  const [currentDate, setCurrentDate] = React.useState(new Date(2026, 0, 12));
+  const [startDate, setStartDate] = React.useState<Date | null>(new Date(2026, 0, 12));
+  const [endDate, setEndDate] = React.useState<Date | null>(new Date(2026, 0, 17));
+
+  React.useEffect(() => {
+    const handleGlobalClick = () => {
+      setIsCalendarOpen(false);
+    };
+    window.addEventListener('click', handleGlobalClick);
+    return () => window.removeEventListener('click', handleGlobalClick);
+  }, []);
 
   // KPI cards
   const kpis = [
@@ -107,16 +119,156 @@ export default function Reports() {
     { name: "Digital Marketing Pro", batches: 15, students: 45, attendance: 76.0, engagement: "Low" },
   ];
 
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  const firstDay = new Date(year, month, 1);
+  const dayOfWeek = (firstDay.getDay() + 6) % 7; 
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const monthName = currentDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+  const formatDateLabel = () => {
+    if (startDate && endDate) {
+      const sStr = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const eStr = endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return `${sStr} – ${endDate.getMonth() === startDate.getMonth() ? endDate.getDate() : eStr}`;
+    }
+    if (startDate) {
+      return startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+    return "Select dates";
+  };
+
+  const prevMonth = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  };
+  const nextMonth = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
+
+  const handleDayClick = (day: number) => {
+    const clickedDate = new Date(year, month, day);
+    if (!startDate || (startDate && endDate)) {
+      setStartDate(clickedDate);
+      setEndDate(null);
+    } else if (startDate && !endDate) {
+      if (clickedDate < startDate) {
+        setStartDate(clickedDate);
+      } else {
+        setEndDate(clickedDate);
+      }
+    }
+  };
+
   return (
     <div className="p-6 bg-[#F8FAFC] dark:bg-slate-950 min-h-screen transition-colors duration-300" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Header ── */}
-      <div className="flex justify-end items-center gap-3 mb-6">
-        <div className="h-[40px] w-[140px] flex items-center justify-center gap-2 bg-white dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 rounded-xl text-[13px] font-medium text-[#464554] dark:text-slate-400 cursor-pointer select-none">
-          <Calendar size={15} />
-          <span>Jan 12 – 17</span>
-          <ChevronRight size={13} className="rotate-90" />
+      <div className="flex justify-end items-center gap-3 mb-6 relative">
+        <div className="relative">
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsCalendarOpen(!isCalendarOpen);
+            }}
+            className="h-[40px] px-4 min-w-[150px] flex items-center justify-center gap-2 bg-white dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 rounded-xl text-[13px] font-medium text-[#464554] dark:text-slate-400 cursor-pointer select-none"
+          >
+            <Calendar size={15} />
+            <span>{formatDateLabel()}</span>
+            <ChevronRight size={13} className={`transition-transform duration-200 ${isCalendarOpen ? 'rotate-[-90deg]' : 'rotate-90'}`} />
+          </div>
+
+          {isCalendarOpen && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute top-full right-0 mt-2 bg-white dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-50 w-[330px] font-['Urbanist'] animate-in fade-in zoom-in-95 duration-150"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-[18px] font-semibold text-[#0F172A] dark:text-white select-none">{monthName}</span>
+                <div className="flex items-center gap-3">
+                  <button onClick={prevMonth} className="p-1 text-[#64748B] hover:text-[#0F172A] dark:hover:text-white cursor-pointer select-none">
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button onClick={nextMonth} className="p-1 text-[#64748B] hover:text-[#0F172A] dark:hover:text-white cursor-pointer select-none">
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-7 text-center mb-3 select-none">
+                {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((wd) => (
+                  <span key={wd} className="text-[14px] font-normal text-[#475569] dark:text-slate-400 h-8 flex items-center justify-center">
+                    {wd}
+                  </span>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 text-center">
+                {[...Array(dayOfWeek).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)].map((day, i) => {
+                  if (day === null) {
+                    return <div key={`empty-${i}`} className="h-9" />;
+                  }
+
+                  const currentDayDate = new Date(year, month, day);
+
+                  let isSelected = false;
+                  let isStart = false;
+                  let isEnd = false;
+
+                  if (startDate && endDate) {
+                    isSelected = currentDayDate >= startDate && currentDayDate <= endDate;
+                    isStart = currentDayDate.getTime() === startDate.getTime();
+                    isEnd = currentDayDate.getTime() === endDate.getTime();
+                  } else if (startDate) {
+                    isStart = currentDayDate.getTime() === startDate.getTime();
+                    isSelected = isStart;
+                  }
+
+                  const today = new Date();
+                  const isToday = currentDayDate.getDate() === today.getDate() && 
+                                  currentDayDate.getMonth() === today.getMonth() && 
+                                  currentDayDate.getFullYear() === today.getFullYear();
+
+                  return (
+                    <div
+                      key={day}
+                      onClick={() => handleDayClick(day)}
+                      className={`h-9 flex items-center justify-center text-[14px] cursor-pointer font-medium select-none transition-all ${
+                        isSelected 
+                          ? 'bg-[#F6810C] text-white' 
+                          : isToday
+                            ? 'border-2 border-[#F6810C] text-[#F6810C] hover:bg-[#FFF4ED] dark:hover:bg-[#F6810C]/10 rounded-full'
+                            : 'text-[#1E293B] dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full'
+                      } ${isStart ? 'rounded-l-full' : ''} ${isEnd ? 'rounded-r-full' : ''}`}
+                    >
+                      {day}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-[#F1F5F9] dark:border-slate-800 flex justify-between items-center select-none font-['Urbanist']">
+                <span className="text-[12px] font-medium text-[#64748B] dark:text-slate-400">Today: {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                <button 
+                  onClick={() => {
+                    const t = new Date();
+                    setCurrentDate(t);
+                    setStartDate(t);
+                    setEndDate(t);
+                    setIsCalendarOpen(false);
+                  }}
+                  className="text-[12px] font-bold text-[#F6810C] hover:underline cursor-pointer"
+                >
+                  Go to Today
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+
         <button className="h-[40px] w-[140px] flex items-center justify-center gap-2 bg-[#F6810C] text-white rounded-xl text-[13px] font-bold hover:opacity-90 transition-all">
           <Download size={15} />
           Export
