@@ -27,6 +27,8 @@ import {
 const UploadedContent = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedChapter, setSelectedChapter] = React.useState<number | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [selectedType, setSelectedType] = React.useState("Notes");
 
   const openModal = (chapterId: number) => {
     setSelectedChapter(chapterId);
@@ -36,6 +38,7 @@ const UploadedContent = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedChapter(null);
+    setIsDropdownOpen(false);
   };
   const chapters = [
     {
@@ -235,13 +238,32 @@ const UploadedContent = () => {
                       <div>
                         <label className="block text-[16px] font-normal text-[#0B1C30] dark:text-slate-200 mb-2 font-['Urbanist'] leading-[24px]">Content Type</label>
                         <div className="relative">
-                          <select className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-2xl text-[14px] text-[#0F172A] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#F6810C]/20 focus:border-[#F6810C] transition-all font-['Urbanist'] appearance-none cursor-pointer">
-                            <option>Notes</option>
-                            <option>Assignment</option>
-                            <option>Tests</option>
-                            <option>Labs</option>
-                          </select>
-                          <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" size={18} />
+                          <div
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-2xl text-[14px] text-[#0F172A] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#F6810C]/20 focus:border-[#F6810C] transition-all font-['Urbanist'] flex justify-between items-center cursor-pointer select-none"
+                          >
+                            <span>{selectedType}</span>
+                            <ChevronDown className={`text-[#94A3B8] transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} size={18} />
+                          </div>
+
+                          {isDropdownOpen && (
+                            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-2xl py-2 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150 font-['Urbanist']">
+                              {["Notes", "Assignment", "Tests", "Labs"].map((type) => (
+                                <div
+                                  key={type}
+                                  onClick={() => {
+                                    setSelectedType(type);
+                                    setIsDropdownOpen(false);
+                                  }}
+                                  className={`px-5 py-3 text-[14px] cursor-pointer hover:bg-[#FFF4ED] dark:hover:bg-[#F6810C]/10 hover:text-[#F6810C] dark:hover:text-[#F6810C] transition-colors ${
+                                    selectedType === type ? 'text-[#F6810C] font-semibold bg-[#FFF4ED] dark:bg-[#F6810C]/10' : 'text-[#0F172A] dark:text-slate-200'
+                                  }`}
+                                >
+                                  {type}
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
 
