@@ -62,6 +62,7 @@ import Reports from "../Pages/Admin/Reports/Reports";
 import CourseOverview from "../Pages/Admin/Courses/BatchesOverview/BatchesOverview";
 import BatchesOverview from "../Pages/Admin/Courses/CourseOverview/CoursesOverview";
 import UploadedContent from "../Pages/Admin/Users/Instructors/UploadedContent";
+import AdminInstructorProfile from "../Pages/Admin/Users/Instructors/InstructorProfile/InstructorProfile";
 
 
 
@@ -149,6 +150,7 @@ export default function AppRoutes() {
                 <Route path="courses/:courseId" element={<CourseOverview />} />
                 <Route path="courses/:courseId/batches/:batchId" element={<BatchesOverview />} />
                 <Route path="users/instructors" element={<AdminInstructors />} />
+                <Route path="users/instructors/:instructorId" element={<AdminInstructorProfile />} />
                 <Route path="users/instructors/uploaded-content" element={<UploadedContent />} />
                 <Route path="users/students" element={<AdminStudents />} />
                 <Route path="users/students/certificate" element={<AdminStudentCertificate />} />

@@ -1,13 +1,13 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import InstructorStats from "./section/InstructorStats";
 import InstructorFilters from "./section/InstructorFilters";
 import InstructorTable from "./section/InstructorTable";
-import InstructorProfile from "./section/InstructorProfile";
 import { instructorMockData } from "../../../../data/InstructorMockData";
 import type { InstructorData } from "../../../../data/InstructorMockData";
 
 const Instructors = () => {
-  const [selectedInstructor, setSelectedInstructor] = useState<InstructorData | null>(null);
+  const navigate = useNavigate();
   
   // Filter and Sort states
   const [searchQuery, setSearchQuery] = useState("");
@@ -67,29 +67,20 @@ const Instructors = () => {
 
   return (
     <section className="pb-6 space-y-6">
-      {!selectedInstructor ? (
-        <>
-          <InstructorStats />
-          <InstructorFilters 
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            filterStatus={filterStatus}
-            setFilterStatus={setFilterStatus}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-          />
-          <InstructorTable 
-            instructors={filteredInstructors} 
-            onSelect={setSelectedInstructor} 
-            onDelete={handleDelete}
-          />
-        </>
-      ) : (
-        <InstructorProfile 
-          instructor={selectedInstructor} 
-          onBack={() => setSelectedInstructor(null)} 
-        />
-      )}
+      <InstructorStats />
+      <InstructorFilters 
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        filterStatus={filterStatus}
+        setFilterStatus={setFilterStatus}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+      />
+      <InstructorTable 
+        instructors={filteredInstructors} 
+        onSelect={(instructor) => navigate(`/admin/users/instructors/${instructor.instructorId}`)} 
+        onDelete={handleDelete}
+      />
     </section>
   );
 };
