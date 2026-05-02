@@ -28,10 +28,10 @@ const MetricCard: React.FC<MetricCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-[35px] p-7 shadow-sm border border-gray-100 flex flex-col h-full min-h-[200px]">
+    <div className="bg-white rounded-[35px] p-7  border border-gray-100 flex flex-col h-full min-h-[200px]">
       {/* Top Row: Icon and Badge */}
-      <div className="flex justify-between items-start mb-8">
-        <div className={`p-3 rounded-2xl ${themes[variant].bg} ${themes[variant].text}`}>
+      <div className="flex justify-between items-start mb-8  boxstyle">
+        <div className={`p-[8px] rounded-[12px] ${themes[variant].bg} ${themes[variant].text}`}>
           <Icon size={24} strokeWidth={2.5} />
         </div>
         {badgeText && (
@@ -46,16 +46,16 @@ const MetricCard: React.FC<MetricCardProps> = ({
       </div>
 
       {/* Content Row: Precisely Aligned */}
-      <div className="flex flex-col gap-1">
-        <p className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-widest">
+      <div className="flex flex-col gap-1 font-[Urbanist]">
+        <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest">
           {title}
         </p>
         <div className="flex flex-col">
-          <h3 className="text-3xl font-extrabold text-[#1e293b]">
+          <h3 className="text-[24px] font-bold text-[#0F172A]">
             {value}
           </h3>
           {/* Subtitle space reserved to prevent layout shift */}
-          <p className="text-[13px] font-medium text-[#94a3b8] mt-1 min-h-[20px]">
+          <p className="text-[13px] font-regular text-[#94A3B8] mt-1 min-h-[20px]">
             {subtitle || ""}
           </p>
         </div>

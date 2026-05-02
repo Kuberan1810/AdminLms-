@@ -76,7 +76,7 @@ const ScheduleCard: React.FC<{ item: ScheduleItem }> = ({ item }) => {
 
   return (
     <div className="bg-white rounded-2xl p-5 border border-slate-50 flex items-center justify-between transition-all hover:shadow-md">
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-6 ">
         <div className="flex flex-col items-center min-w-[60px]">
           <span className="text-lg font-bold text-slate-800 leading-none">{item.time}</span>
           <span className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tighter">{item.period}</span>
@@ -85,7 +85,7 @@ const ScheduleCard: React.FC<{ item: ScheduleItem }> = ({ item }) => {
         <div className={`h-10 border-l-2 ${item.accentColor} rounded-full`}></div>
         
         <div className="flex flex-col">
-          <h4 className="font-bold text-slate-800 text-base">{item.title}</h4>
+          <h4 className="font-semibold text-[#0F172A] text-[16px]">{item.title}</h4>
           <p className="text-sm text-slate-400 font-medium">
             {item.instructor} · <span className="opacity-80">{item.batch}</span>
           </p>
@@ -107,10 +107,10 @@ const LmsCourses: React.FC = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Section: Today's Schedule */}
-        <div className="lg:col-span-7 bg-white rounded-[40px] p-8 md:p-10 shadow-sm border border-slate-100 h-full">
+        <div className="lg:col-span-7 bg-white rounded-[40px] p-8 md:p-10 boxstyle border-slate-100 h-full">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold text-slate-900">Today's Schedule</h2>
-            <button className="text-orange-500 text-sm font-bold hover:underline flex items-center gap-2">
+            <h2 className="text-[24px ] font-bold text-[#0F172A]">Today's Schedule</h2>
+            <button className="text-orange-500 text-sm font-bold hover:underline flex items-center gap-2 cursor-pointer">
               View Calendar
             </button>
           </div>
@@ -124,7 +124,7 @@ const LmsCourses: React.FC = () => {
         
 
         {/* Right Section: Top Courses */}
-        <div className="lg:col-span-5 bg-white rounded-[40px] p-8 md:p-10 shadow-sm border border-slate-100 h-full">
+        <div className="lg:col-span-5 bg-white rounded-[40px] p-8 md:p-10  border-slate-100 h-full font-[Urbanist] boxstyle">
           <h2 className="text-2xl font-bold text-slate-900 mb-10">Top Courses</h2>
           
           <div className="space-y-8">
