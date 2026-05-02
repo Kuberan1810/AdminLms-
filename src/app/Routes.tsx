@@ -52,8 +52,10 @@ import Chats from "../Pages/Student/Chats/Chat";
 import AdminDashboard from "../Pages/Admin/Dashboard/Dashboard";
 import AdminCourses from "../Pages/Admin/Courses/Courses";
 import AdminLayout from "../Components/Admin/AdminLayout";
-import AdminInstructors from "../Pages/Admin/Users/Instructors/Instructors";
-import AdminStudents from "../Pages/Admin/Users/Students/Students";
+import AdminInstructors from "../Pages/Admin/users/Instructors/Instructors";
+import AdminStudents from "../Pages/Admin/users/Students/Students";
+import AdminStudentProfile from "../Pages/Admin/users/Students/StudentProfile";
+import AdminStudentCertificate from "../Pages/Admin/users/Students/Certificate";
 import AdminCommunity from "../Pages/Admin/Community/Community";
 import AdminChat from "../Pages/Admin/Chat/Chat";
 import Reports from "../Pages/Admin/Reports/Reports";
@@ -149,6 +151,8 @@ export default function AppRoutes() {
                 <Route path="users/instructors" element={<AdminInstructors />} />
                 <Route path="users/instructors/uploaded-content" element={<UploadedContent />} />
                 <Route path="users/students" element={<AdminStudents />} />
+                <Route path="users/students/certificate" element={<AdminStudentCertificate />} />
+                <Route path="users/students/:id" element={<AdminStudentProfile />} />
                 <Route path="community" element={<AdminCommunity />} />
                 <Route path="chat" element={<AdminChat />} />
                 <Route path="reports" element={<Reports />} />
