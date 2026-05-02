@@ -11,9 +11,9 @@ import {
 // --- Sub-Components ---
 
 const DailyAttendance = () => (
-  <div className="bg-white rounded-[32px] p-8 shadow-sm border border-slate-50 flex flex-col h-full">
+  <div className="bg-white rounded-[32px] p-8 font-[Urbanist] border-slate-50 flex flex-col h-full">
     <h2 className="text-xl font-bold text-slate-800 mb-8">Daily Attendance</h2>
-    <div className="space-y-6 flex-grow">
+    <div className="boxstyle">
       <div className="flex justify-between items-center">
         <span className="text-slate-500 font-medium">Absent Students</span>
         <span className="text-orange-500 font-bold text-xl">24</span>
@@ -33,13 +33,13 @@ const DailyAttendance = () => (
 );
 
 const EnrollmentGrowth = () => (
-  <div className="bg-white rounded-[32px] p-8 shadow-sm border border-slate-50 h-full flex flex-col">
-    <h2 className="text-xl font-bold text-slate-800">Enrollment Growth</h2>
+  <div className="bg-white rounded-[32px] p-8  border border-slate-50 h-full flex flex-col font-[Urbanist]">
+    <h2 className="text-[20px] font-semibold text-[#0B1C30]">Enrollment Growth</h2>
     <p className="text-xs text-slate-400 mt-1 mb-6">Monthly Performance</p>
     
     <div className="flex items-baseline gap-3 mb-8">
-      <span className="text-4xl font-extrabold text-orange-500">+18.5%</span>
-      <div className="flex items-center text-emerald-500 text-xs font-bold gap-1">
+      <span className="text-[36px] font-semibold text-[#F27121]">+18.5%</span>
+      <div className="flex items-center text-[#22C55E] text-[14px] font-bold gap-1">
         <Triangle size={8} fill="currentColor" /> 2.4%
       </div>
     </div>
@@ -62,7 +62,7 @@ const RecentActivity = () => {
   ];
 
   return (
-    <div className="bg-white rounded-[32px] p-8 shadow-sm border border-slate-50 h-full">
+    <div className="bg-white rounded-[32px] p-8 font-[Urbanist] border border-slate-50 h-full">
       <h2 className="text-slate-500 text-sm font-semibold mb-8">Recent Activity</h2>
       <div className="relative space-y-8">
         {/* Timeline Line */}
