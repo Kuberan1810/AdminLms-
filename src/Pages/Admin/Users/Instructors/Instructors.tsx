@@ -9,22 +9,22 @@ const Instructors = () => {
   const [selectedInstructor, setSelectedInstructor] = useState<InstructorData | null>(null);
 
   return (
-     
-      <section className=" pb-6 space-y-6">
-        {!selectedInstructor ? (
-          <>
-            <InstructorStats />
-            <InstructorFilters />
-            <InstructorTable onSelect={setSelectedInstructor} />
-          </>
-        ) : (
-          <InstructorProfile 
-            instructor={selectedInstructor} 
-            onBack={() => setSelectedInstructor(null)} 
-          />
-        )}
-      </section>
-   
+
+    <section className=" pb-6 space-y-6">
+      {!selectedInstructor ? (
+        <>
+          <InstructorStats />
+          <InstructorFilters />
+          <InstructorTable onSelect={setSelectedInstructor} />
+        </>
+      ) : (
+        <InstructorProfile
+          instructor={selectedInstructor}
+          onBack={() => setSelectedInstructor(null)}
+        />
+      )}
+    </section>
+
   );
 };
 

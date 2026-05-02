@@ -38,8 +38,8 @@ const InstructorTable = ({ onSelect }: Props) => {
           </thead>
           <tbody>
             {instructorMockData.map((instructor) => (
-              <tr 
-                key={instructor.id} 
+              <tr
+                key={instructor.id}
                 onClick={() => onSelect(instructor)}
                 className="border-b border-[#F2EEF4] dark:border-[#3B3B3B] last:border-0 hover:bg-gray-50/50 dark:hover:bg-[#333]/30 transition-all cursor-pointer group"
               >
