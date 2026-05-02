@@ -1,6 +1,14 @@
+import LmsStudentsMetrics from './section/LmsStudentsMetrics'
+import LmsCourses from './section/LmsCourses'
+import LmsAttendanceAndOthers from './section/LmsAttendanceAndOthers'
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div className="flex flex-col gap-3">
+      <LmsStudentsMetrics/>
+      <LmsCourses/>
+      <LmsAttendanceAndOthers/>
+
+      </div>
   )
 }
 
