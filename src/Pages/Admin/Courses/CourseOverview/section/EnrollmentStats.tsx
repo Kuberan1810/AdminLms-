@@ -11,18 +11,18 @@ interface Props {
 
 const EnrollmentStats = ({ enrollment }: Props) => {
   return (
-    <div className="bg-white dark:bg-[#2A2A2A] p-6 rounded-3xl border border-[#F2EEF4] dark:border-[#3B3B3B] space-y-6">
+    <div className="boxStyle space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold text-[#333333] dark:text-white">Enrollment Stats</h3>
-        <span className="text-xs text-[#626262] dark:text-[#A3A3A3]">Total {enrollment.total}</span>
+        <h3 className="md:text-xl text-lg font-semibold text-[#0B1C30] dark:text-white">Enrollment Stats</h3>
+        <span className="text-xs text-[#94A3B8] dark:text-[#A3A3A3]">Total {enrollment.total}</span>
       </div>
 
       <div className="space-y-4">
         {/* Attendance */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-[#626262] dark:text-[#A3A3A3]">Avg. Attendance</span>
-            <span className="text-sm font-bold text-[#333333] dark:text-white">{enrollment.attendance}%</span>
+            <span className="text-sm font-regular text-[#475569] dark:text-[#A3A3A3]">Avg. Attendance</span>
+            <span className="text-sm font-bold text-[#0F172A] dark:text-white">{enrollment.attendance}%</span>
           </div>
           <div className="h-2 bg-[#F3F5F7] dark:bg-[#3B3B3B] rounded-full overflow-hidden">
             <div className="h-full bg-[#22C55E] rounded-full transition-all duration-500" style={{ width: `${enrollment.attendance}%` }} />
@@ -32,8 +32,8 @@ const EnrollmentStats = ({ enrollment }: Props) => {
         {/* Assignment Completion */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-[#626262] dark:text-[#A3A3A3]">Assignment Completion</span>
-            <span className="text-sm font-bold text-[#333333] dark:text-white">{enrollment.completion}%</span>
+            <span className="text-sm font-regular text-[#475569] dark:text-[#A3A3A3]">Assignment Completion</span>
+            <span className="text-sm font-bold text-[#0F172A] dark:text-white">{enrollment.completion}%</span>
           </div>
           <div className="h-2 bg-[#F3F5F7] dark:bg-[#3B3B3B] rounded-full overflow-hidden">
             <div className="h-full bg-[#F67300] rounded-full transition-all duration-500" style={{ width: `${enrollment.completion}%` }} />
@@ -42,7 +42,7 @@ const EnrollmentStats = ({ enrollment }: Props) => {
       </div>
 
       <div className="space-y-4 pt-2">
-        <h4 className="text-xs font-bold text-[#333333] dark:text-white uppercase tracking-wider">Students</h4>
+        <h4 className="text-xs font-bold text-[#64748B] dark:text-white uppercase tracking-wider">Students</h4>
         <div className="flex items-center">
           <div className="flex -space-x-3 overflow-hidden">
             {enrollment.students.map((src, i) => (
@@ -61,7 +61,7 @@ const EnrollmentStats = ({ enrollment }: Props) => {
           </div>
         </div>
 
-        <button className="w-full py-2 bg-[#F3F5F7] dark:bg-[#3B3B3B]/50 text-[#626262] dark:text-[#A3A3A3] font-bold text-xs rounded-xl hover:bg-[#F3F5F7] transition-all cursor-pointer">
+        <button className="w-full py-3 bg-[#F8FAFC] dark:bg-[#3B3B3B]/50 text-[#334155] dark:text-[#A3A3A3] font-semibold text-xs rounded-xl hover:bg-[#F3F5F7] transition-all cursor-pointer">
           View Enrollment List
         </button>
       </div>

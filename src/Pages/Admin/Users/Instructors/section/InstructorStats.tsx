@@ -1,4 +1,8 @@
 import { Users, Presentation, Calendar, CheckSquare } from "lucide-react";
+import Teaching from "../../../../../assets/icons/teaching.svg"
+import Leave from "../../../../../assets/icons/leave.svg"
+import Instructor from "../../../../../assets/icons/instructor.svg"
+
 
 const InstructorStats = () => {
   const stats = [
@@ -6,7 +10,7 @@ const InstructorStats = () => {
       label: "Total Instructor",
       value: "24",
       subtitle: "Across all departments",
-      icon: Users,
+      icon: Instructor,
       iconColor: "text-[#F67300]",
       bgColor: "bg-[#FFF4EB]",
     },
@@ -14,7 +18,7 @@ const InstructorStats = () => {
       label: "Currently Teaching",
       value: "18",
       subtitle: "Live classes ongoing",
-      icon: Presentation,
+      icon: Teaching,
       iconColor: "text-[#22C55E]",
       bgColor: "bg-[#E8F8F0]",
     },
@@ -22,7 +26,7 @@ const InstructorStats = () => {
       label: "On Leave",
       value: "2",
       subtitle: "Not available today",
-      icon: Calendar,
+      icon: Leave,
       iconColor: "text-[#EF4444]",
       bgColor: "bg-[#FEE2E2]",
     },
@@ -30,9 +34,9 @@ const InstructorStats = () => {
       label: "Avg. Attendance",
       value: "95%",
       growth: "+12%",
-      icon: CheckSquare,
-      iconColor: "text-[#8B5CF6]",
-      bgColor: "bg-[#F5F3FF]",
+      icon: Calendar ,
+      iconColor: "text-[#7036E0]",
+      bgColor: "bg-[#7036E0]/10",
     },
   ];
 
@@ -41,11 +45,15 @@ const InstructorStats = () => {
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="bg-white dark:bg-[#2A2A2A] p-6 rounded-[28px] border border-[#F2EEF4] dark:border-[#3B3B3B] transition-all hover:shadow-md relative overflow-hidden"
+          className="boxStyle transition-all relative overflow-hidden"
         >
           <div className="flex items-center justify-between mb-4">
             <div className={`w-10 h-10 rounded-xl ${stat.bgColor} flex items-center justify-center`}>
-              <stat.icon className={stat.iconColor} size={20} />
+              {typeof stat.icon === "string" ? (
+                <img src={stat.icon} alt="icon" className="w-5 h-5" />
+              ) : (
+                <stat.icon className={stat.iconColor} size={20} />
+              )}
             </div>
             {stat.growth && (
               <span className="bg-[#E8F8F0] text-[#22C55E] text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -54,11 +62,13 @@ const InstructorStats = () => {
             )}
           </div>
           <div>
-            <p className="text-sm font-medium text-[#626262] dark:text-[#A3A3A3] mb-1">{stat.label}</p>
-            <h3 className="text-2xl font-bold text-[#333333] dark:text-white mb-1">{stat.value}</h3>
-            {stat.subtitle && (
-              <p className="text-[11px] text-[#626262] dark:text-[#A3A3A3] font-medium">{stat.subtitle}</p>
-            )}
+            <p className="text-sm md:text-base font-medium text-[#767676] dark:text-[#A3A3A3] mb-1">{stat.label}</p>
+            <div className="flex gap-2 items-center mt-2">
+              <h3 className="text-2xl md:text-3xl  font-bold text-[#333333] dark:text-white mb-1">{stat.value}</h3>
+              {stat.subtitle && (
+                <p className="text-[12px] text-[#767676] dark:text-[#A3A3A3] font-medium">{stat.subtitle}</p>
+              )}
+            </div>
           </div>
         </div>
       ))}

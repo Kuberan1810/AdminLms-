@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft, Edit2, Check, X } from "lucide-react";
-import BatchListCard from "../CourseOverview/section/BatchListCard";
+import BatchListCard from "./section/BatchListCard";
 import type { BatchCardData } from "../../../../types/course";
 
 const mockCourseDetail: Record<
@@ -55,7 +55,7 @@ export default function BatchesOverview() {
           className="flex items-center gap-2 text-[#333333] dark:text-white hover:opacity-80 transition-opacity cursor-pointer group"
         >
           <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-xl font-bold">{course.id}</span>
+          <span className="md:text-xl text-lg  font-medium ">{course.id}</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -94,8 +94,8 @@ export default function BatchesOverview() {
           </div>
         ) : (
           <>
-            <h1 className="text-2xl font-bold text-[#333333] dark:text-white">{course.title}</h1>
-            <p className="text-base text-[#626262] dark:text-[#A3A3A3] leading-relaxed max-w-7xl">
+            <h1 className="md:text-2xl text-xl  font-semibold text-[#333333] dark:text-white">{course.title}</h1>
+            <p className="md:text-base text-sm text-[#64748B] dark:text-[#A3A3A3] leading-relaxed max-w-7xl">
               {course.description}
             </p>
           </>
@@ -104,7 +104,7 @@ export default function BatchesOverview() {
 
       {/* ─── Batches Overview Section ─────────────────────────────────── */}
       <div className="space-y-6">
-        <h2 className="text-base font-bold text-[#333333] dark:text-white uppercase tracking-wider">Batches Overview</h2>
+        <h2 className="text-lg md:text-xl font-medium text-[#333333] dark:text-white  tracking-wider">Batches Overview</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {course.batches.map((batch) => (

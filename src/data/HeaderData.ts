@@ -59,11 +59,11 @@ export const headerMap: Record<string, { title: string; subtitle: string }> = {
         title: "Batch Overview",
         subtitle: "Manage enrolled students and batch sessions",
     },
-    "/admin/instructors": {
+    "/admin/users/instructors": {
         title: "Instructor Management",
         subtitle: "Overview of faculty members",
     },
-    "/admin/students": {
+    "/admin/users/students": {
         title: "Student Management",
         subtitle: "Manage and oversee all platform students",
     },
