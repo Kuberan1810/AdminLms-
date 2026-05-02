@@ -144,12 +144,7 @@ const TableSection = () => {
             Sort by : {sortOrder}
           </button>
 
-          <button
-            onClick={() => navigate('/admin/users/students/certificate')}
-            className="flex items-center gap-2 px-6 py-2.5 bg-[#F67300] text-white rounded-[12px] text-[14px] font-semibold hover:bg-[#e66a00] transition-colors shadow-sm"
-          >
-            Bulk Upload
-          </button>
+
         </div>
       </div>
 

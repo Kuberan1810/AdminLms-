@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { SearchNormal1, More, ArrowLeft2, ArrowRight2, DocumentUpload, Sort, FilterSearch, CloseCircle } from 'iconsax-react';
 import avatarImg from '../../../../../assets/avatar.jpg';
+import { SortAscIcon } from 'lucide-react';
 
 const certificateData = [
   { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', status: 'Verified', completionDate: '23/02/2026' },
@@ -8,8 +9,11 @@ const certificateData = [
   { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Verified', completionDate: '23/02/2026' },
   { id: 'BT011', name: 'Student Name ', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', completionDate: '23/02/2026', action: 'Upload' },
   { id: 'BT011', name: 'Student Name ', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', completionDate: '23/02/2026', action: 'Upload' },
-  { id: 'BT018', name: 'Hannah Abbott', email: 'hannah@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', status: 'Verified', completionDate: '26/02/2026' },
-];
+  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', status: 'Verified', completionDate: '23/02/2026' },
+  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', status: 'Verified', completionDate: '23/02/2026' },
+  { id: 'BT011', name: 'Student Name', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Verified', completionDate: '23/02/2026' },
+  { id: 'BT011', name: 'Student Name ', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', completionDate: '23/02/2026', action: 'Upload' },
+  { id: 'BT011', name: 'Student Name ', email: 'Student@gmail.com', avatar: avatarImg, course: 'AM101 - AI / ML Frontier AI Engineer', courseSubtitle: 'Q1103 - Quantum Intelligence', status: 'Pending', completionDate: '23/02/2026', action: 'Upload' },];
 
 const StatusBadge = ({ status }: { status: string }) => {
   const styles: Record<string, string> = {
@@ -34,7 +38,6 @@ const CertificateTableSection = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
 
-  // Parse DD/MM/YYYY date
   const parseDate = (dateStr: string) => {
     const [day, month, year] = dateStr.split('/').map(Number);
     return new Date(year, month - 1, day).getTime();
@@ -43,7 +46,6 @@ const CertificateTableSection = () => {
   const filteredAndSortedData = useMemo(() => {
     let data = [...certificateData];
 
-    // Search filter
     if (searchTerm) {
       const lowerSearch = searchTerm.toLowerCase();
       data = data.filter(item =>
@@ -53,12 +55,10 @@ const CertificateTableSection = () => {
       );
     }
 
-    // Status filter
     if (statusFilter !== 'All') {
       data = data.filter(item => item.status === statusFilter);
     }
 
-    // Sorting logic
     data.sort((a, b) => {
       switch (sortOrder) {
         case 'Newest':
@@ -83,7 +83,6 @@ const CertificateTableSection = () => {
     return filteredAndSortedData.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredAndSortedData, currentPage]);
 
-  // Reset page when filters change
   React.useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter, sortOrder]);
@@ -110,14 +109,13 @@ const CertificateTableSection = () => {
           )}
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto relative">
-          {/* Filter Dropdown */}
           <div className="relative">
             <button
               onClick={() => { setIsFilterOpen(!isFilterOpen); setIsSortOpen(false); }}
               className={`flex items-center gap-2 px-4 py-2.5 dark:bg-[#242424] border rounded-[8px] text-[12px] font-semibold transition-colors ${statusFilter !== 'All' ? 'border-[#F67300] text-[#F67300]' : 'border-[#D3D3D3] dark:border-[#3B3B3B] text-[#333333] dark:text-gray-300'
                 }`}
             >
-              <FilterSearch size={16} color="currentColor" />
+              <Sort size={16} color="currentColor" />
               {statusFilter === 'All' ? 'Filter' : `Filter: ${statusFilter}`}
             </button>
             {isFilterOpen && (
@@ -136,13 +134,13 @@ const CertificateTableSection = () => {
             )}
           </div>
 
-          {/* Sort Dropdown */}
+
           <div className="relative">
             <button
               onClick={() => { setIsSortOpen(!isSortOpen); setIsFilterOpen(false); }}
               className="flex items-center gap-2 px-4 py-2.5 dark:bg-[#242424] border border-[#D3D3D3] dark:border-[#3B3B3B] rounded-[8px] text-[12px] font-semibold text-[#333333] dark:text-gray-300 transition-colors"
             >
-              <Sort size={16} color="currentColor" />
+              <SortAscIcon size={16} color="currentColor" />
               Sort: {sortOrder}
             </button>
             {isSortOpen && (
