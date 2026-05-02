@@ -33,10 +33,12 @@ const EnrollmentGrowth: React.FC<EnrollmentGrowthProps> = ({ data }) => {
 
         {data.map((d, i) => (
           <div key={i} className="relative flex flex-col items-center flex-1 h-full justify-end">
-            <div className={`w-[64px] flex-1 rounded-t-[12px] flex flex-col justify-end items-center p-2 pt-[6px] pb-0 mb-6 ${d.highlighted ? 'bg-[#E3F1FF] dark:bg-[#1E293B]' : ''}`}>
+            <div
+              className={`w-[64px] rounded-t-[12px] flex flex-col justify-end items-center p-2 pt-[6px] pb-0 mb-6 ${d.highlighted ? 'bg-[#E3F1FF] dark:bg-[#1E293B]' : ''}`}
+              style={{ height: `${(d.value / 80) * 80}%` }}
+            >
               <div
-                className={`w-[48px] rounded-t-[12px] ${d.highlighted ? 'bg-[#F6810C]' : 'bg-[#FFF4ED] dark:bg-slate-800'}`}
-                style={{ height: `${(d.value / 80) * 80}%` }}
+                className={`w-[48px] flex-1 rounded-t-[12px] ${d.highlighted ? 'bg-[#F6810C]' : 'bg-[#FFF4ED] dark:bg-slate-800'}`}
               >
                 {d.label && (
                   <div className="absolute top-1/2 left-full ml-2 -translate-y-1/2 bg-white dark:bg-slate-800 shadow-lg border border-[#E2E8F0] dark:border-slate-700 px-3 py-1.5 rounded-xl whitespace-nowrap z-10">
