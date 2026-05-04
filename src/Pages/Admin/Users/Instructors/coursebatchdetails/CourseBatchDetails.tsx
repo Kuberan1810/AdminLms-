@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Search, MoreVertical, ChevronLeft, ChevronRight, Users, TrendingUp, Clock, SortDesc } from 'lucide-react';
+import { Search, MoreVertical, ChevronLeft, ChevronRight, Users, TrendingUp, Clock, SortDesc, Mail, FileText, Trash2 } from 'lucide-react';
 import { Sort, ExportCurve, Add } from 'iconsax-react';
 import { mockStudents } from '../../Students/mockData';
 import AddStudentModal from '../../Students/sections/AddStudentModal';
@@ -16,27 +16,48 @@ const CourseBatchDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [activeActionMenu, setActiveActionMenu] = useState<string | null>(null);
+  const [studentToDelete, setStudentToDelete] = useState<any | null>(null);
+  const [studentsList, setStudentsList] = useState<any[]>([]);
   const itemsPerPage = 8;
+  
+  const menuRef = React.useRef<HTMLDivElement>(null);
 
-  const studentsData = useMemo(() => {
-    // Filter students by batchId
+  useMemo(() => {
+    // Initial load of students for this batch
     const filteredByBatch = mockStudents.filter(s => 
       s.batches.includes(fullBatchId) || s.batches.includes(batchId || '')
     );
-
-    return filteredByBatch.map((s, idx) => ({
+    setStudentsList(filteredByBatch.map((s, idx) => ({
       ...s,
       studentId: s.id || `AM-2026-0891`,
       performance: idx % 4 === 0 ? 'A+' : idx % 4 === 1 ? 'A-' : idx % 4 === 2 ? 'B' : 'A',
-      status: s.status === 'Active' ? 'Active' : s.status === 'Leave' ? 'Leave' : 'Active', // Mapping to known statuses
-    }));
+      status: s.status === 'Active' ? 'Active' : s.status === 'Leave' ? 'Leave' : 'Active',
+    })));
   }, [batchId, fullBatchId]);
 
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setActiveActionMenu(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const confirmDelete = () => {
+    if (studentToDelete) {
+      setStudentsList(prev => prev.filter(s => s.id !== studentToDelete.id));
+      setStudentToDelete(null);
+    }
+  };
+
   const avgAttendance = useMemo(() => {
-    if (studentsData.length === 0) return '0%';
-    const total = studentsData.reduce((acc, s) => acc + parseInt(s.attendance || '0'), 0);
-    return `${Math.round(total / studentsData.length)}%`;
-  }, [studentsData]);
+    if (studentsList.length === 0) return '0%';
+    const total = studentsList.reduce((acc, s) => acc + parseInt(s.attendance || '0'), 0);
+    return `${Math.round(total / studentsList.length)}%`;
+  }, [studentsList]);
 
   const getPerformanceStyles = (perf: string) => {
     switch (perf) {
@@ -58,7 +79,7 @@ const CourseBatchDetails = () => {
   };
 
   const filteredAndSortedData = useMemo(() => {
-    let data = [...studentsData];
+    let data = [...studentsList];
 
     if (searchTerm) {
       const lowerQuery = searchTerm.toLowerCase();
@@ -78,7 +99,7 @@ const CourseBatchDetails = () => {
     }
 
     return data;
-  }, [searchTerm, statusFilter, sortOrder, studentsData]);
+  }, [searchTerm, statusFilter, sortOrder, studentsList]);
 
   const totalPages = Math.ceil(filteredAndSortedData.length / itemsPerPage) || 1;
   const currentData = filteredAndSortedData.slice(
@@ -101,17 +122,22 @@ const CourseBatchDetails = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-[12px] font-normal">
-            <span className="text-[#9CA3AF]">Classes</span>
+            <button 
+              onClick={() => navigate('/admin/courses')}
+              className="text-[#9CA3AF] hover:text-[#F67300] transition-colors cursor-pointer"
+            >
+              Classes
+            </button>
             <span className="text-gray-400">&gt;</span>
             <span className="text-[#EA580C] font-medium">{fullBatchId}</span>
           </div>
           <h2 className="text-[20px] md:text-[24px] font-medium text-[#222222] dark:text-white">
-            {studentsData[0]?.course || 'AM101 - AI / ML Frontier AI Engineer'}
+            {studentsList[0]?.course || 'AM101 - AI / ML Frontier AI Engineer'}
           </h2>
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-2 text-[14px] text-[#2222222] dark:text-[#A3A3A3] font-medium">
               <Users size={16} className="text-[#9CA3AF]" />
-              <span className="font-normal text-[#222222] dark:text-white">{studentsData.length}</span> Total Students
+              <span className="font-normal text-[#222222] dark:text-white">{studentsList.length}</span> Total Students
             </div>
             <div className="flex items-center gap-2 text-[14px] text-[#222222] dark:text-[#A3A3A3] font-medium">
               <TrendingUp size={16} className="text-[#9CA3AF]" />
@@ -233,10 +259,54 @@ const CourseBatchDetails = () => {
                     <td className="px-6 py-4">
                       <span className="text-[16px] text-[#222222] dark:text-white font-medium">{student.attendance}</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <button className="p-2 text-[#575757] dark:text-[#A3A3A3] cursor-pointer">
+                    <td className="px-6 py-4 text-center relative">
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveActionMenu(activeActionMenu === student.id ? null : student.id);
+                        }}
+                        className="p-2 text-[#575757] dark:text-[#A3A3A3] hover:bg-gray-100 dark:hover:bg-[#333] rounded-lg transition-colors cursor-pointer"
+                      >
                         <MoreVertical size={18} />
                       </button>
+
+                      {activeActionMenu === student.id && (
+                        <div
+                          ref={menuRef}
+                          onClick={(e) => e.stopPropagation()}
+                          className="absolute top-[80%] right-10 w-[200px] bg-white dark:bg-[#2A2A2A] shadow-xl rounded-xl border border-[#F2EEF4] dark:border-[#3B3B3B] z-50 animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
+                        >
+                          <div className="px-4 py-3 border-b border-[#F2EEF4] dark:border-[#3B3B3B]">
+                            <p className="text-sm font-semibold text-[#333333] dark:text-white text-left">Student Action</p>
+                          </div>
+                          <div className="p-2 space-y-1">
+                            <button className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-[#626262] dark:text-[#A3A3A3] hover:text-[#333333] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#333] rounded-lg transition-colors text-left cursor-pointer">
+                              <Mail size={16} />
+                              Send Mail
+                            </button>
+                            <button className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-[#626262] dark:text-[#A3A3A3] hover:text-[#333333] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#333] rounded-lg transition-colors text-left cursor-pointer">
+                              <FileText size={16} />
+                              Export Report
+                            </button>
+                            <button
+                              onClick={() => navigate(`/admin/users/students/${student.id}`)}
+                              className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-[#626262] dark:text-[#A3A3A3] hover:text-[#333333] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#333] rounded-lg transition-colors text-left cursor-pointer"
+                            >
+                              <Users size={16} />
+                              View Full Profile
+                            </button>
+                          </div>
+                          <div className="border-t border-[#F2EEF4] dark:border-[#3B3B3B] p-2">
+                            <button
+                              onClick={() => { setStudentToDelete(student); setActiveActionMenu(null); }}
+                              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-[#FF5A5F] hover:bg-[#FF5A5F]/10 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <Trash2 size={16} />
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))
@@ -287,6 +357,26 @@ const CourseBatchDetails = () => {
         onClose={() => setIsAddModalOpen(false)} 
         onAdd={(student) => console.log('New Student:', student)} 
       />
+
+      {/* Delete Modal */}
+      {studentToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#2A2A2A] rounded-2xl p-6 w-full max-w-sm shadow-xl animate-in zoom-in-95 duration-200">
+            <h3 className="text-xl font-bold text-[#333333] dark:text-white mb-2">Delete Student?</h3>
+            <p className="text-sm text-[#626262] dark:text-[#A3A3A3] mb-6">
+              Are you sure you want to remove <span className="font-semibold text-[#333333] dark:text-white">{studentToDelete.name}</span>? This action cannot be undone.
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <button onClick={() => setStudentToDelete(null)} className="px-4 py-2 rounded-xl text-sm font-medium text-[#626262] dark:text-[#A3A3A3] hover:bg-gray-100 dark:hover:bg-[#3B3B3B] transition-colors cursor-pointer border border-[#F2EEF4] dark:border-[#3B3B3B]">
+                Cancel
+              </button>
+              <button onClick={confirmDelete} className="px-4 py-2 rounded-xl text-sm font-medium text-white bg-[#FF5A5F] hover:bg-[#E0484D] transition-colors cursor-pointer">
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

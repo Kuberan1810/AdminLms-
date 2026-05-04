@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 interface EnrollmentData {
   total: number;
   attendance: number;
@@ -7,9 +9,12 @@ interface EnrollmentData {
 
 interface Props {
   enrollment: EnrollmentData;
+  batchCode: string;
 }
 
-const EnrollmentStats = ({ enrollment }: Props) => {
+const EnrollmentStats = ({ enrollment, batchCode }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <div className="boxStyle space-y-6">
       <div className="flex items-center justify-between">
@@ -61,7 +66,10 @@ const EnrollmentStats = ({ enrollment }: Props) => {
           </div>
         </div>
 
-        <button className="w-full py-3 bg-[#F8FAFC] dark:bg-[#3B3B3B]/50 text-[#334155] dark:text-[#A3A3A3] font-semibold text-xs rounded-xl hover:bg-[#F3F5F7] transition-all cursor-pointer">
+        <button 
+          onClick={() => navigate(`/admin/users/instructors/batch/${batchCode}`)}
+          className="w-full py-3 bg-[#F8FAFC] dark:bg-[#3B3B3B]/50 text-[#334155] dark:text-[#A3A3A3] font-semibold text-xs rounded-xl hover:bg-[#F3F5F7] transition-all cursor-pointer"
+        >
           View Enrollment List
         </button>
       </div>

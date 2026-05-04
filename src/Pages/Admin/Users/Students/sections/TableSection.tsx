@@ -17,7 +17,7 @@ import {
 import { Sort, Add } from 'iconsax-react';
 
 import { mockStudents, type Student } from '../mockData';
-import AddStudentModal from './AddStudentModal';
+
 
 const StatusBadge = ({ status }: { status: string }) => {
   const styles: Record<string, string> = {
@@ -41,6 +41,7 @@ const TableSection = () => {
   const [sortBy, setSortBy] = useState("Newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [studentsList, setStudentsList] = useState<Student[]>(mockStudents);
   const itemsPerPage = 8;
 
   const [activeActionMenu, setActiveActionMenu] = useState<string | null>(null);
@@ -69,7 +70,7 @@ const TableSection = () => {
   }, []);
 
   const filteredAndSortedData = useMemo(() => {
-    let data = [...mockStudents];
+    let data = [...studentsList];
 
     if (searchTerm) {
       const lowerQuery = searchTerm.toLowerCase();
@@ -103,7 +104,7 @@ const TableSection = () => {
 
   const confirmDelete = () => {
     if (studentToDelete) {
-      // In real app, call delete API
+      setStudentsList(prev => prev.filter(s => s.id !== studentToDelete.id));
       setStudentToDelete(null);
     }
   };
@@ -187,13 +188,7 @@ const TableSection = () => {
             )}
           </div>
 
-          <button 
-            onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-[#F67300] text-white rounded-xl text-sm font-bold shadow-lg shadow-orange-500/20 hover:bg-[#e06900] transition-all cursor-pointer"
-          >
-            <Add size={20} />
-            Add Student
-          </button>
+      
         </div>
       </div>
 
@@ -334,7 +329,7 @@ const TableSection = () => {
 
       {/* Delete Modal */}
       {studentToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div className="fixed h-full inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white dark:bg-[#2A2A2A] rounded-2xl p-6 w-full max-w-sm shadow-xl animate-in zoom-in-95 duration-200">
             <h3 className="text-xl font-bold text-[#333333] dark:text-white mb-2">Delete Student?</h3>
             <p className="text-sm text-[#626262] dark:text-[#A3A3A3] mb-6">
@@ -352,11 +347,7 @@ const TableSection = () => {
         </div>
       )}
       
-      <AddStudentModal 
-        isOpen={isAddModalOpen} 
-        onClose={() => setIsAddModalOpen(false)} 
-        onAdd={(student) => console.log('New Student:', student)} 
-      />
+    
     </div>
   );
 };

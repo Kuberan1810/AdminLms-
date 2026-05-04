@@ -101,7 +101,7 @@ export default function CoursesOverview() {
         {/* Right Column (Instructor & Enrollment) */}
         <div className="space-y-8">
           <LeadInstructor instructor={batchData.instructor} />
-          <EnrollmentStats enrollment={batchData.enrollment} />
+          <EnrollmentStats enrollment={batchData.enrollment} batchCode={batchData.id} />
         </div>
       </div>
     </div>

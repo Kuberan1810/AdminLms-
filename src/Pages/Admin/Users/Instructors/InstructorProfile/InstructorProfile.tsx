@@ -16,9 +16,15 @@ const InstructorProfile = () => {
   const { instructorId } = useParams();
   const navigate = useNavigate();
 
-  const instructor = useMemo(() => {
+  const [instructor, setInstructor] = useState(() => {
     return instructorMockData.find(inst => inst.instructorId === instructorId);
-  }, [instructorId]);
+  });
+
+  const handleDeactivate = () => {
+    if (instructor) {
+      setInstructor({ ...instructor, status: 'Deactivated' });
+    }
+  };
 
   if (!instructor) {
     return (
@@ -64,7 +70,7 @@ const InstructorProfile = () => {
           />
         ) : (
           <>
-            <ProfileHeaderSection instructor={instructor} onEdit={() => setIsEditing(true)} />
+            <ProfileHeaderSection instructor={instructor} onEdit={() => setIsEditing(true)} onDeactivate={handleDeactivate} />
 
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="w-full flex-1 shrink-0 space-y-6">
