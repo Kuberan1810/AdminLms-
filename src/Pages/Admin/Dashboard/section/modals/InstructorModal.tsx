@@ -89,8 +89,9 @@
 // export default InstructorModal;
 
 import React, { useState, useRef } from 'react';
-import { Camera, Zap, UserPlus, UploadCloud, X, Paperclip } from 'lucide-react';
+import { Camera, Zap, UserPlus, UploadCloud, X, Paperclip, Pencil } from 'lucide-react';
 import BaseSlidePanel from './BaseSlidePanel';
+import { Teacher } from 'iconsax-react';
 
 const InstructorModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [profileImg, setProfileImg] = useState<string | null>(null);
@@ -107,8 +108,8 @@ const InstructorModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   return (
     <BaseSlidePanel 
       isOpen={isOpen} onClose={onClose} title="Add New Instructor"
-      footer={<><button onClick={onClose} className="text-slate-500 font-bold px-6 py-2 cursor-pointer">Cancel</button>
-      <button className="bg-[#F27427] text-white font-bold px-8 py-3 rounded-xl shadow-lg cursor-pointer">Add Instructor</button></>}
+      footer={<><button onClick={onClose} className="flex-1 text-[#626262] border-[#E4E4E4] border rounded-xl hover:bg-gray-50 font-semibold px-8 py-3 cursor-pointer">Cancel</button>
+      <button className="bg-[#F27427] flex-1 text-white font-bold px-8 py-3 rounded-xl  cursor-pointer hover:bg-[#F25500]">Add Instructor</button></>}
     >
       <div className="space-y-8">
         {/* Profile Section */}
@@ -118,12 +119,10 @@ const InstructorModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
             <div className="w-24 h-24 rounded-full border-2 border-dashed border-[#CBD5E1] flex items-center justify-center bg-[#F8FAFC] overflow-hidden">
               {profileImg ? <img src={profileImg} className="w-full h-full object-cover" /> : <Camera size={32} className="text-slate-300" />}
             </div>
-            <div className="absolute bottom-1 right-1 w-7 h-7 rounded-full bg-[#F27427] text-white flex items-center justify-center border-2 border-white shadow-lg"><Zap size={12} fill="white" /></div>
+            <div className="absolute bottom-1 right-1 w-7 h-7 rounded-full bg-[#F27427] text-white flex items-center justify-center border-2 border-white shadow-lg"><Pencil size={12} fill="white" /></div>
           </div>
-          <p className="text-[11px] font-bold text-slate-400 mt-3 uppercase tracking-widest">Profile Picture</p>
+          <p className="text-[11px] font-semibold text-[#626262] mt-3 uppercase tracking-widest">Profile Picture</p>
         </div>
-
-        {/* ... Personal Information & Professional Details sections stay exactly as before ... */}
 
         {/* Personal Information */}
          <div className="space-y-4">
@@ -134,15 +133,15 @@ const InstructorModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
              <InputGroup label="Full Name" placeholder="e.g. Dr. Sarah Jenkins" />
              <InputGroup label="Email Address" placeholder="sarah.j@institution.edu" type="email" />
-             <InputGroup label="Phone Number" placeholder="" type="tel" />
-             <InputGroup label="Instructor ID" value="INI202061" readOnly className="bg-slate-100 text-slate-400 font-bold" />
+             <InputGroup label="Phone Number" placeholder="+91 0000000000" type="tel" />
+             <InputGroup label="Instructor ID" value="INI202061" readOnly className="bg-[#F1F5F9] text-[#94A3B8] font-light" />
            </div>
        </div>
 
          {/* Professional Details */}
          <div className="space-y-4">
            <div className="flex items-center gap-2 text-[#F27427]">
-             <Zap size={16} />
+            <Teacher color='currentColor' className='text-[#F27427]' size={16} />
              <h3 className="text-xs font-bold uppercase tracking-[0.2em]">Professional Details</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
@@ -153,24 +152,25 @@ const InstructorModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 
         {/* Attachment Section */}
         <div className="space-y-2">
-           <label className="text-[13px] font-bold text-slate-700 uppercase tracking-wider">Attachments</label>
+           <label className="text-[13px] font-semibold text-[#0B1C30] uppercase tracking-wider">Attachments</label>
            <input type="file" ref={attachRef} onChange={(e) => e.target.files && setAttachment(e.target.files[0])} className="hidden" />
            <div 
              onClick={() => attachRef.current?.click()}
              onDragOver={(e) => e.preventDefault()}
              onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files[0]) setAttachment(e.dataTransfer.files[0]); }}
-             className="border-2 border-dashed border-[#E2E8F0] rounded-2xl p-6 flex flex-col items-center justify-center gap-2 bg-[#F8FAFC]/50 cursor-pointer"
+             className="mt-3 border-2 border-dashed border-[#E2E8F0] rounded-2xl p-8 flex flex-col items-center justify-center gap-2 bg-[#F8FAFC]/50 hover:bg-[#F8FAFC] transition-colors cursor-pointer group"
            >
              {attachment ? (
-               <div className="flex items-center gap-2 text-[#F27427] font-bold text-sm">
-                 <Paperclip size={16} /> {attachment.name}
+               <div className="flex items-center gap-3 text-[#F27427] font-semibold">
+                 <Paperclip size={20} /> <span>{attachment.name}</span>
+                 <X size={16} className="text-[#626262] hover:text-red-500" onClick={(e) => { e.stopPropagation(); setAttachment(null); }} />
                </div>
              ) : (
                <>
-                 <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#F27427] border border-slate-100 shadow-sm"><UploadCloud size={16} /></div>
+                 <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-[#F27427] border border-slate-100"><UploadCloud size={20} /></div>
                  <div className="text-center">
-                    <p className="font-bold text-sm text-[#1E293B]">Click or drag to upload</p>
-                    <p className="text-[10px] text-slate-400 font-medium tracking-wide">PDF, PNG, JPG (Max 10MB)</p>
+                    <p className="font-semibold text-[#1E293B]">Click or drag to upload</p>
+                    <p className="text-[11px] text-[#626262] font-medium tracking-wide">PDF, PNG, JPG (Max 10MB)</p>
                  </div>
                </>
              )}
@@ -182,11 +182,11 @@ const InstructorModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 };
 
 const InputGroup = ({ label, className = "", ...props }: any) => (
-  <div className="space-y-1.5">
-    <label className="text-[11px] font-bold text-slate-700 ml-1 uppercase tracking-wider">{label}</label>
+  <div className="space-y-2">
+    <label className="text-[13px] font-semibold text-[#0B1C30] ml-1 tracking-wide">{label}</label>
     <input 
       {...props} 
-      className={`w-full bg-[#F8FAFC] border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-[#F27427] text-sm font-medium transition-all ${className}`} 
+      className={`w-full bg-[#F8FAFC] dark:bg-[#2A2A2A] border border-slate-200 dark:border-[#3B3B3B] rounded-xl px-4 py-3.5 outline-none focus:border-[#F27427] text-sm font-light placeholder:text-slate-300 placeholder:text-sm transition-all mt-3 ${className}`} 
     />
    </div>
  );
