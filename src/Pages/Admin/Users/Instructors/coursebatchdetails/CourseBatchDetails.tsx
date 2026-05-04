@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Search, MoreVertical, ChevronLeft, ChevronRight, Users, TrendingUp, Clock, SortDesc } from 'lucide-react';
 import { Sort, ExportCurve, Add } from 'iconsax-react';
 import { mockStudents } from '../../Students/mockData';
+import AddStudentModal from '../../Students/sections/AddStudentModal';
 
 const CourseBatchDetails = () => {
   const { batchId } = useParams();
@@ -14,6 +15,7 @@ const CourseBatchDetails = () => {
   const [sortOrder, setSortOrder] = useState<'Newest' | 'Oldest'>('Newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const itemsPerPage = 8;
 
   const studentsData = useMemo(() => {
@@ -126,7 +128,10 @@ const CourseBatchDetails = () => {
             <ExportCurve size={18} color='black' />
             Export List
           </button>
-          <button className="flex items-center gap-2 px-[16px] py-[8px] bg-[#F27121] text-white rounded-[8px] text-[13px] font-bold hover:bg-[#e06900] transition-colors cursor-pointer">
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center gap-2 px-[16px] py-[8px] bg-[#F27121] text-white rounded-[8px] text-[13px] font-bold hover:bg-[#e06900] transition-colors cursor-pointer"
+          >
             <Add size={18} color='white' />
             Add Student
           </button>
@@ -277,9 +282,12 @@ const CourseBatchDetails = () => {
           <ChevronRight size={16} strokeWidth={2} />
         </button>
       </div>
+      <AddStudentModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+        onAdd={(student) => console.log('New Student:', student)} 
+      />
     </div>
-
-
   );
 };
 

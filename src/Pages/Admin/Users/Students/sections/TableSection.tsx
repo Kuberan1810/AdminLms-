@@ -14,9 +14,10 @@ import {
   ChevronDown,
   Check
 } from "lucide-react";
-import { Sort } from 'iconsax-react';
+import { Sort, Add } from 'iconsax-react';
 
 import { mockStudents, type Student } from '../mockData';
+import AddStudentModal from './AddStudentModal';
 
 const StatusBadge = ({ status }: { status: string }) => {
   const styles: Record<string, string> = {
@@ -39,6 +40,7 @@ const TableSection = () => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortBy, setSortBy] = useState("Newest");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const itemsPerPage = 8;
 
   const [activeActionMenu, setActiveActionMenu] = useState<string | null>(null);
@@ -184,6 +186,14 @@ const TableSection = () => {
               </div>
             )}
           </div>
+
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center gap-2 px-6 py-2.5 bg-[#F67300] text-white rounded-xl text-sm font-bold shadow-lg shadow-orange-500/20 hover:bg-[#e06900] transition-all cursor-pointer"
+          >
+            <Add size={20} />
+            Add Student
+          </button>
         </div>
       </div>
 
@@ -341,6 +351,12 @@ const TableSection = () => {
           </div>
         </div>
       )}
+      
+      <AddStudentModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+        onAdd={(student) => console.log('New Student:', student)} 
+      />
     </div>
   );
 };
