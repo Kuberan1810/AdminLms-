@@ -10,8 +10,8 @@ import ConfirmLogoutModal from "../Student/ConfirmLogoutModal";
 
 import { useAuth } from "../../context/AuthContext";
 import { AnimatePresence } from "framer-motion";
-import StudentNotificationPopup from "../common/Student/StudentNotificationPopup.tsx";
-import SettingsSidebar from "../common/Student/SettingsSidebar.tsx";
+import AdminNotification from "../common/Admin/Notification.tsx";
+import SettingsSidebar from "../common/Admin/Settings.tsx";
 import { useNotifications } from "../../context/StudentNotification/NotificationContext.tsx";
 import GlobalSearchDropdown from "../common/GlobalSearchDropdown";
 
@@ -188,7 +188,7 @@ const AdminHeader = () => {
           {/* Popup */}
           <AnimatePresence>
             {showNotifications && (
-              <StudentNotificationPopup
+              <AdminNotification
                 onClose={() => setShowNotifications(false)}
               />
             )}
