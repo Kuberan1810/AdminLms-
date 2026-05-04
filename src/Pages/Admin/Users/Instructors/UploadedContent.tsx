@@ -3,6 +3,8 @@ import { ChevronRight, Share2, FileText, Cpu, Terminal, File as FileIcon, FileQu
 import { FilterBar } from './section/FilterBar';
 import { ChapterSection } from './section/ChapterSection';
 import { UploadModal } from './section/UploadModal';
+import docIcon from "../../../../assets/Images/icon/doc.svg";
+import pdfIcon from "../../../../assets/Images/icon/pdfIcon.svg";
 
 const UploadedContent = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -83,7 +85,7 @@ const UploadedContent = () => {
           size: "2.4 MB",
           date: "Uploaded Jan 12, 2026",
           color: "bg-[#FFF4ED] text-[#F6810C]",
-          icon: <FileText size={20} />
+          icon: <img src={pdfIcon} className="w-5 h-5 object-contain" alt="pdf" />
         },
         {
           id: 2,
@@ -93,7 +95,7 @@ const UploadedContent = () => {
           size: "450 KB",
           date: "Uploaded Jan 22, 2026",
           color: "bg-[#FAF5FF] text-[#9333EA]",
-          icon: <FileIcon size={20} />
+          icon: <img src={docIcon} className="w-5 h-5 object-contain" alt="doc" />
         },
         {
           id: 3,
@@ -103,7 +105,7 @@ const UploadedContent = () => {
           size: "1.1 MB",
           date: "Uploaded Jan 28, 2026",
           color: "bg-[#FEF2F2] text-[#DC2626]",
-          icon: <FileQuestion size={20} />
+          icon: <img src={pdfIcon} className="w-5 h-5 object-contain" alt="pdf" />
         }
       ]
     },
@@ -121,7 +123,7 @@ const UploadedContent = () => {
           date: "Uploaded Nov 02, 2023",
           color: "bg-[#FFF4ED] text-[#F6810C]",
           badgeColor: "bg-[#EFF6FF] text-[#2563EB]",
-          icon: <Cpu size={20} />
+          icon: <img src={pdfIcon} className="w-5 h-5 object-contain" alt="pdf" />
         },
         {
           id: 5,
@@ -160,7 +162,7 @@ const UploadedContent = () => {
     .filter(Boolean) as typeof chapters;
 
   return (
-    <div className="p-8 bg-white dark:bg-slate-900 min-h-screen font-['Urbanist'] transition-colors duration-300">
+    <div className="p-8 bg-transparent dark:bg-transparent min-h-screen font-['Urbanist'] transition-colors duration-300">
       {/* ── Breadcrumbs & Uploaded Content Title ── */}
       <div className="flex justify-between items-center mb-6">
         <div>

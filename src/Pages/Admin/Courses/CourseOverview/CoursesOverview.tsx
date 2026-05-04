@@ -46,7 +46,7 @@ export default function CoursesOverview() {
           className="flex items-center gap-2 text-[#333333] dark:text-white hover:opacity-80 transition-opacity cursor-pointer group"
         >
           <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-xl font-bold">{batchData.id}</span>
+          <span className="md:text-xl text-lg  font-medium ">{batchData.id}</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -79,8 +79,8 @@ export default function CoursesOverview() {
           </div>
         ) : (
           <>
-            <h1 className="text-2xl font-bold text-[#333333] dark:text-white">Courses Overview</h1>
-            <p className="text-base text-[#626262] dark:text-[#A3A3A3] leading-relaxed max-w-7xl">
+              <h1 className="md:text-2xl text-xl  font-semibold text-[#333333] dark:text-white">Courses Overview</h1>
+              <p className="md:text-base text-sm text-[#64748B] dark:text-[#A3A3A3] leading-relaxed max-w-7xl">
               {description}
             </p>
           </>

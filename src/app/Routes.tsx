@@ -1,5 +1,5 @@
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../Pages/Student/Login/LoginParent";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -54,12 +54,19 @@ import AdminCourses from "../Pages/Admin/Courses/Courses";
 import AdminLayout from "../Components/Admin/AdminLayout";
 import AdminInstructors from "../Pages/Admin/Users/Instructors/Instructors";
 import AdminStudents from "../Pages/Admin/Users/Students/Students";
+import AdminStudentProfile from "../Pages/Admin/Users/Students/StudentProfile";
+import AdminStudentCertificate from "../Pages/Admin/Users/Students/Certificate";
 import AdminCommunity from "../Pages/Admin/Community/Community";
 import AdminChat from "../Pages/Admin/Chat/Chat";
 import Reports from "../Pages/Admin/Reports/Reports";
 import CourseOverview from "../Pages/Admin/Courses/BatchesOverview/BatchesOverview";
 import BatchesOverview from "../Pages/Admin/Courses/CourseOverview/CoursesOverview";
 import UploadedContent from "../Pages/Admin/Users/Instructors/UploadedContent";
+import AdminInstructorProfile from "../Pages/Admin/Users/Instructors/InstructorProfile/InstructorProfile";
+
+import AdminCourseBatchDetails from "../Pages/Admin/Users/Instructors/coursebatchdetails/CourseBatchDetails";
+import AdminProfile from "../Pages/Admin/Profile/AdminProfile";
+
 
 
 
@@ -147,11 +154,19 @@ export default function AppRoutes() {
                 <Route path="courses/:courseId" element={<CourseOverview />} />
                 <Route path="courses/:courseId/batches/:batchId" element={<BatchesOverview />} />
                 <Route path="users/instructors" element={<AdminInstructors />} />
+
+                <Route path="users/instructors/:instructorId" element={<AdminInstructorProfile />} />
                 <Route path="users/instructors/uploaded-content" element={<UploadedContent />} />
+
+                <Route path="users/instructors/batch/:batchId" element={<AdminCourseBatchDetails />} />
+
                 <Route path="users/students" element={<AdminStudents />} />
+                <Route path="users/students/certificate" element={<AdminStudentCertificate />} />
+                <Route path="users/students/:id" element={<AdminStudentProfile />} />
                 <Route path="community" element={<AdminCommunity />} />
                 <Route path="chat" element={<AdminChat />} />
                 <Route path="reports" element={<Reports />} />
+                <Route path="profile" element={<AdminProfile />} />
             </Route>
             {/* </Route> */}
 

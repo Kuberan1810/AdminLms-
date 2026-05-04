@@ -25,8 +25,8 @@ const AdminList = [
       { label: "Students", path: "/admin/users/students" },
     ],
   },
-  { label: "Community", icon: People, path: "/admin/community" },
-  { label: "Chat", icon: Messages3, path: "/admin/chat" },
+  // { label: "Community", icon: People, path: "/admin/community" },
+  // { label: "Chat", icon: Messages3, path: "/admin/chat" },
   { label: "Reports", icon: Chart1, path: "/admin/reports" },
 ];
 

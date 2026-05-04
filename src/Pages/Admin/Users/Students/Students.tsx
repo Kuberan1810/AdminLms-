@@ -1,8 +1,12 @@
+import React from 'react';
+import StatsSection from './sections/StatsSection';
+import TableSection from './sections/TableSection';
+
 const Students = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Students Management</h1>
-      <p className="text-gray-600">Manage all students here.</p>
+    <div className=" space-y-6">
+      <StatsSection />
+      <TableSection />
     </div>
   );
 };

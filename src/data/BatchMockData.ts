@@ -5,8 +5,8 @@ export const getBatchData = (batchId: string) => {
       stats: [
         { label: "Total Students", value: "32", icon: "users", iconColor: "text-[#F67300]", bgColor: "bg-[#FFF5EB]" },
         { label: "Duration", value: "12 Weeks", subtitle: "Current : Week 04 of 12", icon: "clock", iconColor: "text-[#3B82F6]", bgColor: "bg-[#EFF6FF]" },
-        { label: "Next Session", value: "Tomorrow, 10:00 am", icon: "calendar", iconColor: "text-[#A855F7]", bgColor: "bg-[#F5F3FF]" },
-        { label: "Avg. Progress", value: "68% Completion", icon: "trending", iconColor: "text-[#22C55E]", bgColor: "bg-[#F0FDF4]" },
+        { label: "Next Session", value: "Tomorrow, 10:00 am", topic: "", icon: "calendar", iconColor: "text-[#A855F7]", bgColor: "bg-[#F5F3FF]" },
+        { label: "Avg. Progress", value: "68% Completion", growth: "+4% from last week", icon: "trending", iconColor: "text-[#22C55E]", bgColor: "bg-[#F0FDF4]" },
       ],
       modules: [
         { id: "m1", number: "02", title: "Generative AI & LLM Engineering", lessons: [
@@ -24,7 +24,7 @@ export const getBatchData = (batchId: string) => {
       instructor: {
         name: "Dr. Dravid",
         role: "Frontier AI Engineer",
-        tags: ["AI Expert", "ML Mentor"],
+        tags: ["AI Expert", "ML Mentor"," Innovation Leader"],
         avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=256&h=256&fit=crop"
       },
       enrollment: {

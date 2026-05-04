@@ -12,7 +12,7 @@ export default function BatchCards({ course }: Props) {
   return (
     <div
       onClick={() => navigate(`/admin/courses/${course.id}`)}
-      className=" boxStyle transition-all cursor-pointer group"
+      className="boxStyle transition-all cursor-pointer hover:bg-white/60! hover:shadow-xs group"
     >
       {/* Top Row: Batches Count & Status */}
       <div className="flex items-center justify-between mb-4">
@@ -60,7 +60,7 @@ export default function BatchCards({ course }: Props) {
                 />
               ))}
             </div>
-            <span className="text-[10px] bg-[#F1F5F9] p-1 rounded-full  text-[#64748B] dark:text-[#A3A3A3] font-bold">+{course.totalStudents - 2}</span>
+            <span className="-ml-3 text-[10px] bg-[#F1F5F9] p-1 rounded-full  text-[#64748B] dark:text-[#A3A3A3] font-bold">+{course.totalStudents - 2}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Users size={14} color="currentColor" className="text-[#94A3B8] dark:text-[#A3A3A3]" />
