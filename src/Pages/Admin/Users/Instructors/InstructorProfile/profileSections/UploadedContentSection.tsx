@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Download } from 'lucide-react';
 import pdfIcon from '../../../../../../assets/Images/icon/pdfIcon.svg';
 import docIcon from '../../../../../../assets/Images/icon/docIcon.svg';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const UploadedContentSection = ({ instructor }: Props) => {
+  const navigate = useNavigate();
   const contentList = instructor.uploadedContent && instructor.uploadedContent.length > 0
     ? instructor.uploadedContent
     : [
@@ -33,7 +35,10 @@ const UploadedContentSection = ({ instructor }: Props) => {
     <div className="boxStyle">
       <div className="flex items-center justify-between mb-6">
         <h2 className="md:text-xl text-lg font-semibold text-[#0B1C30]  dark:text-white">Uploaded Content</h2>
-        <button className="text-[12px] font-medium text-[#626262] dark:text-[#A3A3A3] hover:text-[#F67300] hover:underline cursor-pointer" >
+        <button 
+          onClick={() => navigate('/admin/users/instructors/uploaded-content')}
+          className="text-[12px] font-medium text-[#626262] dark:text-[#A3A3A3] hover:text-[#F67300] hover:underline cursor-pointer" 
+        >
           View more
         </button>
       </div>

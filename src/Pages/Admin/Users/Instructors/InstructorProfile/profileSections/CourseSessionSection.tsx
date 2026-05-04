@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DocumentText1, Monitor } from 'iconsax-react';
 import type { InstructorData } from '../../../../../../data/InstructorMockData';
 
@@ -7,6 +8,8 @@ interface Props {
 }
 
 const CourseSessionSection = ({ instructor }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <div className="boxStyle">
       <h2 className="md:text-xl text-lg font-semibold text-[#0B1C30]  dark:text-white mb-6">Course & Sessions</h2>
@@ -45,7 +48,11 @@ const CourseSessionSection = ({ instructor }: Props) => {
                 ];
                 const style = styles[idx % styles.length];
                 return (
-                  <span key={idx} className={`px-4 py-1.5 rounded-[12px] text-[12px] font-normal cursor-pointer opacity-70 hover:opacity-100 ${style}`}>
+                  <span 
+                    key={idx} 
+                    onClick={() => navigate(`/admin/users/instructors/batch/${batch.replace('#', '')}`)}
+                    className={`px-4 py-1.5 rounded-[12px] text-[12px] font-normal cursor-pointer opacity-70 hover:opacity-100 ${style}`}
+                  >
                     {batch}
                   </span>
                 );
