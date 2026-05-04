@@ -28,7 +28,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-[35px] p-7  border border-gray-100 flex flex-col h-full min-h-[200px]">
+    <div className="boxStyle flex flex-col h-full min-h-[200px]">
       {/* Top Row: Icon and Badge */}
       <div className="flex justify-between items-start mb-8  boxstyle">
         <div className={`p-[8px] rounded-[12px] ${themes[variant].bg} ${themes[variant].text}`}>
@@ -98,8 +98,8 @@ export const LmsStudentsMetrics: React.FC = () => {
   ];
 
   return (
-    <div className="w-full bg-[#f8fafc] p-6 md:p-10">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="w-full ">
+      <div className="  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {metrics.map((m, i) => (
           <MetricCard key={i} {...m} />
         ))}
