@@ -14,9 +14,11 @@ import {
   ChevronDown,
   Check
 } from "lucide-react";
+
 import { Sort, Add } from 'iconsax-react';
 
 import { mockStudents, type Student } from '../mockData';
+
 
 
 const StatusBadge = ({ status }: { status: string }) => {
@@ -40,8 +42,10 @@ const TableSection = () => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortBy, setSortBy] = useState("Newest");
   const [currentPage, setCurrentPage] = useState(1);
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [studentsList, setStudentsList] = useState<Student[]>(mockStudents);
+
   const itemsPerPage = 8;
 
   const [activeActionMenu, setActiveActionMenu] = useState<string | null>(null);
@@ -70,7 +74,9 @@ const TableSection = () => {
   }, []);
 
   const filteredAndSortedData = useMemo(() => {
+
     let data = [...studentsList];
+
 
     if (searchTerm) {
       const lowerQuery = searchTerm.toLowerCase();
@@ -104,7 +110,9 @@ const TableSection = () => {
 
   const confirmDelete = () => {
     if (studentToDelete) {
+
       setStudentsList(prev => prev.filter(s => s.id !== studentToDelete.id));
+
       setStudentToDelete(null);
     }
   };
@@ -188,7 +196,6 @@ const TableSection = () => {
             )}
           </div>
 
-      
         </div>
       </div>
 
@@ -330,6 +337,7 @@ const TableSection = () => {
       {/* Delete Modal */}
       {studentToDelete && (
         <div className="fixed h-full inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+
           <div className="bg-white dark:bg-[#2A2A2A] rounded-2xl p-6 w-full max-w-sm shadow-xl animate-in zoom-in-95 duration-200">
             <h3 className="text-xl font-bold text-[#333333] dark:text-white mb-2">Delete Student?</h3>
             <p className="text-sm text-[#626262] dark:text-[#A3A3A3] mb-6">
@@ -346,8 +354,7 @@ const TableSection = () => {
           </div>
         </div>
       )}
-      
-    
+
     </div>
   );
 };

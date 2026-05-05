@@ -75,7 +75,9 @@ const ScheduleCard: React.FC<{ item: ScheduleItem }> = ({ item }) => {
   };
 
   return (
+
     <div className="boxStyle flex items-center justify-between transition-all ">
+
       <div className="flex items-center gap-6 ">
         <div className="flex flex-col items-center min-w-[60px]">
           <span className="text-lg font-bold text-slate-800 leading-none">{item.time}</span>
@@ -92,7 +94,9 @@ const ScheduleCard: React.FC<{ item: ScheduleItem }> = ({ item }) => {
         </div>
       </div>
 
+
       <button className={`px-6 py-2 rounded-xl text-sm font-bold transition-colors min-w-[110px] cursor-pointer ${getButtonStyles()}`}>
+
         {item.status === 'join' && "Join"}
         {item.status === 'countdown' && item.countdownText}
         {item.status === 'upcoming' && "Upcoming"}
@@ -103,11 +107,13 @@ const ScheduleCard: React.FC<{ item: ScheduleItem }> = ({ item }) => {
 
 const LmsCourses: React.FC = () => {
   return (
+
     <div className="w-full">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 h-full items-start">
         
         {/* Left Section: Today's Schedule */}
         <div className="lg:col-span-7 boxStyle h-full">
+
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-[24px ] font-bold text-[#0F172A]">Today's Schedule</h2>
             <button className="text-orange-500 text-sm font-bold hover:underline flex items-center gap-2 cursor-pointer">
@@ -124,7 +130,9 @@ const LmsCourses: React.FC = () => {
         
 
         {/* Right Section: Top Courses */}
+
         <div className="lg:col-span-5 h-full  boxStyle">
+
           <h2 className="text-2xl font-bold text-slate-900 mb-10">Top Courses</h2>
           
           <div className="space-y-8">

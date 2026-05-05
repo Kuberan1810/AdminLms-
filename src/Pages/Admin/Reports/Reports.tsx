@@ -164,7 +164,7 @@ export default function Reports() {
   };
 
   return (
-    <div className="p-6 bg-[#F8FAFC] dark:bg-slate-950 min-h-screen transition-colors duration-300" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className=" dark:bg-slate-950 min-h-screen transition-colors duration-300" >
 
       {/* ── Header ── */}
       <div className="flex justify-end items-center gap-3 mb-6 relative">

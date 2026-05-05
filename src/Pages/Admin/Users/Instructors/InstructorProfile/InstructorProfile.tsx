@@ -1,4 +1,6 @@
+
 import React, { useMemo, useState } from 'react';
+
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Profile} from 'iconsax-react';
@@ -16,6 +18,7 @@ const InstructorProfile = () => {
   const { instructorId } = useParams();
   const navigate = useNavigate();
 
+
   const [instructor, setInstructor] = useState(() => {
     return instructorMockData.find(inst => inst.instructorId === instructorId);
   });
@@ -25,6 +28,7 @@ const InstructorProfile = () => {
       setInstructor({ ...instructor, status: 'Deactivated' });
     }
   };
+
 
   if (!instructor) {
     return (
@@ -70,7 +74,9 @@ const InstructorProfile = () => {
           />
         ) : (
           <>
+
             <ProfileHeaderSection instructor={instructor} onEdit={() => setIsEditing(true)} onDeactivate={handleDeactivate} />
+
 
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="w-full flex-1 shrink-0 space-y-6">

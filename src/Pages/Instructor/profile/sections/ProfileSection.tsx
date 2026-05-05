@@ -10,7 +10,7 @@ import { useAuth } from "../../../../context/AuthContext";
 
 const ProfileSection: React.FC = () => {
   const navigate = useNavigate();
-  const { user} = useAuth();
+  const { user } = useAuth();
 
   const { profile } = useSelector((state: RootState) => state.instructor);
 

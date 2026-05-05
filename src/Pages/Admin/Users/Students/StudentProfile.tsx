@@ -16,6 +16,7 @@ const StudentProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+
   const [student, setStudent] = useState(() => {
     return mockStudents.find(s => s.id === id);
   });
@@ -25,6 +26,7 @@ const StudentProfile = () => {
       setStudent({ ...student, status: 'Deactivated' });
     }
   };
+
 
   if (!student) {
     return (
@@ -67,7 +69,9 @@ const StudentProfile = () => {
           <StudentEditMode student={student} onCancel={() => setIsEditing(false)} />
         ) : (
           <>
+
             <ProfileHeaderSection student={student} onEdit={() => setIsEditing(true)} onDeactivate={handleDeactivate} />
+
 
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="w-full flex-1 shrink-0 space-y-6">

@@ -5,6 +5,7 @@ import { Sort, ExportCurve, Add } from 'iconsax-react';
 import { mockStudents } from '../../Students/mockData';
 import AddStudentModal from '../../Students/sections/AddStudentModal';
 
+
 const CourseBatchDetails = () => {
   const { batchId } = useParams();
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const CourseBatchDetails = () => {
     return `${Math.round(total / studentsList.length)}%`;
   }, [studentsList]);
 
+
   const getPerformanceStyles = (perf: string) => {
     switch (perf) {
       case 'A+': return 'bg-[#F0FDF4] text-[#15803D] border-[1px] border-[#DCFCE7]';
@@ -79,7 +81,9 @@ const CourseBatchDetails = () => {
   };
 
   const filteredAndSortedData = useMemo(() => {
+
     let data = [...studentsList];
+
 
     if (searchTerm) {
       const lowerQuery = searchTerm.toLowerCase();
@@ -99,7 +103,9 @@ const CourseBatchDetails = () => {
     }
 
     return data;
+
   }, [searchTerm, statusFilter, sortOrder, studentsList]);
+
 
   const totalPages = Math.ceil(filteredAndSortedData.length / itemsPerPage) || 1;
   const currentData = filteredAndSortedData.slice(
@@ -122,22 +128,28 @@ const CourseBatchDetails = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-[12px] font-normal">
+
             <button 
               onClick={() => navigate('/admin/courses')}
               className="text-[#9CA3AF] hover:text-[#F67300] transition-colors cursor-pointer"
             >
               Classes
             </button>
+
             <span className="text-gray-400">&gt;</span>
             <span className="text-[#EA580C] font-medium">{fullBatchId}</span>
           </div>
           <h2 className="text-[20px] md:text-[24px] font-medium text-[#222222] dark:text-white">
+
             {studentsList[0]?.course || 'AM101 - AI / ML Frontier AI Engineer'}
+
           </h2>
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-2 text-[14px] text-[#2222222] dark:text-[#A3A3A3] font-medium">
               <Users size={16} className="text-[#9CA3AF]" />
+
               <span className="font-normal text-[#222222] dark:text-white">{studentsList.length}</span> Total Students
+
             </div>
             <div className="flex items-center gap-2 text-[14px] text-[#222222] dark:text-[#A3A3A3] font-medium">
               <TrendingUp size={16} className="text-[#9CA3AF]" />
@@ -154,10 +166,12 @@ const CourseBatchDetails = () => {
             <ExportCurve size={18} color='black' />
             Export List
           </button>
+
           <button 
             onClick={() => setIsAddModalOpen(true)}
             className="flex items-center gap-2 px-[16px] py-[8px] bg-[#F27121] text-white rounded-[8px] text-[13px] font-bold hover:bg-[#e06900] transition-colors cursor-pointer"
           >
+
             <Add size={18} color='white' />
             Add Student
           </button>
@@ -259,6 +273,7 @@ const CourseBatchDetails = () => {
                     <td className="px-6 py-4">
                       <span className="text-[16px] text-[#222222] dark:text-white font-medium">{student.attendance}</span>
                     </td>
+
                     <td className="px-6 py-4 text-center relative">
                       <button 
                         onClick={(e) => {
@@ -307,6 +322,7 @@ const CourseBatchDetails = () => {
                           </div>
                         </div>
                       )}
+
                     </td>
                   </tr>
                 ))
@@ -352,6 +368,7 @@ const CourseBatchDetails = () => {
           <ChevronRight size={16} strokeWidth={2} />
         </button>
       </div>
+
       <AddStudentModal 
         isOpen={isAddModalOpen} 
         onClose={() => setIsAddModalOpen(false)} 
@@ -378,6 +395,7 @@ const CourseBatchDetails = () => {
         </div>
       )}
     </div>
+
   );
 };
 

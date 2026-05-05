@@ -1,5 +1,5 @@
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../Pages/Student/Login/LoginParent";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -52,10 +52,12 @@ import Chats from "../Pages/Student/Chats/Chat";
 import AdminDashboard from "../Pages/Admin/Dashboard/Dashboard";
 import AdminCourses from "../Pages/Admin/Courses/Courses";
 import AdminLayout from "../Components/Admin/AdminLayout";
+
 import AdminInstructors from "../Pages/Admin/users/Instructors/Instructors";
 import AdminStudents from "../Pages/Admin/users/Students/Students";
 import AdminStudentProfile from "../Pages/Admin/users/Students/StudentProfile";
 import AdminStudentCertificate from "../Pages/Admin/users/Students/Certificate";
+
 import AdminCommunity from "../Pages/Admin/Community/Community";
 import AdminChat from "../Pages/Admin/Chat/Chat";
 import Reports from "../Pages/Admin/Reports/Reports";
@@ -64,7 +66,11 @@ import BatchesOverview from "../Pages/Admin/Courses/CourseOverview/CoursesOvervi
 import UploadedContent from "../Pages/Admin/Users/Instructors/UploadedContent";
 import AdminInstructorProfile from "../Pages/Admin/Users/Instructors/InstructorProfile/InstructorProfile";
 
+
 import AdminCourseBatchDetails from "../Pages/Admin/users/Instructors/coursebatchdetails/CourseBatchDetails";
+
+import AdminProfile from "../Pages/Admin/Profile/AdminProfile";
+
 
 
 
@@ -165,6 +171,7 @@ export default function AppRoutes() {
                 <Route path="community" element={<AdminCommunity />} />
                 <Route path="chat" element={<AdminChat />} />
                 <Route path="reports" element={<Reports />} />
+                <Route path="profile" element={<AdminProfile />} />
             </Route>
             {/* </Route> */}
 

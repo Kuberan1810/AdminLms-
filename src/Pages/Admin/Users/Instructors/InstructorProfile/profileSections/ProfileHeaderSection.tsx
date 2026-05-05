@@ -6,10 +6,12 @@ import type { InstructorData } from '../../../../../../data/InstructorMockData';
 interface Props {
   instructor: InstructorData;
   onEdit?: () => void;
+
   onDeactivate?: () => void;
 }
 
 const ProfileHeaderSection = ({ instructor, onEdit, onDeactivate }: Props) => {
+
   const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false);
 
   return (
@@ -25,7 +27,9 @@ const ProfileHeaderSection = ({ instructor, onEdit, onDeactivate }: Props) => {
                 instructor.status === 'Leave' ? 'bg-[#F6810C]/10 text-[#F6810C] dark:bg-orange-500/10 dark:text-orange-400' :
                 instructor.status === 'Pending' ? 'bg-[#3111E8]/10 text-[#3111E8] dark:bg-purple-500/10 dark:text-purple-400' :
                 instructor.status === 'Resigned' ? 'bg-[#EA1115]/10 text-[#EA1115] dark:bg-red-500/10 dark:text-red-400' :
+
                 instructor.status === 'Deactivated' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
+
                 'bg-gray-100 text-gray-600'
               }`}>
                 {instructor.status}
@@ -100,7 +104,9 @@ const ProfileHeaderSection = ({ instructor, onEdit, onDeactivate }: Props) => {
                 </button>
                 <button 
                   onClick={() => {
+
                     onDeactivate?.();
+
                     setIsDeactivateModalOpen(false);
                   }}
                   className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-[#B91C1C] text-white rounded-[12px] text-[14px] font-semibold hover:bg-[#991B1B] transition-colors cursor-pointer"

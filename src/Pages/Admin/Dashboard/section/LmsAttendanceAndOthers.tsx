@@ -1,10 +1,13 @@
 
+
+
 import React, { useState } from 'react';
 import { 
   AlertTriangle, 
   Triangle, 
   Zap, 
   Megaphone, 
+
   Users 
 } from 'lucide-react';
 
@@ -18,6 +21,7 @@ const DailyAttendance = () => (
   <div className="boxStyle flex flex-col h-full ">
     <h2 className="text-xl font-bold text-slate-800 mb-8">Daily Attendance</h2>
     <div className="space-y-6 flex-grow">
+
       <div className="flex justify-between items-center">
         <span className="text-slate-500 font-medium">Absent Students</span>
         <span className="text-orange-500 font-bold text-xl">24</span>
@@ -37,7 +41,9 @@ const DailyAttendance = () => (
 );
 
 const EnrollmentGrowth = () => (
+
   <div className="boxStyle h-full flex flex-col ">
+
     <h2 className="text-[20px] font-semibold text-[#0B1C30]">Enrollment Growth</h2>
     <p className="text-xs text-slate-400 mt-1 mb-6">Monthly Performance</p>
     
@@ -53,13 +59,16 @@ const EnrollmentGrowth = () => (
       <div className="flex-1 bg-orange-100 rounded-sm h-[60%]"></div>
       <div className="flex-1 bg-orange-200 rounded-sm h-[50%]"></div>
       <div className="flex-1 bg-orange-300 rounded-sm h-[80%]"></div>
+
       <div className="flex-1 bg-[#F27121] rounded-sm h-[100%]"></div>
+
     </div>
   </div>
 );
 
 const RecentActivity = () => {
   const activities = [
+
     { name: "Alex Rivera", action: "Submitted: Full Stack Web Development Module 4", time: "2 mins ago" ,avatar: "https://i.pravatar.cc/150?u=alex"},
     { name: "Sophie Chen", action: "Started: Python for Beginners - Quiz 1", time: "15 mins ago",avatar: "https://i.pravatar.cc/150?u=sophie" },
     { name: "Jordan Smith", action: "Updated: Final Project Proposal Draft", time: "1 hour ago",avatar: "https://i.pravatar.cc/150?u=jordan" },
@@ -74,6 +83,7 @@ const RecentActivity = () => {
           <div key={idx} className="flex gap-4 relative z-10">
             <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center border-4 border-white overflow-hidden shrink-0">
                <img src={item.avatar} alt={item.name} className="w-full h-full object-cover" />
+
             </div>
             <div className="flex flex-col">
               <span className="text-[14px] font-bold text-slate-800 leading-none">{item.name}</span>
@@ -90,6 +100,7 @@ const RecentActivity = () => {
 // --- Main Component ---
 
 const LmsAttendanceAndOthers: React.FC = () => {
+
   // State for the FAB Popover
   const [isFabOpen, setIsFabOpen] = useState(false);
   
@@ -99,10 +110,12 @@ const LmsAttendanceAndOthers: React.FC = () => {
   return (
     <div className="">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
         <DailyAttendance />
         <EnrollmentGrowth />
         <RecentActivity />
       </div>
+
 
       {/* --- MODALS --- */}
       <AnnouncementModal 
@@ -181,6 +194,7 @@ const LmsAttendanceAndOthers: React.FC = () => {
           />
         </button>
         
+
       </div>
     </div>
   );

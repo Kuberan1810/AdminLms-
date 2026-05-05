@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface EnrollmentData {
   day: string;
@@ -8,10 +8,30 @@ interface EnrollmentData {
 }
 
 interface EnrollmentGrowthProps {
-  data: EnrollmentData[];
+  data?: EnrollmentData[];
 }
 
-const EnrollmentGrowth: React.FC<EnrollmentGrowthProps> = ({ data }) => {
+const EnrollmentGrowth: React.FC<EnrollmentGrowthProps> = () => {
+  const [activeRange, setActiveRange] = useState<'Week' | 'Month'>('Week');
+
+  const weekData: EnrollmentData[] = [
+    { day: "MON", value: 40, label: "40 Enrollments" },
+    { day: "TUE", value: 25, label: "25 Enrollments" },
+    { day: "WED", value: 45, label: "45 Enrollments" },
+    { day: "THUR", value: 35, label: "35 Enrollments" },
+    { day: "FRI", value: 70, highlighted: true, label: "70 Enrollments" },
+  ];
+
+  const monthData: EnrollmentData[] = [
+    { day: "JAN", value: 65, label: "65 Enrollments" },
+    { day: "FEB", value: 45, label: "45 Enrollments" },
+    { day: "MAR", value: 75, highlighted: true, label: "75 Enrollments" },
+    { day: "APR", value: 50, label: "50 Enrollments" },
+    { day: "MAY", value: 60, label: "60 Enrollments" },
+  ];
+
+  const currentData = activeRange === 'Week' ? weekData : monthData;
+
   return (
     <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-[#F1F5F9] dark:border-slate-800 p-7 transition-colors duration-300">
       <div className="flex justify-between items-start mb-8">
@@ -20,8 +40,26 @@ const EnrollmentGrowth: React.FC<EnrollmentGrowthProps> = ({ data }) => {
           <p className="text-[13px] text-[#64748B] dark:text-slate-400 mt-0.5">New learner registrations</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="px-4 py-1.5 text-[12px] font-bold text-[#334155] dark:text-slate-300 bg-white dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700 rounded-xl font-['Urbanist']">Month</button>
-          <button className="px-4 py-1.5 text-[12px] font-bold text-white bg-[#F6810C] border border-[#F6810C] rounded-xl font-['Urbanist']">Week</button>
+          <button
+            onClick={() => setActiveRange('Month')}
+            className={`px-4 py-1.5 text-[12px] font-bold rounded-xl font-['Urbanist'] cursor-pointer transition-all ${
+              activeRange === 'Month'
+                ? 'text-white bg-[#F6810C] border border-[#F6810C]'
+                : 'text-[#334155] dark:text-slate-300 bg-white dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700'
+            }`}
+          >
+            Month
+          </button>
+          <button
+            onClick={() => setActiveRange('Week')}
+            className={`px-4 py-1.5 text-[12px] font-bold rounded-xl font-['Urbanist'] cursor-pointer transition-all ${
+              activeRange === 'Week'
+                ? 'text-white bg-[#F6810C] border border-[#F6810C]'
+                : 'text-[#334155] dark:text-slate-300 bg-white dark:bg-slate-800 border border-[#E2E8F0] dark:border-slate-700'
+            }`}
+          >
+            Week
+          </button>
         </div>
       </div>
 
@@ -31,7 +69,7 @@ const EnrollmentGrowth: React.FC<EnrollmentGrowthProps> = ({ data }) => {
           <div key={i} className="absolute w-full h-px bg-[#F1F5F9] dark:bg-slate-800" style={{ bottom: `${i * 25}%` }} />
         ))}
 
-        {data.map((d, i) => (
+        {currentData.map((d, i) => (
           <div key={i} className="relative flex flex-col items-center flex-1 h-full justify-end group cursor-pointer">
             <div
               className={`w-[64px] rounded-t-[12px] flex flex-col justify-end items-center p-2 pt-[6px] pb-0 mb-6 relative ${d.highlighted ? 'bg-[#E3F1FF] dark:bg-[#1E293B]' : ''}`}
